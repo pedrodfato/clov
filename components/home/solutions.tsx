@@ -88,6 +88,11 @@ export default function Solutions() {
           scrollTrigger: { trigger: el, start: "top 85%", end: "bottom 45%", scrub: 0.4 },
         }
       );
+
+      // O SplitText mudou a altura deste bloco depois que o ScrollSmoother já
+      // mediu a página. Sem esse refresh os limites de scroll ficam defasados e
+      // as seções abaixo (contato) dão um salto ao serem alcançadas.
+      ScrollTrigger.refresh();
     });
 
     return () => {

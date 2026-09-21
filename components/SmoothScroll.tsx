@@ -13,7 +13,17 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     // Sem create() os dois divs ficam no fluxo normal — o site segue funcionando.
     const smoother = ScrollSmoother.create({ smooth: 1.1, smoothTouch: 0 });
-    return () => smoother.kill();
+
+    // A altura da página muda depois do load (fontes, imagens). Sem recalcular,
+    // os limites de scroll ficam defasados e as seções finais saltam.
+    const refresh = () => ScrollTrigger.refresh();
+    document.fonts?.ready.then(refresh);
+    window.addEventListener("load", refresh);
+
+    return () => {
+      window.removeEventListener("load", refresh);
+      smoother.kill();
+    };
   }, []);
 
   return (

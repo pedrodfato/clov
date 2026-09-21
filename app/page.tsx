@@ -3,6 +3,7 @@ import Parceiros from "@/components/home/parceiros"
 import About from "@/components/home/about"
 import Metodology from "@/components/home/metodology"
 import Solutions from "@/components/home/solutions"
+import Reviews from "@/components/home/reviews"
 import Contact from "@/components/home/contact"
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
     <About/>
     <Metodology/>
     <Solutions/>
+    <Reviews/>
     <Contact/>
     </>
   )
