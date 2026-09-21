@@ -1,142 +1,172 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, Circle } from "lucide-react";
+import { useEffect, useRef } from "react";
+import SectionLabel from "../SectionLabel";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+const solutions = [
+  {
+    id: "sites",
+    title: "Sites",
+    category: "desenvolvimento",
+    desc: [
+      "Na maioria das empresas o site é a primeira conversa que o cliente tem com a marca, e ela acaba acontecendo em uma página lenta, parecida com a de todo mundo.",
+      "A gente constrói sites rápidos e responsivos, com uma estrutura que leva o visitante até a ação em vez de deixar ele se perder no caminho.",
+      "Cuidamos do projeto do começo ao deploy, para o site acompanhar o tamanho da sua empresa hoje e o crescimento que vem depois.",
+    ],
+    items: [
+      "Design UI/UX",
+      "CMS & Integrações",
+      "Front-end",
+      "Performance & SEO",
+      "Landing Pages",
+      "Deploy & Hosting",
+    ],
+  },
+  {
+    id: "automacoes",
+    title: "Automações de IA",
+    category: "automação",
+    desc: [
+      "Tarefa repetitiva custa o tempo da sua equipe todo mês, e boa parte dos processos que rodam na mão hoje já poderia estar automatizada.",
+      "Desenvolvemos agentes e fluxos que conversam com as ferramentas que você já usa, cortam retrabalho e encurtam o tempo entre a informação chegar e a decisão sair.",
+      "A operação passa a rodar sozinha nas partes chatas e a equipe volta a trabalhar no que só ela consegue fazer.",
+    ],
+    items: [
+      "Chatbots & Agentes",
+      "Fluxos com IA",
+      "Automação de APIs",
+      "Análise de Dados",
+      "Ferramentas Internas",
+    ],
+  },
+  {
+    id: "seguranca",
+    title: "Segurança",
+    category: "proteção",
+    desc: [
+      "Empresa que cresce sem cuidar de segurança vai juntando risco pelo caminho, e a conta chega em dado vazado e cliente que perde a confiança.",
+      "Avaliamos sua infraestrutura de ponta a ponta, achamos as falhas antes que virem incidente e colocamos as camadas de proteção que fazem sentido para o seu caso.",
+      "No fim você tem uma base monitorada e sabe exatamente onde está protegido.",
+    ],
+    items: [
+      "Testes de Penetração",
+      "Monitoramento",
+      "Auditoria de Código",
+      "Resposta a Incidentes",
+      "Hardening de Infra",
+      "LGPD",
+    ],
+  },
+];
 
 export default function Solutions() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
-  const solutions = [
-    {
-      number: "01",
-      title: "Website Development",
-      category: "Desenvolvimento",
-      desc: [
-        "Seu site é o primeiro contato de um cliente com sua marca — e a maioria das empresas perde essa oportunidade com páginas lentas, genéricas e sem propósito.",
-        "Construímos sites rápidos, responsivos e pensados para conversão, unindo design, performance técnica e uma estrutura que guia o visitante até a ação.",
-        "Do zero ao deploy, cuidamos de cada detalhe para que seu site represente o nível da sua empresa e sustente o crescimento que vem pela frente.",
-      ],
-      columns: [
-        ["Design UI/UX", "Front-end", "Landing Pages"],
-        ["CMS & Integrações", "Performance & SEO", "Deploy & Hosting"],
-      ],
-    },
-    {
-      number: "02",
-      title: "Automações de IA",
-      category: "Automação",
-      desc: [
-        "Tarefas repetitivas consomem tempo e energia que poderiam estar sendo investidos em crescimento. A maioria das empresas ainda opera processos que poderiam ser automatizados.",
-        "Desenvolvemos agentes e fluxos que integram suas ferramentas, eliminam retrabalho e aceleram decisões em toda a operação.",
-        "O resultado é uma empresa que roda sozinha e uma equipe livre para focar no que realmente importa.",
-      ],
-      columns: [
-        ["Chatbots & Agentes", "Automação de APIs"],
-        ["Fluxos com IA", "Análise de Dados", "Ferramentas Internas"],
-      ],
-    },
-    {
-      number: "03",
-      title: "Segurança",
-      category: "Proteção",
-      desc: [
-        "Crescer sem segurança é acumular risco. Vulnerabilidades não tratadas custam caro — em dados, reputação e confiança dos seus clientes.",
-        "Avaliamos sua infraestrutura de ponta a ponta, identificando falhas antes que se tornem incidentes e implementando as camadas certas para proteger seu negócio.",
-        "Construímos uma base sólida e monitorada, para que sua empresa escale com a confiança de que está protegida.",
-      ],
-      columns: [
-        ["Testes de Penetração", "Auditoria de Código", "Hardening de Infra"],
-        ["Monitoramento", "Resposta a Incidentes & LGPD"],
-      ],
-    },
-  ];
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let split: SplitText | undefined;
+    let tween: gsap.core.Tween | undefined;
+
+    // Espera as fontes: a quebra de linha muda depois que a PP Mori carrega.
+    document.fonts.ready.then(() => {
+      split = new SplitText(el, { type: "words" });
+      tween = gsap.fromTo(
+        split.words,
+        { opacity: 0.18 },
+        {
+          opacity: 1,
+          ease: "none",
+          stagger: 0.4,
+          scrollTrigger: { trigger: el, start: "top 85%", end: "bottom 45%", scrub: 0.4 },
+        }
+      );
+    });
+
+    return () => {
+      tween?.scrollTrigger?.kill();
+      tween?.kill();
+      split?.revert();
+    };
+  }, []);
 
   return (
-    <section className="w-full flex flex-col gap-[40px] px-40 py-32 text-white/80">
-      <div className="w-full max-w-[1200px] flex flex-col gap-16 align-center justify-center mx-auto">
-        <div className="flex items-end justify-between border-b border-[#11542e]/25 pb-12">
-          <div className="flex flex-col gap-3">
-            <div className="bg-gradient-to-r from-[#5BB421] to-[#0B4C11]/60 flex items-center justify-center p-[1px] rounded-md w-fit">
-              <span className="bg-gradient-to-r from-[#021002] to-[#000000] flex rounded-md px-4 py-1 gap-2 items-center text-[14px] text-[#00db71] uppercase">
-                <Circle className="w-2 h-2 bg-[#00db71] rounded-full text-[#00db71]" /> Soluções
-              </span>
-            </div>
-            <h2 className="font-bold text-4xl leading-tight">
+    <section id="solucoes" className="w-full px-6 sm:px-10 lg:px-24 py-24 md:py-32">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-14 md:gap-20">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-16">
+          <div className="flex flex-col gap-4">
+            <SectionLabel>Soluções</SectionLabel>
+            <h2
+              ref={headingRef}
+              className="max-w-[18ch] text-[34px] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[46px] lg:text-[54px]"
+            >
               Três formas de ajudarmos sua empresa a{" "}
-              <span className="text-[#00E87A]">crescer</span>
+              <span className="text-brand">crescer</span>
             </h2>
           </div>
-          <p className="font-mono text-white/50 max-w-[420px] pt-2">
-            Desafios de crescimento passam por como você constrói, como você automatiza ou como você se protege. É aí que atuamos.
+          <p className="max-w-[46ch] font-mono text-[15px] leading-relaxed text-white/45 md:pb-2">
+            Desafio de crescimento costuma aparecer em como você constrói, em como você automatiza ou em como você se protege.
           </p>
         </div>
 
-        {solutions.map((s, index) => {
-          const isOpen = openIndex === index;
-
-          return (
-            <div
-              key={s.number}
-              className="group relative border-b border-[#11542e]/25 pb-16 last:border-b-0 transition-all duration-500"
+        <div className="flex flex-col border-t border-brand-line/25">
+          {solutions.map((s) => (
+            <details
+              key={s.id}
+              name="solucoes"
+              className="accordion-row group relative border-b border-brand-line/25"
             >
-              <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-[#00E87A] to-transparent transition-all duration-500 group-hover:w-full"></div>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 left-[-6rem] w-[40%] opacity-0 transition-opacity duration-700 group-open:opacity-100 bg-[radial-gradient(closest-side,rgba(0,232,122,0.14),rgba(0,232,122,0)_75%)] blur-2xl"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-0 h-full w-[2px] origin-top scale-y-0 bg-gradient-to-b from-brand to-transparent transition-transform duration-500 ease-out group-open:scale-y-100"
+              />
 
-              <button
-                type="button"
-                onClick={() => setOpenIndex(isOpen ? null : index)}
-                className="w-full flex items-center justify-between gap-4 text-left cursor-pointer"
-              >
-                <div className="flex items-baseline gap-4">
-                  <span className="text-white/30 text-sm">{s.number}</span>
-                  <h3 className="font-bold text-[#00E87A] text-4xl transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(0,232,122,0.6)]">
-                    {s.title}
-                  </h3>
-                  <span className="text-white/40 font-mono text-sm">{s.category}</span>
+              <summary className="relative flex cursor-pointer list-none items-center gap-4 py-7 pr-1 transition-[padding] duration-500 ease-out group-open:pl-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:gap-6 sm:py-9 [&::-webkit-details-marker]:hidden">
+                <h3 className="text-[32px] font-semibold leading-none tracking-tight text-white/45 transition-colors duration-500 group-hover:text-white/75 group-open:text-ink sm:text-[52px]">
+                  {s.title}
+                </h3>
+                <span className="mt-auto pb-1 font-mono text-xs text-white/30 transition-colors duration-500 group-open:text-brand sm:pb-2 sm:text-[13px]">
+                  {s.category}
+                </span>
+
+                <span className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-line/50 text-white/50 transition-colors duration-500 group-hover:border-brand/60 group-hover:text-brand group-open:border-brand group-open:text-brand">
+                  <span className="relative block h-3 w-3 transition-transform duration-500 ease-out group-open:rotate-90">
+                    <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
+                    <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 rounded-full bg-current transition-transform duration-500 ease-out group-open:scale-y-0" />
+                  </span>
+                </span>
+              </summary>
+
+              <div className="relative flex flex-col gap-10 pb-12 group-open:pl-5 md:flex-row md:justify-between md:gap-16">
+                <div className="flex max-w-[58ch] flex-col gap-4 font-mono text-[15px] leading-relaxed text-white/50">
+                  {s.desc.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
                 </div>
 
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border border-[#00E87A]/40 shrink-0 transition-all duration-500 group-hover:border-[#00E87A] group-hover:drop-shadow-[0_0_10px_rgba(0,232,122,0.6)]">
-                  <ChevronDown
-                    className={`w-4 h-4 text-[#00E87A] transition-transform duration-500 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </div>
-              </button>
-
-              <div
-                className={`grid transition-all duration-500 ease-in-out ${
-                  isOpen ? "grid-rows-[1fr] opacity-100 mt-8" : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <div className="flex justify-between gap-12">
-                    <div className="flex flex-col gap-4 font-mono text-white/50 text-[15px] leading-relaxed max-w-[520px]">
-                      {s.desc.map((p, i) => (
-                        <p key={i}>{p}</p>
-                      ))}
-                    </div>
-
-                    <div className="flex gap-12 shrink-0">
-                      {s.columns.map((col, i) => (
-                        <ul key={i} className="flex flex-col gap-3">
-                          {col.map((item) => (
-                            <li
-                              key={item}
-                              className="flex items-center gap-2 text-[#00E87A] font-mono text-[15px]"
-                            >
-                              <span className="w-1 h-1 rounded-full bg-[#00E87A]"></span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <ul className="grid shrink-0 grid-cols-1 gap-x-12 gap-y-3 sm:grid-cols-2 md:w-[340px] md:pr-14">
+                  {s.items.map((item) => (
+                    <li key={item} className="flex items-center gap-3 font-mono text-[15px] text-white/70">
+                      <span className="h-1 w-1 shrink-0 rounded-full bg-brand" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          );
-        })}
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

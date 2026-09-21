@@ -1,44 +1,49 @@
-import { Circle } from "lucide-react";
+import SectionLabel from "../SectionLabel";
+
+const steps = [
+  {
+    number: "01",
+    title: "Diagnóstico",
+    desc: "Mapeamos o que trava o negócio hoje e o que dá retorno mais rápido.",
+  },
+  {
+    number: "02",
+    title: "Escopo fechado",
+    desc: "Prazo, preço e entregáveis definidos antes da primeira linha de código.",
+  },
+  {
+    number: "03",
+    title: "Sprints de 7 dias",
+    desc: "Toda semana tem algo navegável na sua mão, com ajuste de rota imediato.",
+  },
+  {
+    number: "04",
+    title: "Handoff e suporte",
+    desc: "Documentação, acessos e 60 dias de acompanhamento depois da entrega.",
+  },
+];
 
 export default function Metodology() {
-
-  const meth = [
-    {letter: "C", title: "Concept", desc: "Direção estratégica antes de qualquer execução", number: "01"},
-    {letter: "L", title: "Language", desc: "Design como ferramenta de comunicação e posicionamento", number: "02"},
-    {letter: "O", title: "Orchestration", desc: "Cada interação tem um propósito: conduzir à ação.", number: "03"},
-    {letter: "V", title: "Velocity", desc: "Performance que acelera, conversão que escala.", number: "04"}
-  ]
   return (
-    <section className="h-screen w-full flex flex-col justify-center items-center gap-[40px] px-40 text-white/80">
-        <div className="w-[870px] flex flex-col justify-center items-center gap-15 relative">
-        <div className="absolute bg-[#061910] w-[400px] h-[250px] top-30 left-60 z-2 rounded-full blur-3xl"></div>
-      <div className="text-center flex flex-col pb-3 gap-3 items-center z-3">
-        <div className="bg-gradient-to-r from-[#5BB421] to-[#0B4C11]/60 flex items-center justify-center p-[1px] rounded-md mb-3 w-fit"><span className="bg-gradient-to-r from-[#021002] to-[#000000] flex rounded-md px-4 py-1 gap-2 items-center text-[14px] text-[#00db71] uppercase"><Circle className="w-2 h-2 bg-[#00db71] rounded-full text-[#00db71] " /> Metodologia</span></div>
-        <h2 className="font-bold text-4xl">O método <span className="text-[#00E87A]">CLOV</span></h2>
-        <p className="font-mono text-white/50 w-[70%]">Quatro pilares que separam marcas comuns de marcas extraordinárias</p>
-        </div>
-        <div className="grid grid-cols-4 w-full z-3 ">
-          {meth.map((m) => {
-            return(
-              <div key={m.number} className="flex flex-col h-full border-r border-[#11542e]/25 last:border-r-0 z-1"> 
-                <div className="border-b-1 border-[#11542e]/25 text-center">
-                  <h3 className="text-[70px] font-bold text-[#00E87A]">{m.letter}</h3>
-                </div>
-                <div className="group relative text-start font-mono gap-3 flex flex-col py-7 px-8 border-b border-[#11542e]/25 transition-all duration-500 hover:bg-[#00E87A]/[0.02] cursor-default overflow-hidden flex-1">
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-[#00E87A] to-transparent transition-all duration-500 group-hover:w-full"></div>
-                  
-                  <p className="text-white/30 text-sm transition-colors duration-500 group-hover:text-[#00E87A]/50">{m.number}</p>
-                  <h3 className="font-bold text-[#00E87A] text-[15px] uppercase tracking-widest transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(0,232,122,0.6)]">
-                    {m.title}
-                  </h3>
-                  <p className="text-white/50 text-[15px] leading-relaxed transition-colors duration-500 group-hover:text-white/70">{m.desc}</p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+    <section id="metodologia" className="w-full px-6 sm:px-10 lg:px-24 py-24 md:py-32">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-10">
+        <SectionLabel>Metodologia</SectionLabel>
+
+        {/* Cada célula desenha topo/esquerda; o wrapper fecha direita e baixo.
+            Fecha a grade sozinho em 1, 2 ou 4 colunas, sem nth-child. */}
+        <ol className="grid grid-cols-1 border-b border-r border-brand-line/25 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s) => (
+            <li
+              key={s.number}
+              className="flex flex-col gap-3 border-l border-t border-brand-line/25 p-7"
+            >
+              <span className="font-mono text-xs text-brand">{s.number}</span>
+              <h3 className="text-xl font-semibold tracking-tight text-ink">{s.title}</h3>
+              <p className="max-w-[34ch] font-mono text-[15px] leading-relaxed text-white/50">{s.desc}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
-  )
+  );
 }
-

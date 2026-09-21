@@ -1,178 +1,87 @@
-"use client";
-
-import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  Circle,
-  GitFork,
-  Link2,
-  Mail,
-  MapPin,
-  Send,
-  X,
-} from "lucide-react";
+import SectionLabel from "../SectionLabel";
+import StartChallengeButton from "../StartChallengeButton";
+import FreeTrialButton from "../FreeTrialButton";
+
+const EMAIL = "oi@clov.studio";
+const WHATSAPP = "https://wa.me/5511999999999";
+
+const rows = [
+  { label: "E-mail", value: EMAIL, href: `mailto:${EMAIL}` },
+  { label: "Telefone", value: "+55 11 99999-9999", href: "tel:+5511999999999" },
+  { label: "Base", value: "São Paulo · remoto" },
+  { label: "Agenda", value: "2 vagas em outubro", live: true },
+];
 
 export default function Contact() {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <section className="relative w-full flex flex-col items-center gap-[40px] px-40 py-32">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-[#00E87A]/20 blur-[140px]"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#00E87A]/30 blur-[100px]"></div>
+    <section id="contato" className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-surface">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="animate-breathe absolute inset-0 origin-top">
+          <div className="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(90%_100%_at_50%_0%,rgba(0,232,122,0.16)_0%,rgba(11,76,17,0.22)_34%,rgba(6,25,16,0.3)_56%,rgba(10,10,10,0)_78%)]" />
+        </div>
+        <div className="bg-grain absolute inset-0 opacity-[0.04] mix-blend-overlay" />
       </div>
 
-      <div className="relative w-full max-w-[900px] [perspective:2000px]">
-        <div
-          className={`grid transition-transform duration-700 [transform-style:preserve-3d] ${
-            isOpen ? "[transform:rotateY(180deg)]" : ""
-          }`}
-        >
-          {/* Front face */}
-          <div
-            style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
-            className={`[grid-area:1/1] w-full min-h-[420px] rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl px-16 py-20 flex-col items-center text-center gap-6 ${
-              isOpen ? "hidden" : "flex"
-            }`}
-          >
-            <div className="bg-gradient-to-r from-[#5BB421] to-[#0B4C11]/60 flex items-center justify-center p-[1px] rounded-md w-fit">
-              <span className="bg-gradient-to-r from-[#021002] to-[#000000] flex rounded-md px-4 py-1 gap-2 items-center text-[14px] text-[#00db71] uppercase">
-                <Circle className="w-2 h-2 bg-[#00db71] rounded-full text-[#00db71]" /> Entre
-                em contato
-              </span>
-            </div>
-
-            <h2 className="font-bold text-4xl leading-tight text-white/80">
-              Vamos Dar Vida A <span className="text-[#00E87A]">Sua Ideia!</span>
-            </h2>
-
-            <p className="font-mono text-white/50 max-w-[480px]">
-              Estou aberto para discutir sobre novas ideias e futuros projetos. Sinta-se à
-              vontade para entrar em contato e transformar sua ideia em uma máquina de
-              resultados.
-            </p>
-
-            <div className="flex items-center gap-4 mt-4">
-              <Link
-                href="/projects"
-                className="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-[15px] font-mono text-white/70 transition-all duration-300 hover:border-[#00E87A]/40 hover:text-white"
-              >
-                Ver projetos
-                <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-
-              <button
-                type="button"
-                onClick={() => setIsOpen(true)}
-                className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-[#00E87A] to-[#0B4C11] px-6 py-3 text-[15px] font-bold text-black transition-all duration-300 hover:drop-shadow-[0_0_16px_rgba(0,232,122,0.5)]"
-              >
-                Formulário de contato
-                <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            </div>
+      <div className="relative grid w-full max-w-[1200px] gap-14 px-6 pt-32 pb-16 sm:px-10 lg:mx-auto lg:grid-cols-2 lg:gap-20 lg:px-24 lg:pt-40">
+        <div className="flex flex-col items-start gap-6">
+          <SectionLabel>Contato</SectionLabel>
+          <h2 className="max-w-[15ch] text-[34px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[46px] lg:text-[52px]">
+            Conte o que precisa. A gente responde em 24h.
+          </h2>
+          <p className="max-w-[52ch] font-mono text-[15px] leading-relaxed text-white/50">
+            A primeira conversa é um diagnóstico de 30 minutos, sem custo. A gente olha o seu cenário e diz se é caso para nós, inclusive quando a resposta é não.
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <StartChallengeButton href={`mailto:${EMAIL}?subject=Agendar%20diagn%C3%B3stico`}>
+              Agendar diagnóstico
+            </StartChallengeButton>
+            <FreeTrialButton href={WHATSAPP}>WhatsApp</FreeTrialButton>
           </div>
+        </div>
 
-          {/* Back face */}
-          <div
-            style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
-            className={`[grid-area:1/1] [transform:rotateY(180deg)] relative w-full min-h-[420px] rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-12 grid-cols-2 gap-10 ${
-              isOpen ? "grid" : "hidden"
-            }`}
-          >
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-6 flex items-center justify-center w-9 h-9 rounded-full border border-white/10 text-white/50 transition-colors duration-300 hover:border-[#00E87A]/40 hover:text-[#00E87A]"
+        <dl className="flex flex-col rounded-2xl border border-brand-line/30 bg-surface-elevated/70 px-7 py-2 backdrop-blur-sm sm:px-9">
+          {rows.map((r) => (
+            <div
+              key={r.label}
+              className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-brand-line/25 py-5 last:border-b-0"
             >
-              <X className="w-4 h-4" />
-            </button>
-
-            <div className="flex flex-col gap-6 justify-center">
-              <div className="bg-gradient-to-r from-[#5BB421] to-[#0B4C11]/60 flex items-center justify-center p-[1px] rounded-md w-fit">
-                <span className="bg-gradient-to-r from-[#021002] to-[#000000] flex rounded-md px-4 py-1 gap-2 items-center text-[14px] text-[#00db71] uppercase">
-                  <Circle className="w-2 h-2 bg-[#00db71] rounded-full text-[#00db71]" /> Entre
-                  em contato
-                </span>
-              </div>
-
-              <h3 className="font-bold text-2xl text-white/80 leading-tight">
-                Vamos Dar Vida A <span className="text-[#00E87A]">Sua Ideia!</span>
-              </h3>
-
-              <p className="font-mono text-white/50 text-[15px] leading-relaxed">
-                Estou aberto para discutir sobre novas ideias e futuros projetos. Sinta-se à
-                vontade para entrar em contato e transformar sua ideia em uma máquina de
-                resultados.
-              </p>
-
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3 rounded-lg border border-[#11542e]/40 bg-[#00E87A]/5 px-4 py-3 font-mono text-[15px] text-white/70">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-md bg-[#00E87A]/10 text-[#00E87A]">
-                    <Mail className="w-4 h-4" />
-                  </span>
-                  contato@webpedro.com.br
-                </div>
-                <div className="flex items-center gap-3 rounded-lg border border-[#11542e]/40 bg-[#00E87A]/5 px-4 py-3 font-mono text-[15px] text-white/70">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-md bg-[#00E87A]/10 text-[#00E87A]">
-                    <MapPin className="w-4 h-4" />
-                  </span>
-                  Jau, SP
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <span className="font-mono text-white/40 text-sm">Redes</span>
-                <div className="flex items-center gap-3">
-                  <a
-                    href="#"
-                    className="flex items-center justify-center w-9 h-9 rounded-md border border-white/10 text-white/60 transition-colors duration-300 hover:border-[#00E87A]/40 hover:text-[#00E87A]"
-                  >
-                    <Link2 className="w-4 h-4" />
+              <dt className="font-mono text-xs uppercase tracking-[0.18em] text-white/40">{r.label}</dt>
+              <dd className="font-mono text-[15px] text-white/85">
+                {r.href ? (
+                  <a href={r.href} className="transition-colors hover:text-brand">
+                    {r.value}
                   </a>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center w-9 h-9 rounded-md border border-white/10 text-white/60 transition-colors duration-300 hover:border-[#00E87A]/40 hover:text-[#00E87A]"
-                  >
-                    <GitFork className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
+                ) : r.live ? (
+                  <span className="flex items-center gap-2 text-brand">
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                    {r.value}
+                  </span>
+                ) : (
+                  r.value
+                )}
+              </dd>
             </div>
+          ))}
+        </dl>
+      </div>
 
-            <form className="flex flex-col gap-4 justify-center">
-              <div className="flex flex-col gap-2">
-                <label className="font-mono text-white/40 text-sm">Nome</label>
-                <input
-                  type="text"
-                  placeholder="Seu nome"
-                  className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-[15px] text-white/80 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-[#00E87A]/40"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="font-mono text-white/40 text-sm">E-mail</label>
-                <input
-                  type="email"
-                  placeholder="seu@email.com"
-                  className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-[15px] text-white/80 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-[#00E87A]/40"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="font-mono text-white/40 text-sm">Mensagem</label>
-                <textarea
-                  rows={4}
-                  placeholder="Conte um pouco sobre seu projeto"
-                  className="resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-[15px] text-white/80 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-[#00E87A]/40"
-                />
-              </div>
-              <button
-                type="submit"
-                className="group flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#00E87A] to-[#0B4C11] px-6 py-3 text-[15px] font-bold text-black transition-all duration-300 hover:drop-shadow-[0_0_16px_rgba(0,232,122,0.5)]"
-              >
-                Enviar mensagem
-                <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            </form>
+      <div className="relative w-full border-t border-brand-line/25">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-24">
+          <Image
+            src="/logoclov.svg"
+            alt="Clov"
+            width={260}
+            height={104}
+            unoptimized
+            className="h-9 w-auto"
+          />
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-sm text-white/40">
+            <span>© 2026 Clov</span>
+            <Link href="#" className="transition-colors hover:text-white/70">
+              Política de privacidade
+            </Link>
           </div>
         </div>
       </div>

@@ -1,29 +1,59 @@
-import Image from "next/image";
-import StartChallengeButton from "../StartChallengeButton";
-import FreeTrialButton from "../FreeTrialButton";
+import DotGrid from "../DotGrid"
+import ShaderImage from "../ShaderImage"
+import StartChallengeButton from "../StartChallengeButton"
 
 export default function Hero() {
-    return(
-        <section className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-            <Image
-                src="/hero1.png"
-                alt=""
-                fill
-                priority
-                className="absolute inset-0 m-auto object-contain pointer-events-none select-none"
-            />
-            <div className="relative text-center">
-            <h1 className='text-[52px] font-semibold leading-[1.2em]'>Onde a criatividade<br/>
-encontra resultados</h1>
-            <ul className='text-muted flex items-center justify-center gap-4 my-8'>
-                <li>Desenvolvimento</li>
-                <li>Segurança</li>
-                <li>Automações com IA</li>
-            </ul>
-            <div className='flex items-center justify-center gap-4'>
-                <StartChallengeButton />
-                <FreeTrialButton />
+    return (
+        <section className="relative flex w-full flex-1 flex-col overflow-hidden bg-surface">
+            <div className="pointer-events-none absolute inset-0">
+                <DotGrid
+                    dotSize={4}
+                    gap={24}
+                    baseColor="#111a15"
+                    activeColor="#0f8b4c"
+                    proximity={140}
+                    speedTrigger={220}
+                    shockRadius={180}
+                    shockStrength={1.2}
+                    resistance={2200}
+                    returnDuration={1.1}
+                    breathCycle={5}
+                    breathStrength={0.22}
+                    style={{ opacity: 0.6 }}
+                />
+                <div className="bg-grain absolute inset-0 opacity-[0.04] mix-blend-overlay" />
             </div>
+
+            <div className="relative flex flex-1 flex-col items-center justify-center pt-32 pb-52">
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                    <div className="absolute left-[-22%] top-[70%] aspect-square w-[70%] -translate-y-1/2 opacity-[0.3] [&_canvas]:-scale-y-100 [&_canvas]:rotate-[20deg] sm:left-[-10%] sm:w-[56%] sm:opacity-[0.6] lg:w-[48%]">
+                        <ShaderImage
+                            src="/bracorobo.png"
+                            className="h-full w-full"
+                            overrides={{ uBrightness: 0.01, uContrast: 0.6   }}
+                        />
+                    </div>
+
+                    <div className="absolute right-[-14%] top-[60%] aspect-[1671/941] w-[76%] -translate-y-1/2 opacity-[0.22] [&_canvas]:rotate-[5deg] sm:right-[-5%] sm:w-[54%] sm:opacity-[0.4] lg:w-[46%]">
+                        <ShaderImage src="/maohumano.png" className="h-full w-full" />
+                    </div>
+
+                    <div className="bg-noise absolute inset-0 opacity-[0.55]" />
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center px-6 text-center">
+                    <h1 className="max-w-3xl text-[40px] font-semibold leading-[1.05] tracking-tight text-ink sm:text-[52px] lg:text-[64px]">
+                        Onde a criatividade encontra <span className="text-brand">resultados</span>
+                    </h1>
+
+                    <p className="mt-6 max-w-[520px] font-mono text-base text-white/55 sm:text-lg">
+                        Desenvolvimento, automações com IA e segurança para negócios que não têm tempo a perder
+                    </p>
+
+                    <div className="mt-8">
+                        <StartChallengeButton href="/projects">Entre em contato</StartChallengeButton>
+                    </div>
+                </div>
             </div>
         </section>
     )
