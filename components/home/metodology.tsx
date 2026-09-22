@@ -4,23 +4,23 @@ import Reveal from "../Reveal";
 const steps = [
   {
     number: "01",
-    title: "Diagnóstico",
-    desc: "Mapeamos o que trava o negócio hoje e o que dá retorno mais rápido.",
+    title: "Diagnóstico primeiro",
+    desc: "A gente acha o que trava o negócio antes de propor qualquer coisa.",
   },
   {
     number: "02",
     title: "Escopo fechado",
-    desc: "Prazo, preço e entregáveis definidos antes da primeira linha de código.",
+    desc: "Prazo, preço e entregas na mesa antes da primeira linha de código.",
   },
   {
     number: "03",
-    title: "Sprints de 7 dias",
-    desc: "Toda semana tem algo navegável na sua mão, com ajuste de rota imediato.",
+    title: "Entrega toda semana",
+    desc: "Você abre algo que já funciona e diz o que muda.",
   },
   {
     number: "04",
-    title: "Handoff e suporte",
-    desc: "Documentação, acessos e 60 dias de acompanhamento depois da entrega.",
+    title: "Você sai com tudo",
+    desc: "Documentação, acessos e 60 dias de suporte depois da entrega.",
   },
 ];
 
