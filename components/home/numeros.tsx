@@ -84,7 +84,7 @@ export default function Numeros() {
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col gap-16 md:gap-24">
         <Reveal split className="flex flex-col items-center gap-5 text-center">
           <h2 className="max-w-[20ch] text-balance text-[28px] font-semibold leading-[1.15] tracking-tight text-ink sm:text-[38px]">
-            A Clov é nova. A experiência por trás dela não é.
+            A Clov é nova. A experiência por trás dela não.
           </h2>
           <p className="max-w-[58ch] font-mono text-[15px] leading-relaxed text-white/45">
             Os números abaixo são do fundador e vêm de antes da empresa existir. A
