@@ -14,11 +14,11 @@ const HALFTONE = {
   uDotSize: 0.8,
   uContrast: 1.08,
   uBrightness: -0.01,
-  uColor: "#00d964",
+  uColor: "#00ff66",
 };
 
 // Sites de fundo claro precisam da luminância invertida, senão o branco
-// preenche todos os pontos e o card vira um retângulo verde.
+// preenche todos os pontos e vira um borrão verde.
 const HALFTONE_LIGHT = { ...HALFTONE, uInvert: 1, uContrast: 1.2, uBrightness: -0.04 };
 
 const projects = [
@@ -87,16 +87,19 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
           className="object-cover object-top"
         />
 
-        {/* O halftone cobre o screenshot e some no hover, revelando o site.
-            O canvas tem fundo transparente, daí o bg-surface no wrapper. */}
-        <div className="absolute inset-0 bg-surface transition-opacity duration-500 ease-out group-hover:opacity-0 group-focus-visible:opacity-0">
-          {near && (
-            <ShaderImage
-              src={project.img}
-              className="h-full w-full"
-              overrides={project.light ? HALFTONE_LIGHT : HALFTONE}
-            />
-          )}
+        {/* Véu: o screenshot aparece por baixo o tempo todo e o halftone é só
+            uma textura por cima. O canvas já é transparente entre os pontos,
+            então a opacidade baixa deixa o site legível. Some todo no hover. */}
+        <div className="absolute inset-0 bg-surface/30 opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0 group-focus-visible:opacity-0">
+          <div className="absolute inset-0 opacity-[0.35]">
+            {near && (
+              <ShaderImage
+                src={project.img}
+                className="h-full w-full"
+                overrides={project.light ? HALFTONE_LIGHT : HALFTONE}
+              />
+            )}
+          </div>
         </div>
       </div>
 
@@ -130,7 +133,7 @@ export default function Projects() {
             {/* A dica só aparece em aparelho que tem mouse pra passar. */}
             <span className="hidden [@media(hover:hover)]:inline">
               {" "}
-              Passe o mouse para ver cada site como ele é.
+              Passe o mouse para ver sem o efeito.
             </span>
           </p>
         </div>
