@@ -8,58 +8,60 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+// Três camadas do mesmo sistema, não três serviços soltos. A `category` diz o
+// que a camada resolve, que é informação, em vez de repetir o nome dela.
 const solutions = [
   {
-    id: "sites",
-    title: "Sites",
-    category: "desenvolvimento",
+    id: "digital",
+    title: "Digital",
+    category: "o que o cliente vê",
     desc: [
-      "Na maioria das empresas o site é a primeira conversa que o cliente tem com a marca, e ela acaba acontecendo em uma página lenta, parecida com a de todo mundo.",
-      "A gente constrói sites rápidos e responsivos, com uma estrutura que leva o visitante até a ação em vez de deixar ele se perder no caminho.",
-      "Cuidamos do projeto do começo ao deploy, para o site acompanhar o tamanho da sua empresa hoje e o crescimento que vem depois.",
+      "Na maioria das empresas o site é a primeira conversa que o cliente tem com a marca, e ela acontece em uma página lenta, parecida com a de todo mundo.",
+      "A gente constrói a camada visível: site, loja, as telas por onde o seu cliente passa. Rápidas, responsivas, com uma estrutura que leva o visitante até a ação em vez de deixar ele se perder.",
+      "Do design ao deploy, feito para acompanhar o tamanho da empresa hoje e o crescimento que vem depois.",
     ],
     items: [
       "Design UI/UX",
-      "CMS & Integrações",
+      "WordPress",
       "Front-end",
-      "Performance & SEO",
+      "Shopify",
       "Landing Pages",
+      "Performance & SEO",
+    ],
+  },
+  {
+    id: "systems",
+    title: "Systems",
+    category: "o que faz a operação rodar",
+    desc: [
+      "É a camada que quase ninguém mostra e que decide se a operação aguenta crescer. CRM que não fala com o financeiro, pedido que alguém copia de uma tela para outra, planilha que virou banco de dados sem querer.",
+      "Conectamos o que você já usa, construímos as ferramentas internas que faltam e tiramos as pessoas do meio do caminho entre dois sistemas.",
+      "O objetivo é simples: a informação chega sozinha onde precisa chegar.",
+    ],
+    items: [
+      "Integrações & APIs",
+      "Ferramentas internas",
+      "Node.js",
+      "Migração de dados",
+      "Painéis internos",
       "Deploy & Hosting",
     ],
   },
   {
-    id: "automacoes",
-    title: "Automações de IA",
-    category: "automação",
+    id: "intelligence",
+    title: "Intelligence",
+    category: "o que automatiza e decide",
     desc: [
-      "Tarefa repetitiva custa o tempo da sua equipe todo mês, e boa parte dos processos que rodam na mão hoje já poderia estar automatizada.",
-      "Desenvolvemos agentes e fluxos que conversam com as ferramentas que você já usa, cortam retrabalho e encurtam o tempo entre a informação chegar e a decisão sair.",
-      "A operação passa a rodar sozinha nas partes chatas e a equipe volta a trabalhar no que só ela consegue fazer.",
+      "Tarefa repetitiva custa o tempo da sua equipe todo mês, e boa parte do que roda na mão hoje já poderia estar automatizada.",
+      "Desenvolvemos agentes e fluxos que conversam com as ferramentas que você já tem, cortam retrabalho e encurtam o tempo entre a informação chegar e a decisão sair.",
+      "A operação passa a rodar sozinha nas partes chatas e a equipe volta para o que só ela consegue fazer.",
     ],
     items: [
-      "Chatbots & Agentes",
+      "Automações (n8n, Make)",
+      "Agentes & chatbots",
       "Fluxos com IA",
-      "Automação de APIs",
-      "Análise de Dados",
-      "Ferramentas Internas",
-    ],
-  },
-  {
-    id: "seguranca",
-    title: "Segurança",
-    category: "proteção",
-    desc: [
-      "Empresa que cresce sem cuidar de segurança vai juntando risco pelo caminho, e a conta chega em dado vazado e cliente que perde a confiança.",
-      "Avaliamos sua infraestrutura de ponta a ponta, achamos as falhas antes que virem incidente e colocamos as camadas de proteção que fazem sentido para o seu caso.",
-      "No fim você tem uma base monitorada e sabe exatamente onde está protegido.",
-    ],
-    items: [
-      "Testes de Penetração",
-      "Monitoramento",
-      "Auditoria de Código",
-      "Resposta a Incidentes",
-      "Hardening de Infra",
-      "LGPD",
+      "Análise de dados",
+      "Relatórios automáticos",
     ],
   },
 ];
@@ -119,12 +121,11 @@ export default function Solutions() {
               ref={headingRef}
               className="max-w-[18ch] text-[34px] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[46px] lg:text-[54px]"
             >
-              Três formas de ajudarmos sua empresa a{" "}
-              <span className="text-brand">crescer</span>
+              Três camadas do mesmo sistema.
             </h2>
           </div>
           <p className="max-w-[46ch] font-mono text-[15px] leading-relaxed text-white/45 md:pb-2">
-            Desafio de crescimento costuma aparecer em como você constrói, em como você automatiza ou em como você se protege.
+            Quase sempre o trabalho começa em uma camada e o problema estava na de baixo.
           </p>
         </div>
 

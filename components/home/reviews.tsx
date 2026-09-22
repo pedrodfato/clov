@@ -56,7 +56,7 @@ export default function Reviews() {
     <section
       ref={sectionRef}
       id="depoimentos"
-      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-6 py-24 sm:px-10 md:py-32 lg:px-24"
+      className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-6 py-24 sm:px-10 md:py-32 lg:px-24"
     >
       {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
       <div className="pointer-events-none absolute inset-0">

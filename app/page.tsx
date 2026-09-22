@@ -11,7 +11,7 @@ export default function Home() {
   return(
     <>
     {/* Hero + Parceiros dividem a primeira tela: a hero ocupa a sobra. */}
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-[100dvh] flex-col">
       <Hero />
       <Parceiros/>
     </div>
