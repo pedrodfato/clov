@@ -135,6 +135,18 @@ Os números "40+ projetos entregues", "12 dias de média até o go-live" e "98% 
 retenção" estiveram publicados no site e **não são verdadeiros**. Foram removidos e
 não podem voltar em nenhuma forma.
 
+Números hoje publicados na seção `#numeros`, atribuídos explicitamente ao fundador
+e não à empresa: mais de 5 anos desenvolvendo e posicionando produtos digitais, e
+mais de 200 projetos desenvolvidos. Foram afirmados pelo fundador e não têm como
+ser verificados de fora; a atribuição ao fundador é o que os mantém honestos, já
+que a Clov como empresa não os realizou.
+
+A contagem de linhas de código na mesma seção parte de uma base fixa em
+`components/home/numeros.tsx` e incrementa alguns dígitos por minuto enquanto a
+página está aberta. **O incremento é decorativo, não é telemetria.** A base precisa
+ser um número que o fundador assine; enquanto for o valor de exemplo, a seção está
+publicada com um dado que ele ainda não confirmou.
+
 ## Product Principles
 
 1. Prova antes de claim. Nenhum número, certificação, cliente ou resultado entra em

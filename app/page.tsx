@@ -1,6 +1,6 @@
 import Hero from "@/components/home/hero"
 import Parceiros from "@/components/home/parceiros"
-import Situacao from "@/components/home/situacao"
+import Numeros from "@/components/home/numeros"
 import About from "@/components/home/about"
 import Metodology from "@/components/home/metodology"
 import Solutions from "@/components/home/solutions"
@@ -18,7 +18,7 @@ export default function Home() {
       <Hero />
       <Parceiros/>
     </div>
-    <Situacao/>
+    <Numeros/>
     <About/>
     <Metodology/>
     <Solutions/>
