@@ -83,6 +83,7 @@ export default function Reviews() {
       </div>
 
       <div
+        data-reviews-content
         className="relative mx-auto flex w-full max-w-[900px] flex-col items-center text-center"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}

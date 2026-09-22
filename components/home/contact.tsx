@@ -19,34 +19,67 @@ export default function Contact() {
   useEffect(() => {
     const scene = sceneRef.current;
     const copy = copyRef.current;
-    if (!scene || !copy) return;
+    const reviews = document.getElementById("depoimentos");
+    if (!scene || !copy || !reviews) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const reviewsContent = reviews.querySelector("[data-reviews-content]");
+    const sceneBg = scene.querySelector("[data-scene-bg]");
     const heading = copy.querySelector("h2");
-    const rest = copy.querySelectorAll("p, .cta-row");
-    if (!heading) return;
+    const paragrafo = copy.querySelector("p");
+    const ctas = copy.querySelector(".cta-row");
+    if (!reviewsContent || !sceneBg || !heading || !paragrafo || !ctas) return;
 
-    // Scroll 100% nativo — nada prende a tela. A cena entra no fluxo normal
-    // (Reviews sobe e sai por cima, o contato entra por baixo) e só o texto
-    // ganha uma entrada: título palavra a palavra, depois parágrafo e CTAs.
     let ctx: gsap.Context | undefined;
     let split: SplitText | undefined;
     let cancelled = false;
 
     // O StrictMode monta, desmonta e monta de novo em dev. Reverter dentro da
-    // promise deixava o revert do 1º mount apagar o split do 2º, e a seção
-    // ficava invisível. A flag descarta o efeito antigo antes dele criar nada.
+    // promise deixava o revert do 1º mount apagar o split do 2º.
     document.fonts.ready.then(() => {
       if (cancelled) return;
+
       ctx = gsap.context(() => {
         split = new SplitText(heading, { type: "words" });
 
-        gsap
-          .timeline({
-            scrollTrigger: { trigger: scene, start: "top 70%", toggleActions: "play none none reverse" },
-          })
-          .from(split!.words, { opacity: 0, y: 16, duration: 0.5, stagger: 0.06, ease: "power2.out" })
-          .fromTo(rest, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power2.out" }, "-=0.2");
+        // Estado inicial: o painel é uma folha preta. Fundo, título, texto e
+        // botões só existem depois, conforme o scroll revela cada um.
+        gsap.set(sceneBg, { opacity: 0 });
+        gsap.set([split!.words, paragrafo, ctas], { opacity: 0 });
+
+        // Sem pinSpacing: o Reviews fixa na tela mas não ocupa espaço no
+        // fluxo, então o Contato, que vem logo depois, sobe por cima dele
+        // por scroll nativo. Com o espaçador padrão a posição natural do
+        // Contato ficava uma tela inteira abaixo e ele nunca chegava a cobrir.
+        // Isso também faz a transição não consumir scroll além do normal.
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: reviews,
+            start: "top top",
+            end: "+=100%",
+            pin: reviews,
+            pinSpacing: false,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl
+          // 1. O depoimento recua e some, ainda por baixo da folha.
+          .to(reviewsContent, { opacity: 0, scale: 0.94, y: -28, duration: 0.35 }, 0)
+          // 2. A folha preta já está subindo sozinha por scroll. Conforme ela
+          //    cobre, a cena acende: primeiro o fundo.
+          .fromTo(sceneBg, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.45)
+          // 3. Depois o texto, em ordem de leitura.
+          .fromTo(
+            split!.words,
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.23, stagger: 0.014, ease: "power2.out" },
+            0.62
+          )
+          .fromTo(paragrafo, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, 0.8)
+          .fromTo(ctas, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" }, 0.86);
       }, scene);
     });
 
@@ -64,7 +97,7 @@ export default function Contact() {
         ref={sceneRef}
         className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-24 text-center sm:px-10"
       >
-        <div className="pointer-events-none absolute inset-0">
+        <div data-scene-bg className="pointer-events-none absolute inset-0">
           {/* Brilho ambiente no topo. */}
           <div className="absolute inset-x-0 top-0 h-1/2 bg-[radial-gradient(80%_100%_at_50%_0%,rgba(0,232,122,0.06),transparent_70%)]" />
 
