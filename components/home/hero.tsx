@@ -1,6 +1,7 @@
 import DotGrid from "../DotGrid"
 import ShaderImage from "../ShaderImage"
 import StartChallengeButton from "../StartChallengeButton"
+import Reveal from "../Reveal"
 
 export default function Hero() {
     return (
@@ -42,17 +43,22 @@ export default function Hero() {
                 </div>
 
                 <div className="relative z-10 flex flex-col items-center px-6 text-center">
-                    <h1 className="max-w-3xl text-[40px] font-semibold leading-[1.05] tracking-tight text-ink sm:text-[52px] lg:text-[64px]">
-                        Onde a criatividade encontra <span className="text-brand">resultados</span>
-                    </h1>
+                    {/* Os delays esperam a intro (3s em IntroReveal) abrir o trevo. */}
+                    <Reveal split delay={2.3}>
+                        <h1 className="max-w-3xl text-[40px] font-semibold leading-[1.05] tracking-tight text-ink sm:text-[52px] lg:text-[64px]">
+                            Onde a criatividade encontra <span className="text-brand">resultados</span>
+                        </h1>
+                    </Reveal>
 
-                    <p className="mt-6 max-w-[520px] font-mono text-base text-white/55 sm:text-lg">
-                        Desenvolvimento, automações com IA e segurança para negócios que não têm tempo a perder
-                    </p>
+                    <Reveal delay={2.8} stagger={0.14} className="flex flex-col items-center">
+                        <p className="mt-6 max-w-[520px] font-mono text-base text-white/55 sm:text-lg">
+                            Desenvolvimento, automações com IA e segurança para negócios que não têm tempo a perder
+                        </p>
 
-                    <div className="mt-8">
-                        <StartChallengeButton href="/projects">Entre em contato</StartChallengeButton>
-                    </div>
+                        <div className="mt-8">
+                            <StartChallengeButton href="/projects">Entre em contato</StartChallengeButton>
+                        </div>
+                    </Reveal>
                 </div>
             </div>
         </section>
