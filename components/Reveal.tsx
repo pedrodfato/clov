@@ -38,10 +38,15 @@ export default function Reveal({
 
     let ctx: gsap.Context | undefined;
     let st: SplitText | undefined;
+    let cancelled = false;
 
+    // O StrictMode monta, desmonta e monta de novo em dev. Reverter dentro da
+    // promise deixava o revert do 1º mount apagar o split do 2º, e a seção
+    // ficava invisível. A flag descarta o efeito antigo antes dele criar nada.
     // As fontes mudam a quebra de linha: dividir antes delas carregarem
     // deixa as palavras nas posições erradas.
-    const ready = document.fonts.ready.then(() => {
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
       ctx = gsap.context(() => {
         let items: Element[];
         if (split) {
@@ -64,10 +69,9 @@ export default function Reveal({
     });
 
     return () => {
-      ready.then(() => {
-        ctx?.revert();
-        st?.revert();
-      });
+      cancelled = true;
+      ctx?.revert();
+      st?.revert();
     };
   }, [split, targets, stagger, delay, y]);
 

@@ -11,6 +11,7 @@ export const imageShader = {
         uContrast: { value: 1.3 },
         uBrightness: { value: 0 },
         uEffectStrength: { value: 1 },
+        uInvert: { value: 0 },
         uColor: { value: new THREE.Color("#00ff66") },
         uTime: { value: 0 },
     },
@@ -35,6 +36,7 @@ export const imageShader = {
         uniform float uContrast;
         uniform float uBrightness;
         uniform float uEffectStrength;
+        uniform float uInvert;
         uniform vec3 uColor;
         uniform float uTime;
 
@@ -94,6 +96,9 @@ export const imageShader = {
             vec4 original = texture2D(uTexture, coverUv(vUv));
 
             float lum = lumaOf(pixelated.rgb);
+            // Site de fundo claro satura tudo no raio máximo e vira um bloco
+            // sólido; invertido, o branco some e o conteúdo é que acende.
+            lum = mix(lum, 1.0 - lum, uInvert);
             lum = (lum - 0.5) * uContrast + 0.5 + uBrightness;
             lum = clamp(lum, 0.0, 1.0);
 

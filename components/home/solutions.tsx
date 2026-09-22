@@ -76,7 +76,13 @@ export default function Solutions() {
     let tween: gsap.core.Tween | undefined;
 
     // Espera as fontes: a quebra de linha muda depois que a PP Mori carrega.
+    let cancelled = false;
+
+    // O StrictMode monta, desmonta e monta de novo em dev. Reverter dentro da
+    // promise deixava o revert do 1º mount apagar o split do 2º, e a seção
+    // ficava invisível. A flag descarta o efeito antigo antes dele criar nada.
     document.fonts.ready.then(() => {
+      if (cancelled) return;
       split = new SplitText(el, { type: "words" });
       tween = gsap.fromTo(
         split.words,
@@ -96,6 +102,7 @@ export default function Solutions() {
     });
 
     return () => {
+      cancelled = true;
       tween?.scrollTrigger?.kill();
       tween?.kill();
       split?.revert();

@@ -33,8 +33,13 @@ export default function Contact() {
     // ganha uma entrada: título palavra a palavra, depois parágrafo e CTAs.
     let ctx: gsap.Context | undefined;
     let split: SplitText | undefined;
+    let cancelled = false;
 
-    const ready = document.fonts.ready.then(() => {
+    // O StrictMode monta, desmonta e monta de novo em dev. Reverter dentro da
+    // promise deixava o revert do 1º mount apagar o split do 2º, e a seção
+    // ficava invisível. A flag descarta o efeito antigo antes dele criar nada.
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
       ctx = gsap.context(() => {
         split = new SplitText(heading, { type: "words" });
 
@@ -48,10 +53,9 @@ export default function Contact() {
     });
 
     return () => {
-      ready.then(() => {
-        ctx?.revert();
-        split?.revert();
-      });
+      cancelled = true;
+      ctx?.revert();
+      split?.revert();
     };
   }, []);
 
