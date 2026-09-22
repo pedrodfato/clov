@@ -7,8 +7,9 @@ import StartChallengeButton from "../StartChallengeButton";
 import FreeTrialButton from "../FreeTrialButton";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const EMAIL = "oi@clov.studio";
 const WHATSAPP = "https://wa.me/5511999999999";
@@ -20,38 +21,38 @@ export default function Contact() {
   useEffect(() => {
     const scene = sceneRef.current;
     const copy = copyRef.current;
-    const reviews = document.getElementById("depoimentos");
-    if (!scene || !copy || !reviews) return;
+    if (!scene || !copy) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const heading = copy.querySelector("h2");
     const rest = copy.querySelectorAll("p, .cta-row");
+    if (!heading) return;
 
-    // Reviews prende (pin) por uma tela de scroll; nessa mesma janela a cena
-    // do contato desliza de baixo pra cima até cobrir tudo, e o texto entra
-    // no fim do percurso. Um scrub só, então voltar o scroll desfaz tudo.
-    const ctx = gsap.context(() => {
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: reviews,
-            start: "top top",
-            end: "+=100%",
-            scrub: 0.5,
-            pin: true,
-          },
-        })
-        .fromTo(scene, { yPercent: 100 }, { yPercent: 0, ease: "none", duration: 0.65 }, 0)
-        .fromTo(heading, { opacity: 0, y: 20 }, { opacity: 1, y: 0, ease: "none", duration: 0.2 }, 0.5)
-        .fromTo(
-          rest,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, ease: "none", duration: 0.3, stagger: 0.1 },
-          0.65
-        );
+    // Scroll 100% nativo — nada prende a tela. A cena entra no fluxo normal
+    // (Reviews sobe e sai por cima, o contato entra por baixo) e só o texto
+    // ganha uma entrada: título palavra a palavra, depois parágrafo e CTAs.
+    let ctx: gsap.Context | undefined;
+    let split: SplitText | undefined;
+
+    const ready = document.fonts.ready.then(() => {
+      ctx = gsap.context(() => {
+        split = new SplitText(heading, { type: "words" });
+
+        gsap
+          .timeline({
+            scrollTrigger: { trigger: scene, start: "top 70%", toggleActions: "play none none reverse" },
+          })
+          .from(split!.words, { opacity: 0, y: 16, duration: 0.5, stagger: 0.06, ease: "power2.out" })
+          .fromTo(rest, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power2.out" }, "-=0.2");
+      }, scene);
     });
 
-    return () => ctx.revert();
+    return () => {
+      ready.then(() => {
+        ctx?.revert();
+        split?.revert();
+      });
+    };
   }, []);
 
   return (
