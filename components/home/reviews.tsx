@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import SectionLabel from "../SectionLabel";
+import SideRays from "../SideRays";
+import useNearViewport from "../useNearViewport";
 
 // Depoimentos provisórios, escritos a partir do feedback real dos clientes.
 // Troque `author` e `context` pelos nomes e cargos reais assim que os tiver.
@@ -29,6 +31,7 @@ const reviews = [
 const ROTATE_MS = 7000;
 
 export default function Reviews() {
+  const [sectionRef, near] = useNearViewport<HTMLElement>();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -51,9 +54,29 @@ export default function Reviews() {
 
   return (
     <section
+      ref={sectionRef}
       id="depoimentos"
       className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-6 py-24 sm:px-10 md:py-32 lg:px-24"
     >
+      {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
+      <div className="pointer-events-none absolute inset-0">
+        {near && (
+          <SideRays
+            speed={2.5}
+            rayColor1="#00e87a"
+            rayColor2="#00ed9e"
+            intensity={2}
+            spread={2}
+            origin="top-right"
+            tilt={0}
+            saturation={1.5}
+            blend={0.75}
+            falloff={1.6}
+            opacity={1}
+          />
+        )}
+      </div>
+
       {/* Foco de luz sutil atrás da citação, no verde da marca. */}
       <div className="pointer-events-none absolute inset-0 flex justify-center">
         <div className="h-full w-full max-w-[900px] bg-[radial-gradient(60%_55%_at_50%_38%,rgba(0,232,122,0.10)_0%,rgba(10,10,10,0)_70%)]" />

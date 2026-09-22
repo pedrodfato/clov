@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import SectionLabel from "../SectionLabel";
 import Reveal from "../Reveal";
 import ShaderImage from "../ShaderImage";
+import useNearViewport from "../useNearViewport";
 
 // Grade mais fechada que a do hero: a tela do site tem mais detalhe que uma
 // mão. Ponto pequeno e verde puxado pra baixo deixam o efeito mais discreto.
@@ -47,26 +48,7 @@ const projects = [
 ];
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const [near, setNear] = useState(false);
-
-  // Três canvas WebGL rodando desde o topo da página custam caro. Só monta
-  // o shader quando o card chega perto da viewport.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setNear(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "300px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const [ref, near] = useNearViewport<HTMLAnchorElement>();
 
   return (
     <a
