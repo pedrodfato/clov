@@ -7,9 +7,8 @@ import StartChallengeButton from "../StartChallengeButton";
 import FreeTrialButton from "../FreeTrialButton";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 const EMAIL = "oi@clov.studio";
 const WHATSAPP = "https://wa.me/5511999999999";
@@ -21,80 +20,46 @@ export default function Contact() {
   useEffect(() => {
     const scene = sceneRef.current;
     const copy = copyRef.current;
-    if (!scene || !copy) return;
+    const reviews = document.getElementById("depoimentos");
+    if (!scene || !copy || !reviews) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const heading = copy.querySelector("h2");
     const rest = copy.querySelectorAll("p, .cta-row");
-    if (!heading) return;
 
-    let ctx: gsap.Context | undefined;
-    let split: SplitText | undefined;
-
-    // A PP Mori muda a quebra do título: dividir antes dela carregar
-    // deixa os caracteres nas posições erradas.
-    const ready = document.fonts.ready.then(() => {
-      ctx = gsap.context(() => {
-        // 1. Tudo que vem antes se dissolve enquanto a cena sobe para ocupar a tela.
-        // Elemento direto, não seletor: #page-top está fora do escopo do context.
-        gsap.to(document.getElementById("page-top"), {
-          autoAlpha: 0,
-          scale: 0.97,
-          filter: "blur(6px)",
-          ease: "none",
-          scrollTrigger: { trigger: scene, start: "top 70%", end: "top top", scrub: true },
-        });
-
-        // 2. A cena trava por meia tela: é o tempo do texto entrar.
-        ScrollTrigger.create({ trigger: scene, start: "top top", end: "+=55%", pin: true });
-
-        split = new SplitText(heading, { type: "words,chars" });
-        gsap.set(split.chars, { opacity: 0 });
-        gsap.set(rest, { opacity: 0, y: 14 });
-
-        gsap
-          .timeline({ scrollTrigger: { trigger: scene, start: "top 55%", once: true } })
-          // steps(1) faz o caractere piscar em vez de dar fade — leitura digital.
-          .to(split!.chars, {
-            opacity: 1,
-            duration: 0.05,
-            ease: "steps(1)",
-            stagger: { each: 0.018, from: "random" },
-          })
-          .add(() => {
-            heading.classList.add("glitch-slice");
-            heading.addEventListener(
-              "animationend",
-              () => heading.classList.remove("glitch-slice"),
-              { once: true }
-            );
-            // Um punhado de caracteres pisca em verde junto com a fatia.
-            const picks = gsap.utils.shuffle(split!.chars.slice()).slice(0, 10);
-            gsap.fromTo(
-              picks,
-              { color: "#00e87a" },
-              { color: "#00e87a", duration: 0.07, repeat: 5, yoyo: true, ease: "steps(1)", clearProps: "color" }
-            );
-          })
-          .to(rest, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power2.out" }, "+=0.25");
-      }, scene);
+    // Reviews prende (pin) por uma tela de scroll; nessa mesma janela a cena
+    // do contato desliza de baixo pra cima até cobrir tudo, e o texto entra
+    // no fim do percurso. Um scrub só, então voltar o scroll desfaz tudo.
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: reviews,
+            start: "top top",
+            end: "+=100%",
+            scrub: 0.5,
+            pin: true,
+          },
+        })
+        .fromTo(scene, { yPercent: 100 }, { yPercent: 0, ease: "none", duration: 0.65 }, 0)
+        .fromTo(heading, { opacity: 0, y: 20 }, { opacity: 1, y: 0, ease: "none", duration: 0.2 }, 0.5)
+        .fromTo(
+          rest,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, ease: "none", duration: 0.3, stagger: 0.1 },
+          0.65
+        );
     });
 
-    return () => {
-      // O context não reverte o SplitText: sem isso o Fast Refresh empilha spans.
-      ready.then(() => {
-        ctx?.revert();
-        split?.revert();
-      });
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="contato" className="w-full bg-surface">
+    <section id="contato" className="relative z-10 w-full bg-surface">
       {/* Cena espacial: estrelas, cometas e o planeta com atmosfera verde no rodapé. */}
       <div
         ref={sceneRef}
-        className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-32 pb-24 text-center sm:px-10"
+        className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-24 text-center sm:px-10"
       >
         <div className="pointer-events-none absolute inset-0">
           {/* Brilho ambiente no topo. */}

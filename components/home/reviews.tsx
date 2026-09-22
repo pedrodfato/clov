@@ -52,7 +52,7 @@ export default function Reviews() {
   return (
     <section
       id="depoimentos"
-      className="relative w-full overflow-hidden px-6 py-24 sm:px-10 md:py-32 lg:px-24"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-6 py-24 sm:px-10 md:py-32 lg:px-24"
     >
       {/* Foco de luz sutil atrás da citação, no verde da marca. */}
       <div className="pointer-events-none absolute inset-0 flex justify-center">
@@ -68,13 +68,28 @@ export default function Reviews() {
           O que dizem sobre a <span className="text-ink">CLOV</span>
         </SectionLabel>
 
-        <blockquote aria-live="polite" className="mt-10">
-          <p className="text-balance text-[26px] font-light leading-[1.25] tracking-tight text-ink sm:text-[34px] lg:text-[40px]">
-            <span className="text-brand/40">&ldquo;</span>
-            {current.quote}
-            <span className="text-brand/40">&rdquo;</span>
-          </p>
-        </blockquote>
+        {/* A altura vem do depoimento mais longo dos três, empilhado e invisível
+            atrás (grid-stack). Sem isso, cada troca de citação move tudo abaixo
+            dela — e junto o ponto de fim do pin/slide do Contato (ver contact.tsx). */}
+        <div className="relative mt-10 w-full">
+          <div aria-hidden className="invisible grid">
+            {reviews.map((r) => (
+              <p
+                key={r.author}
+                className="col-start-1 row-start-1 text-balance text-[26px] font-light leading-[1.25] tracking-tight sm:text-[34px] lg:text-[40px]"
+              >
+                &ldquo;{r.quote}&rdquo;
+              </p>
+            ))}
+          </div>
+          <blockquote aria-live="polite" className="absolute inset-0 flex items-center justify-center">
+            <p className="text-balance text-[26px] font-light leading-[1.25] tracking-tight text-ink sm:text-[34px] lg:text-[40px]">
+              <span className="text-brand/40">&ldquo;</span>
+              {current.quote}
+              <span className="text-brand/40">&rdquo;</span>
+            </p>
+          </blockquote>
+        </div>
 
         <div className="mt-9 h-px w-10 bg-brand/60" />
 
