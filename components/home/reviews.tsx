@@ -86,7 +86,6 @@ export default function Reviews() {
       id="depoimentos"
       className="relative z-10 flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 py-24 sm:px-10 md:py-32 lg:px-24"
     >
-      <div data-reviews-stage className="flex w-full flex-1 flex-col items-center justify-center">
       <div data-reviews-bg>
       {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
       <div className="pointer-events-none absolute inset-0">
@@ -113,6 +112,11 @@ export default function Reviews() {
       </div>
       </div>
 
+      {/* Palco: o contato desbota isto com scale e y. O fundo fica de fora de
+          propósito, porque o transform do GSAP vira bloco de contenção e os
+          raios, que são absolute inset-0, passariam a medir o palco em vez da
+          seção inteira. */}
+      <div data-reviews-stage className="w-full">
       <div
         data-reviews-content
         className="relative mx-auto flex w-full max-w-[900px] flex-col items-center text-center"
