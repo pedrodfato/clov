@@ -104,7 +104,11 @@ export default function Contact() {
           </div>
         </div>
 
-        <div ref={copyRef} className="relative z-10 flex max-w-[760px] flex-col items-center gap-6">
+        <div
+          ref={copyRef}
+          data-contato-content
+          className="relative z-10 flex max-w-[760px] flex-col items-center gap-6"
+        >
           <h2 className="text-balance text-[34px] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[52px] lg:text-[60px]">
             Conte o que precisa. A gente responde em 24h.
           </h2>
