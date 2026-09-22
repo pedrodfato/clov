@@ -9,6 +9,8 @@ import Contact from "@/components/home/contact"
 export default function Home() {
   return(
     <>
+    {/* Alvo do fade-out quando o contato assume a tela (ver contact.tsx). */}
+    <div id="page-top">
     {/* Hero + Parceiros dividem a primeira tela: a hero ocupa a sobra. */}
     <div className="flex min-h-screen flex-col">
       <Hero />
@@ -18,6 +20,7 @@ export default function Home() {
     <Metodology/>
     <Solutions/>
     <Reviews/>
+    </div>
     <Contact/>
     </>
   )

@@ -289,3 +289,47 @@ body {
     opacity: 0;
   }
 }
+
+/* Glitch do título do contato: a fatia corta o bloco em faixas e desloca
+   cada uma por 2 frames. Só roda durante o reveal, via classe. */
+@keyframes glitch-slice {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    clip-path: none;
+  }
+  12% {
+    transform: translate3d(-7px, 0, 0);
+    clip-path: inset(6% 0 78% 0);
+  }
+  24% {
+    transform: translate3d(5px, 0, 0);
+    clip-path: inset(44% 0 32% 0);
+  }
+  36% {
+    transform: translate3d(-3px, 1px, 0);
+    clip-path: inset(72% 0 8% 0);
+  }
+  48% {
+    transform: translate3d(6px, -1px, 0);
+    clip-path: inset(22% 0 58% 0);
+  }
+  60% {
+    transform: translate3d(-4px, 0, 0);
+    clip-path: inset(58% 0 22% 0);
+  }
+  72% {
+    transform: translate3d(2px, 0, 0);
+    clip-path: inset(4% 0 86% 0);
+  }
+}
+
+.glitch-slice {
+  animation: glitch-slice 420ms steps(2, end) 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-slice {
+    animation: none;
+  }
+}
