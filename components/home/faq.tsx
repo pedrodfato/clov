@@ -1,7 +1,5 @@
 import Reveal from "../Reveal";
 
-// Respostas abertas em vez de accordion: o accordion já é a linguagem da seção
-// de camadas, e aqui texto visível ainda ajuda quem chega pela busca.
 const perguntas = [
   {
     q: "Vocês trabalham com empresa pequena?",
@@ -24,6 +22,10 @@ const perguntas = [
     a: "Diagnóstico primeiro. Depois prazo, preço e entregas fechados antes da primeira linha de código. Durante o projeto, algo navegável toda semana. No fim, documentação, acessos e 60 dias de suporte.",
   },
   {
+    q: "Vocês fazem manutenção depois de entregar?",
+    a: "Os 60 dias de suporte entram em todo projeto. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
+  },
+  {
     q: "Quando não faz sentido chamar vocês?",
     a: "Quando o que você precisa é uma página simples e barata, ou quando a empresa ainda não vende e o que falta é validar a ideia. Nos dois casos existe caminho mais barato do que a gente.",
   },
@@ -32,19 +34,32 @@ const perguntas = [
 export default function Faq() {
   return (
     <section id="faq" className="w-full px-6 sm:px-10 lg:px-24 py-24 md:py-32">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-12">
-        <Reveal split>
-          <h2 className="text-[26px] font-semibold leading-[1.15] tracking-tight text-ink sm:text-[32px]">
-            Perguntas frequentes
+      <div className="mx-auto flex w-full max-w-[820px] flex-col items-center gap-12">
+        <Reveal split className="text-center">
+          <h2 className="max-w-[22ch] text-balance text-[26px] font-semibold leading-[1.2] tracking-tight text-ink sm:text-[34px]">
+            Respostas para as perguntas mais frequentes
           </h2>
         </Reveal>
 
-        <Reveal targets="div[data-q]" stagger={0.1} className="grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2">
+        <Reveal targets="details" stagger={0.07} className="w-full border-t border-brand-line/25">
           {perguntas.map((p) => (
-            <div key={p.q} data-q className="flex flex-col gap-3">
-              <h3 className="text-lg font-semibold tracking-tight text-ink">{p.q}</h3>
-              <p className="max-w-[52ch] font-mono text-[15px] leading-relaxed text-white/50">{p.a}</p>
-            </div>
+            /* `name` compartilhado deixa o accordion exclusivo sem uma linha de JS. */
+            <details key={p.q} name="faq" className="group border-b border-brand-line/25">
+              <summary className="flex cursor-pointer list-none items-center gap-6 py-5 text-left transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
+                <span className="flex-1 font-mono text-[15px] leading-snug text-white/70 transition-colors duration-300 group-hover:text-ink group-open:text-ink">
+                  {p.q}
+                </span>
+
+                <span className="relative block h-3 w-3 shrink-0 text-white/40 transition-colors duration-300 group-hover:text-brand group-open:text-brand">
+                  <span className="absolute left-0 top-1/2 h-px w-3 -translate-y-1/2 bg-current" />
+                  <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-current transition-transform duration-300 ease-out group-open:scale-y-0" />
+                </span>
+              </summary>
+
+              <p className="max-w-[62ch] pb-6 pr-9 font-mono text-[15px] leading-relaxed text-white/45">
+                {p.a}
+              </p>
+            </details>
           ))}
         </Reveal>
       </div>

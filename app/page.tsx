@@ -8,6 +8,7 @@ import Projects from "@/components/home/projects"
 import Reviews from "@/components/home/reviews"
 import Faq from "@/components/home/faq"
 import Contact from "@/components/home/contact"
+import Footer from "@/components/Footer"
 
 export default function Home() {
   return(
@@ -24,8 +25,9 @@ export default function Home() {
     <Projects/>
     {/* Reviews prende (pin) e o Contato desliza por cima dela — ver contact.tsx. */}
     <Reviews/>
-    <Faq/>
     <Contact/>
+    <Faq/>
+    <Footer/>
     </>
   )
 }
