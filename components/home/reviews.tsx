@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import SectionLabel from "../SectionLabel";
 import SideRays from "../SideRays";
 import useNearViewport from "../useNearViewport";
+import gsap from "gsap";
+import timelineDeCobertura from "../coverTransition";
 
 // Depoimentos provisórios, escritos a partir do feedback real dos clientes.
 // Troque `author` e `context` pelos nomes e cargos reais assim que os tiver.
@@ -50,14 +52,42 @@ export default function Reviews() {
     return () => clearInterval(id);
   }, [paused, index]);
 
+  // O Reviews é a folha que sobe por cima de Projetos: entra preto e acende
+  // por dentro conforme cobre. Depois ele vira a seção presa da transição
+  // seguinte, comandada por contact.tsx.
+  useEffect(() => {
+    const secao = sectionRef.current;
+    if (!secao) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const projetos = document.getElementById("projetos");
+    const projetosContent = projetos?.querySelector("[data-projetos-content]");
+    const fundo = secao.querySelector("[data-reviews-bg]");
+    const conteudo = secao.querySelector("[data-reviews-content]");
+    if (!projetos || !projetosContent || !fundo || !conteudo) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set([fundo, conteudo], { opacity: 0 });
+
+      timelineDeCobertura(projetos)
+        .fromTo(projetosContent, { opacity: 1, scale: 1, y: 0 }, { opacity: 0, scale: 0.94, y: -28, duration: 0.35 }, 0)
+        .fromTo(fundo, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.45)
+        .fromTo(conteudo, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 0.62);
+    }, secao);
+
+    return () => ctx.revert();
+  }, []);
+
   const current = reviews[index];
 
   return (
     <section
       ref={sectionRef}
       id="depoimentos"
-      className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-6 py-24 sm:px-10 md:py-32 lg:px-24"
+      className="relative z-10 flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 py-24 sm:px-10 md:py-32 lg:px-24"
     >
+      <div data-reviews-stage className="flex w-full flex-1 flex-col items-center justify-center">
+      <div data-reviews-bg>
       {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
       <div className="pointer-events-none absolute inset-0">
         {near && (
@@ -80,6 +110,7 @@ export default function Reviews() {
       {/* Foco de luz sutil atrás da citação, no verde da marca. */}
       <div className="pointer-events-none absolute inset-0 flex justify-center">
         <div className="h-full w-full max-w-[900px] bg-[radial-gradient(60%_55%_at_50%_38%,rgba(0,232,122,0.10)_0%,rgba(10,10,10,0)_70%)]" />
+      </div>
       </div>
 
       <div
@@ -158,6 +189,7 @@ export default function Reviews() {
             &rsaquo;
           </button>
         </div>
+      </div>
       </div>
     </section>
   );

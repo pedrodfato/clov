@@ -6,6 +6,7 @@ import FreeTrialButton from "../FreeTrialButton";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import timelineDeCobertura from "../coverTransition";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -23,12 +24,12 @@ export default function Contact() {
     if (!scene || !copy || !reviews) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const reviewsContent = reviews.querySelector("[data-reviews-content]");
+    const reviewsStage = reviews.querySelector("[data-reviews-stage]");
     const sceneBg = scene.querySelector("[data-scene-bg]");
     const heading = copy.querySelector("h2");
     const paragrafo = copy.querySelector("p");
     const ctas = copy.querySelector(".cta-row");
-    if (!reviewsContent || !sceneBg || !heading || !paragrafo || !ctas) return;
+    if (!reviewsStage || !sceneBg || !heading || !paragrafo || !ctas) return;
 
     let ctx: gsap.Context | undefined;
     let split: SplitText | undefined;
@@ -47,27 +48,11 @@ export default function Contact() {
         gsap.set(sceneBg, { opacity: 0 });
         gsap.set([split!.words, paragrafo, ctas], { opacity: 0 });
 
-        // Sem pinSpacing: o Reviews fixa na tela mas não ocupa espaço no
-        // fluxo, então o Contato, que vem logo depois, sobe por cima dele
-        // por scroll nativo. Com o espaçador padrão a posição natural do
-        // Contato ficava uma tela inteira abaixo e ele nunca chegava a cobrir.
-        // Isso também faz a transição não consumir scroll além do normal.
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: reviews,
-            start: "top top",
-            end: "+=100%",
-            pin: reviews,
-            pinSpacing: false,
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        });
+        const tl = timelineDeCobertura(reviews);
 
         tl
           // 1. O depoimento recua e some, ainda por baixo da folha.
-          .to(reviewsContent, { opacity: 0, scale: 0.94, y: -28, duration: 0.35 }, 0)
+          .fromTo(reviewsStage, { opacity: 1, scale: 1, y: 0 }, { opacity: 0, scale: 0.94, y: -28, duration: 0.35 }, 0)
           // 2. A folha preta já está subindo sozinha por scroll. Conforme ela
           //    cobre, a cena acende: primeiro o fundo.
           .fromTo(sceneBg, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.45)
