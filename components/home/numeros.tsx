@@ -92,35 +92,38 @@ export default function Numeros() {
           </p>
         </Reveal>
 
-        {/* Números fora do grid regular: três colunas iguais viram cartão de
-            agência. O deslocamento vertical é o que dá o ar de composição. */}
-        <Reveal targets="[data-stat]" stagger={0.18} className="grid grid-cols-1 gap-12 sm:grid-cols-12 sm:gap-y-20">
-          <div data-stat className="flex flex-col gap-2 sm:col-span-5 sm:col-start-1">
-            <p className="text-[44px] font-semibold leading-none tracking-tight text-brand sm:text-[60px]">
+        <Reveal
+          targets="[data-stat]"
+          stagger={0.18}
+          className="mx-auto grid w-full max-w-[900px] grid-cols-1 gap-12 text-center sm:grid-cols-3 sm:gap-8"
+        >
+          <div data-stat className="flex flex-col items-center gap-2">
+            <p className="flex h-[44px] items-end justify-center text-[44px] font-semibold leading-none tracking-tight text-brand sm:h-[56px] sm:text-[56px]">
               +<span ref={anosRef}>0</span>
             </p>
-            <p className="max-w-[26ch] font-mono text-[13px] leading-relaxed text-white/45">
+            <p className="max-w-[24ch] font-mono text-[13px] leading-relaxed text-white/45">
               anos desenvolvendo e posicionando produtos digitais
             </p>
           </div>
 
-          <div data-stat className="flex flex-col gap-2 sm:col-span-5 sm:col-start-8 sm:mt-10">
-            <p className="text-[44px] font-semibold leading-none tracking-tight text-brand sm:text-[60px]">
+          <div data-stat className="flex flex-col items-center gap-2">
+            <p className="flex h-[44px] items-end justify-center text-[44px] font-semibold leading-none tracking-tight text-brand sm:h-[56px] sm:text-[56px]">
               +<span ref={projetosRef}>0</span>
             </p>
-            <p className="max-w-[26ch] font-mono text-[13px] leading-relaxed text-white/45">
+            <p className="max-w-[24ch] font-mono text-[13px] leading-relaxed text-white/45">
               projetos desenvolvidos, no Brasil e fora dele
             </p>
           </div>
 
-          <div data-stat className="flex flex-col gap-2 sm:col-span-7 sm:col-start-3">
-            <p className="font-mono text-[34px] font-semibold leading-none tracking-tight text-ink tabular-nums sm:text-[44px]">
+          <div data-stat className="flex flex-col items-center gap-2">
+            <p className="flex h-[44px] items-end justify-center font-mono text-[30px] font-semibold leading-none tracking-tight text-ink tabular-nums sm:h-[56px] sm:text-[38px]">
               <span ref={linhasRef}>0</span>
             </p>
-            <p className="max-w-[30ch] font-mono text-[13px] leading-relaxed text-white/45">
+            <p className="max-w-[24ch] font-mono text-[13px] leading-relaxed text-white/45">
               linhas de código escritas, e contando enquanto você lê isto
             </p>
           </div>
+
         </Reveal>
       </div>
     </section>
