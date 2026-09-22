@@ -62,17 +62,17 @@ export default function Reviews() {
       <div className="pointer-events-none absolute inset-0">
         {near && (
           <SideRays
-            speed={0.8}
+            speed={0.3}
             rayColor1="#00e87a"
             rayColor2="#00ed9e"
-            intensity={1.15}
-            spread={2}
-            origin="top-right"
+            intensity={1.2}
+            spread={0.45}
+            origin={[1.3, 1.4]}
             tilt={0}
             saturation={1.5}
             blend={0.75}
-            falloff={1.6}
-            opacity={0.55}
+            falloff={0.95}
+            opacity={0.5}
           />
         )}
       </div>

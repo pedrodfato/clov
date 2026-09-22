@@ -4,13 +4,17 @@ import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-type Origin =
+type OriginName =
   | "top-left" | "top-center" | "top-right"
   | "left" | "center" | "right"
   | "bottom-left" | "bottom-center" | "bottom-right";
 
+/** Nome de um canto, ou [x, y] em uv. Valores fora de 0..1 jogam a origem
+ *  pra fora do quadro: aí só se vê a faixa já aberta, sem o vértice. */
+type Origin = OriginName | [number, number];
+
 // Canto de onde os feixes saem, em coordenadas uv.
-const ORIGINS: Record<Origin, [number, number]> = {
+const ORIGINS: Record<OriginName, [number, number]> = {
   "top-left": [0, 1], "top-center": [0.5, 1], "top-right": [1, 1],
   left: [0, 0.5], center: [0.5, 0.5], right: [1, 0.5],
   "bottom-left": [0, 0], "bottom-center": [0.5, 0], "bottom-right": [1, 0],
@@ -129,7 +133,9 @@ function Rays(props: Required<Omit<Props, "className">>) {
 
   useEffect(() => {
     const u = material.uniforms;
-    const [x, y] = ORIGINS[props.origin] ?? ORIGINS["top-right"];
+    const [x, y] = Array.isArray(props.origin)
+      ? props.origin
+      : ORIGINS[props.origin] ?? ORIGINS["top-right"];
     u.uOrigin.value.set(x, y);
     u.uColor1.value.set(props.rayColor1);
     u.uColor2.value.set(props.rayColor2);
