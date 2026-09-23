@@ -2,6 +2,7 @@ import DotGrid from "../DotGrid"
 import ShaderImage from "../ShaderImage"
 import StartChallengeButton from "../StartChallengeButton"
 import Reveal from "../Reveal"
+import HeroVeil from "./heroVeil"
 
 export default function Hero() {
     return (
@@ -61,6 +62,8 @@ export default function Hero() {
                     </Reveal>
                 </div>
             </div>
+
+            <HeroVeil />
         </section>
     )
 }
