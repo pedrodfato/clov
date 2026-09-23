@@ -1,6 +1,6 @@
 import DotGrid from "../DotGrid"
-import ShaderImage from "../ShaderImage"
 import StartChallengeButton from "../StartChallengeButton"
+import HeroHands from "./heroHands"
 import Reveal from "../Reveal"
 
 export default function Hero() {
@@ -27,17 +27,7 @@ export default function Hero() {
 
             <div className="relative flex flex-1 flex-col items-center justify-center pt-32 pb-52">
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                    <div className="absolute left-[-22%] top-[70%] aspect-square w-[70%] -translate-y-1/2 opacity-[0.3] [&_canvas]:-scale-y-100 [&_canvas]:rotate-[20deg] sm:left-[-10%] sm:w-[56%] sm:opacity-[0.6] lg:w-[48%]">
-                        <ShaderImage
-                            src="/bracorobo.png"
-                            className="h-full w-full"
-                            overrides={{ uBrightness: 0.01, uContrast: 0.6   }}
-                        />
-                    </div>
-
-                    <div className="absolute right-[-14%] top-[60%] aspect-[1671/941] w-[76%] -translate-y-1/2 opacity-[0.22] [&_canvas]:rotate-[5deg] sm:right-[-5%] sm:w-[54%] sm:opacity-[0.4] lg:w-[46%]">
-                        <ShaderImage src="/maohumano.png" className="h-full w-full" />
-                    </div>
+                    <HeroHands />
 
                     <div className="bg-noise absolute inset-0 opacity-[0.55]" />
                 </div>

@@ -1,0 +1,63 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ShaderImage from "../ShaderImage";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Quanto cada mão anda ao longo do scroll do hero, como fração da altura da
+// tela. Em pixels, e não em % do próprio elemento: as duas têm proporções
+// diferentes, e o mesmo yPercent faria uma andar quase o dobro da outra.
+const DESLOCAMENTO = 0.14;
+
+export default function HeroHands() {
+  const esquerda = useRef<HTMLDivElement>(null);
+  const direita = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const a = esquerda.current;
+    const b = direita.current;
+    if (!a || !b) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const hero = a.closest("section");
+    if (!hero) return;
+
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true, invalidateOnRefresh: true },
+        })
+        .to(a, { y: () => window.innerHeight * DESLOCAMENTO }, 0)
+        .to(b, { y: () => -window.innerHeight * DESLOCAMENTO }, 0);
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <>
+      {/* O wrapper externo carrega a posição e o -translate-y-1/2; o interno é
+          o que o GSAP move. Animar o externo apagaria esse deslocamento, já
+          que o GSAP reescreve o transform inteiro. */}
+      <div className="absolute left-[-22%] top-[70%] aspect-square w-[70%] -translate-y-1/2 opacity-[0.3] [&_canvas]:-scale-y-100 [&_canvas]:rotate-[20deg] sm:left-[-10%] sm:w-[56%] sm:opacity-[0.6] lg:w-[48%]">
+        <div ref={esquerda} className="h-full w-full">
+          <ShaderImage
+            src="/bracorobo.png"
+            className="h-full w-full"
+            overrides={{ uBrightness: 0.01, uContrast: 0.6 }}
+          />
+        </div>
+      </div>
+
+      <div className="absolute right-[-14%] top-[60%] aspect-[1671/941] w-[76%] -translate-y-1/2 opacity-[0.22] [&_canvas]:rotate-[5deg] sm:right-[-5%] sm:w-[54%] sm:opacity-[0.4] lg:w-[46%]">
+        <div ref={direita} className="h-full w-full">
+          <ShaderImage src="/maohumano.png" className="h-full w-full" />
+        </div>
+      </div>
+    </>
+  );
+}
