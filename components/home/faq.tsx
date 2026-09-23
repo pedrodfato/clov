@@ -32,10 +32,6 @@ const perguntas = [
     q: "O que acontece depois que vocês entregam?",
     a: "Você fica com a documentação, os acessos no seu nome e 60 dias de suporte. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
   },
-  {
-    q: "Quando não faz sentido nos chamar?",
-    a: "Quando você precisa de uma página simples e barata, ou quando a empresa ainda não vende e o que falta é validar a ideia. Nos dois casos existe caminho mais barato do que a gente.",
-  },
 ];
 
 
