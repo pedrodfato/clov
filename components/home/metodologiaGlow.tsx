@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-// Fração do circuito que o pulso ocupa, e quanto tempo leva uma volta.
+// Fração do circuito que o pulso ocupa, e a velocidade dele em px por
+// segundo. Velocidade em vez de duração fixa: o circuito muda de comprimento
+// com a largura da tela, e a duração é calculada a partir dele.
 const TAMANHO_PULSO = 0.1;
-const DURACAO = 13;
+const VELOCIDADE = 280;
 
 export default function MetodologiaGlow() {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -46,8 +48,13 @@ export default function MetodologiaGlow() {
         // sobe a borda direita, topo do 04 e 03, desce 02/03, base do 02 e
         // 01, sobe a borda esquerda e fecha no ponto de partida.
         d:
+          // ida: topo do 01, desce 01/02, base do 02, sobe 02/03, topo do 03,
+          // desce 03/04, base do 04 até a direita.
           `M 0 0 H ${x(1)} V ${h} H ${x(2)} V 0 H ${x(3)} V ${h} H ${w}` +
-          ` V 0 H ${x(2)} V ${h} H 0 V 0 Z`,
+          // volta em ziguezague: sobe a direita, topo do 04, desce 03/04,
+          // base do 03, sobe 02/03, topo do 02, desce 01/02, base do 01 e
+          // sobe pela borda esquerda, fechando no ponto de partida.
+          ` V 0 H ${x(3)} V ${h} H ${x(2)} V 0 H ${x(1)} V ${h} H 0 V 0 Z`,
         w,
         h,
       });
@@ -70,7 +77,7 @@ export default function MetodologiaGlow() {
     const anim = gsap.fromTo(
       path,
       { strokeDashoffset: 0 },
-      { strokeDashoffset: -total, duration: DURACAO, ease: "none", repeat: -1 }
+      { strokeDashoffset: -total, duration: total / VELOCIDADE, ease: "none", repeat: -1 }
     );
 
     return () => {
