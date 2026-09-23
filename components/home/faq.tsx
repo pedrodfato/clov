@@ -9,34 +9,35 @@ gsap.registerPlugin(SplitText);
 
 const perguntas = [
   {
-    q: "Vocês trabalham com empresa pequena?",
-    a: "Trabalhamos com empresa que já vende e já tem operação rodando. O tamanho importa menos que isso: o que muda o projeto é existir processo para organizar, em vez de começar do zero.",
+    q: "Precisamos contratar tudo de uma vez?",
+    a: "Não. Dá para começar pela camada que está doendo agora, seja o site, uma integração ou uma automação. A arquitetura já é montada para o resto entrar depois, quando você quiser.",
   },
   {
-    q: "Dá para contratar só o site?",
-    a: "Dá, e é assim que a maioria começa. O site costuma ser onde o problema aparece primeiro, mesmo quando ele mora na camada de baixo.",
+    q: "Por que não contratar uma agência e um dev separados?",
+    a: "Porque aí você vira o gerente de projeto dos dois. Aqui quem desenha é quem constrói, então não existe a conversa em que um lado explica por que a culpa é do outro.",
   },
   {
-    q: "Vocês substituem um time interno?",
-    a: "Não. A gente constrói e entrega a estrutura para a sua equipe usar e cuidar depois. Por isso todo projeto termina com documentação e acessos no seu nome.",
+    q: "Vocês vão entender o nosso negócio?",
+    a: "É a primeira etapa, antes de qualquer proposta. E é o que os clientes mais comentam: você explica uma vez e não precisa repetir.",
   },
   {
-    q: "Vocês mexem em sistema que já existe?",
-    a: "É o cenário mais comum. Quase nunca chegamos numa folha em branco: o trabalho é integrar, migrar ou substituir alguma coisa que já está em uso e não pode parar.",
+    q: "E os sistemas que a gente já usa?",
+    a: "Continuam. Quase nunca chegamos numa folha em branco, e o trabalho costuma ser integrar ou substituir alguma coisa que está rodando e não pode parar.",
   },
   {
-    q: "Como funciona um projeto?",
-    a: "Diagnóstico primeiro. Depois prazo, preço e entregas fechados antes da primeira linha de código. Durante o projeto, algo navegável toda semana. No fim, documentação, acessos e 60 dias de suporte.",
+    q: "Como é o primeiro passo, na prática?",
+    a: "Uma conversa de 30 minutos, sem custo. Depois dela a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.",
   },
   {
-    q: "Vocês fazem manutenção depois de entregar?",
-    a: "Os 60 dias de suporte entram em todo projeto. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
+    q: "O que acontece depois que vocês entregam?",
+    a: "Você fica com a documentação, os acessos no seu nome e 60 dias de suporte. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
   },
   {
-    q: "Quando não faz sentido chamar vocês?",
-    a: "Quando o que você precisa é uma página simples e barata, ou quando a empresa ainda não vende e o que falta é validar a ideia. Nos dois casos existe caminho mais barato do que a gente.",
+    q: "Quando não faz sentido nos chamar?",
+    a: "Quando você precisa de uma página simples e barata, ou quando a empresa ainda não vende e o que falta é validar a ideia. Nos dois casos existe caminho mais barato do que a gente.",
   },
 ];
+
 
 export default function Faq() {
   const secaoRef = useRef<HTMLElement>(null);
