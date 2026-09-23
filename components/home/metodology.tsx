@@ -1,5 +1,6 @@
 import SectionLabel from "../SectionLabel";
 import Reveal from "../Reveal";
+import MetodologiaGlow from "./metodologiaGlow";
 
 const steps = [
   {
@@ -30,7 +31,7 @@ export default function Metodology() {
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-10">
         <SectionLabel>Metodologia</SectionLabel>
 
-        <Reveal targets="li" stagger={0.12}>
+        <Reveal targets="li" stagger={0.12} className="relative">
           {/* Cada célula desenha topo/esquerda; o wrapper fecha direita e baixo.
               Fecha a grade sozinho em 1, 2 ou 4 colunas, sem nth-child. */}
           <ol className="grid grid-cols-1 border-b border-r border-brand-line/25 sm:grid-cols-2 lg:grid-cols-4">
@@ -45,6 +46,8 @@ export default function Metodology() {
               </li>
             ))}
           </ol>
+
+          <MetodologiaGlow />
         </Reveal>
       </div>
     </section>
