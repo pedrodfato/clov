@@ -5,8 +5,11 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import SectionLabel from "../SectionLabel";
 import Reveal from "../Reveal";
-import ShaderImage from "../ShaderImage";
+import dynamic from "next/dynamic";
+
+const ShaderImage = dynamic(() => import("../ShaderImage"), { ssr: false });
 import useNearViewport from "../useNearViewport";
+import useShaderPermitido from "../useShaderPermitido";
 
 // Grade mais fechada que a do hero: a tela do site tem mais detalhe que uma
 // mão. Ponto pequeno e verde puxado pra baixo deixam o efeito mais discreto.
@@ -49,6 +52,7 @@ const projects = [
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   const [ref, near] = useNearViewport<HTMLAnchorElement>();
+  const permitido = useShaderPermitido();
 
   return (
     <a
@@ -74,7 +78,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             então a opacidade baixa deixa o site legível. Some todo no hover. */}
         <div className="absolute inset-0 bg-surface/30 opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0 group-focus-visible:opacity-0">
           <div className="absolute inset-0 opacity-[0.35]">
-            {near && (
+            {near && permitido && (
               <ShaderImage
                 src={project.img}
                 className="h-full w-full"

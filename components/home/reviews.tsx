@@ -2,8 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import SectionLabel from "../SectionLabel";
-import SideRays from "../SideRays";
+import dynamic from "next/dynamic";
+
+const SideRays = dynamic(() => import("../SideRays"), { ssr: false });
 import useNearViewport from "../useNearViewport";
+import useShaderPermitido from "../useShaderPermitido";
 import gsap from "gsap";
 import timelineDeCobertura from "../coverTransition";
 
@@ -34,6 +37,7 @@ const ROTATE_MS = 7000;
 
 export default function Reviews() {
   const [sectionRef, near] = useNearViewport<HTMLElement>();
+  const permitido = useShaderPermitido();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -89,7 +93,7 @@ export default function Reviews() {
       <div data-reviews-bg>
       {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
       <div className="pointer-events-none absolute inset-0">
-        {near && (
+        {near && permitido && (
           <SideRays
             speed={0.3}
             rayColor1="#00e87a"

@@ -57,9 +57,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <SmoothScroll>{children}</SmoothScroll>
 
-        {/* Google Tag Manager. O next/script injeta e controla o carregamento;
-            afterInteractive é a estratégia que a doc do Next indica pro GTM. */}
-        <Script id="gtm" strategy="afterInteractive">
+        {/* Google Tag Manager. lazyOnload em vez de afterInteractive: são ~291 KB
+            de JavaScript de terceiro (container + Analytics) e, na thread de um
+            aparelho de entrada, isso disputava com a hidratação da página.
+            Assim ele carrega depois do load. O custo é não registrar quem sai
+            em menos de um segundo. */}
+        <Script id="gtm" strategy="lazyOnload">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=

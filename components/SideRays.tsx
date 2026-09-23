@@ -182,7 +182,9 @@ export default function SideRays({
     <Canvas
       className={className}
       gl={{ alpha: true, antialias: true }}
-      dpr={[1, 2]}
+      // Gradiente suave: 2x o devicePixelRatio não muda o resultado e
+      // quadruplica o custo por pixel.
+      dpr={1}
       onCreated={({ gl }) => gl.setClearAlpha(0)}
     >
       <Rays

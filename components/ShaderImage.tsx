@@ -105,7 +105,9 @@ export default function ShaderImage({ src, className = "", overrides }: Props) {
             // O R3F força overflow:hidden no wrapper, o que corta o canvas quando ele é rotacionado.
             style={{ overflow: "visible" }}
             gl={{ alpha: true, antialias: true }}
-            dpr={[1, 2]}
+            // O resultado é uma trama de pontos de poucos px: renderizar em 2x o
+            // devicePixelRatio quadruplica o trabalho por pixel sem diferença visível.
+            dpr={1}
             onCreated={({ gl }) => gl.setClearAlpha(0)}
         >
             <ImageEffect src={src} overrides={overrides} />
