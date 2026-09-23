@@ -26,7 +26,7 @@ const reviews = [
     quote:
       "Já perdi a conta dos projetos que fizemos juntos. Passo o problema e sei que volta resolvido. Por isso sempre volto pra clov.",
     author: "Green Dynamics",
-    context: "Cliente recorrente",
+    context: "Agência Parceira",
   },
 ];
 
