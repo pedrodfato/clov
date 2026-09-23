@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-// Fração do caminho que o pulso ocupa, e quanto tempo leva cada travessia.
-const TAMANHO_PULSO = 0.16;
-const DURACAO = 7;
+// Fração do circuito que o pulso ocupa, e quanto tempo leva uma volta.
+const TAMANHO_PULSO = 0.1;
+const DURACAO = 13;
 
 export default function MetodologiaGlow() {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -41,9 +41,13 @@ export default function MetodologiaGlow() {
       const x = (i: number) => Math.round(celulas[i].left - r.left);
 
       setCaminho({
-        // topo do 01, desce no divisor 01/02, base do 02, sobe no divisor
-        // 02/03, topo do 03 e 04, desce na borda direita, volta pela base.
-        d: `M 0 0 H ${x(1)} V ${h} H ${x(2)} V 0 H ${w} V ${h} H ${x(3)}`,
+        // Circuito fechado. Ida: topo do 01, desce 01/02, base do 02, sobe
+        // 02/03, topo do 03, desce 03/04, base do 04 até a direita. Volta:
+        // sobe a borda direita, topo do 04 e 03, desce 02/03, base do 02 e
+        // 01, sobe a borda esquerda e fecha no ponto de partida.
+        d:
+          `M 0 0 H ${x(1)} V ${h} H ${x(2)} V 0 H ${x(3)} V ${h} H ${w}` +
+          ` V 0 H ${x(2)} V ${h} H 0 V 0 Z`,
         w,
         h,
       });
@@ -65,14 +69,8 @@ export default function MetodologiaGlow() {
 
     const anim = gsap.fromTo(
       path,
-      { strokeDashoffset: pulso },
-      {
-        strokeDashoffset: -total,
-        duration: DURACAO,
-        ease: "power1.inOut",
-        repeat: -1,
-        yoyo: true,
-      }
+      { strokeDashoffset: 0 },
+      { strokeDashoffset: -total, duration: DURACAO, ease: "none", repeat: -1 }
     );
 
     return () => {
@@ -99,6 +97,14 @@ export default function MetodologiaGlow() {
               </feMerge>
             </filter>
           </defs>
+
+          <path
+            d={caminho.d}
+            stroke="#00e87a"
+            strokeWidth={1}
+            opacity={0.09}
+            filter="url(#metodologia-brilho)"
+          />
 
           <path
             ref={pathRef}
