@@ -7,10 +7,12 @@ import ShaderImage from "../ShaderImage";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Quanto cada mão anda ao longo do scroll do hero, como fração da altura da
-// tela. Em pixels, e não em % do próprio elemento: as duas têm proporções
-// diferentes, e o mesmo yPercent faria uma andar quase o dobro da outra.
-const DESLOCAMENTO = 0.14;
+// Quanto cada mão anda ao longo do scroll do hero: a esquerda sai pela
+// diagonal inferior esquerda, a direita pela superior direita. Em pixels, e
+// não em % do próprio elemento: as duas têm proporções diferentes, e a mesma
+// porcentagem faria uma andar quase o dobro da outra.
+const DESLOCA_X = 0.2; // fração da largura da tela
+const DESLOCA_Y = 0.25; // fração da altura da tela
 
 export default function HeroHands() {
   const esquerda = useRef<HTMLDivElement>(null);
@@ -31,8 +33,8 @@ export default function HeroHands() {
           defaults: { ease: "none" },
           scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true, invalidateOnRefresh: true },
         })
-        .to(a, { y: () => window.innerHeight * DESLOCAMENTO }, 0)
-        .to(b, { y: () => -window.innerHeight * DESLOCAMENTO }, 0);
+        .to(a, { x: () => -window.innerWidth * DESLOCA_X, y: () => window.innerHeight * DESLOCA_Y }, 0)
+        .to(b, { x: () => window.innerWidth * DESLOCA_X, y: () => -window.innerHeight * DESLOCA_Y }, 0);
     });
 
     return () => ctx.revert();
