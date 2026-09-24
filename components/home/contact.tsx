@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import timelineDeCobertura from "../coverTransition";
+import useTelaGrande from "../useTelaGrande";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -16,12 +17,13 @@ const WHATSAPP = "https://wa.me/5511999999999";
 export default function Contact() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
+  const telaGrande = useTelaGrande();
 
   useEffect(() => {
     const scene = sceneRef.current;
     const copy = copyRef.current;
     const reviews = document.getElementById("depoimentos");
-    if (!scene || !copy || !reviews) return;
+    if (!scene || !copy || !reviews || !telaGrande) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const reviewsStage = reviews.querySelector("[data-reviews-stage]");
@@ -73,7 +75,7 @@ export default function Contact() {
       ctx?.revert();
       split?.revert();
     };
-  }, []);
+  }, [telaGrande]);
 
   return (
     <section id="contato" className="relative z-10 w-full bg-surface">

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import timelineDeCobertura from "../coverTransition";
+import useTelaGrande from "../useTelaGrande";
 
 gsap.registerPlugin(SplitText);
 
@@ -37,13 +38,14 @@ const perguntas = [
 
 export default function Faq() {
   const secaoRef = useRef<HTMLElement>(null);
+  const telaGrande = useTelaGrande();
 
   // O FAQ é a folha que sobe por cima do contato: entra preto e revela
   // título e perguntas por dentro conforme cobre. Por isso não usa <Reveal>,
   // que teria a própria ScrollTrigger disputando as mesmas opacidades.
   useEffect(() => {
     const secao = secaoRef.current;
-    if (!secao) return;
+    if (!secao || !telaGrande) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const contato = document.getElementById("contato");
@@ -84,7 +86,7 @@ export default function Faq() {
       ctx?.revert();
       split?.revert();
     };
-  }, []);
+  }, [telaGrande]);
 
   return (
     <section

@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 
 const ShaderImage = dynamic(() => import("../ShaderImage"), { ssr: false });
 import useNearViewport from "../useNearViewport";
-import useShaderPermitido from "../useShaderPermitido";
+import useTelaGrande from "../useTelaGrande";
 
 // Grade mais fechada que a do hero: a tela do site tem mais detalhe que uma
 // mão. Ponto pequeno e verde puxado pra baixo deixam o efeito mais discreto.
@@ -52,7 +52,7 @@ const projects = [
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   const [ref, near] = useNearViewport<HTMLAnchorElement>();
-  const permitido = useShaderPermitido();
+  const permitido = useTelaGrande();
 
   return (
     <a

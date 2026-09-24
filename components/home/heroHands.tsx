@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 // está interativa, em vez de disputar com ela.
 const ShaderImage = dynamic(() => import("../ShaderImage"), { ssr: false });
 
-import useShaderPermitido from "../useShaderPermitido";
+import useTelaGrande from "../useTelaGrande";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +25,7 @@ export default function HeroHands() {
   const esquerda = useRef<HTMLDivElement>(null);
   const direita = useRef<HTMLDivElement>(null);
   const [ocioso, setOcioso] = useState(false);
-  const permitido = useShaderPermitido();
+  const permitido = useTelaGrande();
   const pronto = ocioso && permitido;
 
   useEffect(() => {

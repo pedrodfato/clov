@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const SideRays = dynamic(() => import("../SideRays"), { ssr: false });
 import useNearViewport from "../useNearViewport";
-import useShaderPermitido from "../useShaderPermitido";
+import useTelaGrande from "../useTelaGrande";
 import gsap from "gsap";
 import timelineDeCobertura from "../coverTransition";
 
@@ -37,7 +37,7 @@ const ROTATE_MS = 7000;
 
 export default function Reviews() {
   const [sectionRef, near] = useNearViewport<HTMLElement>();
-  const permitido = useShaderPermitido();
+  const telaGrande = useTelaGrande();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -61,7 +61,7 @@ export default function Reviews() {
   // seguinte, comandada por contact.tsx.
   useEffect(() => {
     const secao = sectionRef.current;
-    if (!secao) return;
+    if (!secao || !telaGrande) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const projetos = document.getElementById("projetos");
@@ -80,7 +80,7 @@ export default function Reviews() {
     }, secao);
 
     return () => ctx.revert();
-  }, []);
+  }, [telaGrande]);
 
   const current = reviews[index];
 
@@ -93,7 +93,7 @@ export default function Reviews() {
       <div data-reviews-bg>
       {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
       <div className="pointer-events-none absolute inset-0">
-        {near && permitido && (
+        {near && telaGrande && (
           <SideRays
             speed={0.3}
             rayColor1="#00e87a"
