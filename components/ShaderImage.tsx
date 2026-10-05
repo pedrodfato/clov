@@ -15,6 +15,7 @@ const settings = {
     uBrightness: 0.02,
     uEffectStrength: 1.05,
     uInvert: 0,
+    uAnchorY: 0.5,
     uColor: "#00ff66",
 }
 
@@ -55,6 +56,7 @@ function ImageEffect({ src, overrides }: { src: string; overrides?: Overrides })
         uniforms.uBrightness.value = config.uBrightness
         uniforms.uEffectStrength.value = config.uEffectStrength
         uniforms.uInvert.value = config.uInvert
+        uniforms.uAnchorY.value = config.uAnchorY
         uniforms.uColor.value = new THREE.Color(config.uColor)
 
         const applyImageSize = () => {
