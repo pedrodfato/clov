@@ -128,12 +128,15 @@ export default function Footer() {
       {/* Dunas: mesma trama de pontos verdes das mãos do hero, desenhada por
           cima da foto para ela entrar na paleta do site. */}
       <div ref={dunasRef} className="relative aspect-[1817/866] w-full">
+        {/* No celular o shader não roda e sobraria a foto em cinza. O tingimento
+            por filtro chega perto do verde sem trazer o WebGL junto; no desktop
+            ela volta a ser só a base cinza por baixo do shader. */}
         <Image
           src="/deserto.webp"
           alt=""
           fill
           sizes="100vw"
-          className="object-cover opacity-[0.18] grayscale"
+          className="object-cover opacity-50 [filter:grayscale(1)_brightness(0.55)_contrast(1.9)_sepia(1)_hue-rotate(72deg)_saturate(5)] lg:opacity-[0.18] lg:[filter:grayscale(1)]"
         />
         {perto && telaGrande && (
           <div className="absolute inset-0 opacity-70">
