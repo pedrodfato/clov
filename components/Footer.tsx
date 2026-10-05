@@ -44,7 +44,6 @@ const CONTATOS = [
 export default function Footer() {
   const [dunasRef, perto] = useNearViewport<HTMLDivElement>();
   const telaGrande = useTelaGrande();
-  const dunasVerdes = perto && telaGrande;
 
   return (
     <footer className="relative z-10 w-full overflow-hidden border-t border-brand-line/25 bg-surface">
@@ -128,29 +127,25 @@ export default function Footer() {
 
       {/* Dunas: mesma trama de pontos verdes das mãos do hero, desenhada por
           cima da foto para ela entrar na paleta do site. */}
-      {/* A foto é 2:1: na largura toda ela daria 900px de altura, e só a metade
-          de cima caberia na tela. A faixa tem altura própria e o corte ancora
-          na base (uAnchorY / object-bottom), que é onde estão as dunas. */}
-      <div ref={dunasRef} className="relative h-[clamp(220px,30vw,560px)] w-full">
-        {dunasVerdes ? (
-          // Só o shader: a foto por baixo apareceria como um cinza que lava o
-          // verde — é por isso que as mãos do hero também vão sem ela.
-          <ShaderImage
-            src="/deserto.webp"
-            className="h-full w-full"
-            overrides={{ uGridSize: 2.5, uContrast: 1.2, uBrightness: -0.02, uAnchorY: 1 }}
-          />
-        ) : (
-          <Image
-            src="/deserto.webp"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-[0.18] grayscale"
-          />
+      <div ref={dunasRef} className="relative aspect-[1817/866] w-full">
+        <Image
+          src="/deserto.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-[0.18] grayscale"
+        />
+        {perto && telaGrande && (
+          <div className="absolute inset-0 opacity-70">
+            <ShaderImage
+              src="/deserto.webp"
+              className="h-full w-full"
+              overrides={{ uGridSize: 2.5, uContrast: 1.15, uBrightness: -0.04 }}
+            />
+          </div>
         )}
         {/* Dissolve o topo da foto no preto da seção. */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-surface to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-surface to-transparent" />
       </div>
     </footer>
   );
