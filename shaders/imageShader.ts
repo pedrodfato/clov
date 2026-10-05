@@ -12,7 +12,6 @@ export const imageShader = {
         uBrightness: { value: 0 },
         uEffectStrength: { value: 1 },
         uInvert: { value: 0 },
-        uAnchorY: { value: 0.5 },
         uColor: { value: new THREE.Color("#00ff66") },
         uTime: { value: 0 },
     },
@@ -38,15 +37,12 @@ export const imageShader = {
         uniform float uBrightness;
         uniform float uEffectStrength;
         uniform float uInvert;
-        uniform float uAnchorY;
         uniform vec3 uColor;
         uniform float uTime;
 
         varying vec2 vUv;
 
         // Maps canvas uv to texture uv keeping the image aspect (object-fit: cover).
-        // uAnchorY escolhe que parte sobrevive ao corte vertical: 0.5 é o centro
-        // (object-position: center), 1.0 cola na base (object-position: bottom).
         vec2 coverUv(vec2 uv) {
             float canvasAspect = uResolution.x / uResolution.y;
             float imageAspect = uImageResolution.x / uImageResolution.y;
@@ -58,8 +54,7 @@ export const imageShader = {
                 scale.x = canvasAspect / imageAspect;
             }
 
-            vec2 anchor = vec2(0.5, uAnchorY);
-            return (uv - anchor) * scale + anchor;
+            return (uv - 0.5) * scale + 0.5;
         }
 
         float lumaOf(vec3 color) {

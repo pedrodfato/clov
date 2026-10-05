@@ -127,23 +127,27 @@ export default function Footer() {
 
       {/* Dunas: mesma trama de pontos verdes das mãos do hero, desenhada por
           cima da foto para ela entrar na paleta do site. */}
-      {/* A foto é 2:1 e em tela cheia isso vira quase 900px de altura, a maior
-          parte céu vazio. A faixa tem altura própria e o corte é ancorado na
-          base (object-bottom / uAnchorY), que é onde estão as dunas. */}
-      <div ref={dunasRef} className="relative h-[clamp(200px,26vw,500px)] w-full">
+      {/* A foto é 2:1: ocupando a largura toda ela passava de 900px de altura e
+          só a metade de cima cabia na tela. Limitar a largura mostra a cena
+          inteira numa faixa que cabe, e a máscara dissolve as bordas laterais
+          para não virar um retângulo colado no preto. */}
+      <div
+        ref={dunasRef}
+        className="relative mx-auto aspect-[1600/763] w-full max-w-[1180px] [mask-image:linear-gradient(to_right,transparent,#000_14%,#000_86%,transparent)]"
+      >
         <Image
           src="/deserto.webp"
           alt=""
           fill
-          sizes="100vw"
-          className="object-cover object-bottom opacity-[0.18] grayscale"
+          sizes="(max-width: 1180px) 100vw, 1180px"
+          className="object-cover opacity-[0.18] grayscale"
         />
         {perto && telaGrande && (
           <div className="absolute inset-0 opacity-70">
             <ShaderImage
               src="/deserto.webp"
               className="h-full w-full"
-              overrides={{ uGridSize: 2.5, uContrast: 1.15, uBrightness: -0.04, uAnchorY: 1 }}
+              overrides={{ uGridSize: 2.5, uContrast: 1.15, uBrightness: -0.04 }}
             />
           </div>
         )}
