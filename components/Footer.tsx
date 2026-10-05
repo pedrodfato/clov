@@ -127,25 +127,28 @@ export default function Footer() {
 
       {/* Dunas: mesma trama de pontos verdes das mãos do hero, desenhada por
           cima da foto para ela entrar na paleta do site. */}
-      <div ref={dunasRef} className="relative aspect-[1817/866] w-full">
+      {/* A foto é 2:1 e em tela cheia isso vira quase 900px de altura, a maior
+          parte céu vazio. A faixa tem altura própria e o corte é ancorado na
+          base (object-bottom / uAnchorY), que é onde estão as dunas. */}
+      <div ref={dunasRef} className="relative h-[clamp(200px,26vw,500px)] w-full">
         <Image
           src="/deserto.webp"
           alt=""
           fill
           sizes="100vw"
-          className="object-cover opacity-[0.18] grayscale"
+          className="object-cover object-bottom opacity-[0.18] grayscale"
         />
         {perto && telaGrande && (
           <div className="absolute inset-0 opacity-70">
             <ShaderImage
               src="/deserto.webp"
               className="h-full w-full"
-              overrides={{ uGridSize: 2.5, uContrast: 1.15, uBrightness: -0.04 }}
+              overrides={{ uGridSize: 2.5, uContrast: 1.15, uBrightness: -0.04, uAnchorY: 1 }}
             />
           </div>
         )}
         {/* Dissolve o topo da foto no preto da seção. */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-surface to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-surface to-transparent" />
       </div>
     </footer>
   );
