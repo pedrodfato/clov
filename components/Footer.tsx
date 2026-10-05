@@ -1,5 +1,14 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import dynamic from "next/dynamic";
+import { Mail, MapPin, Phone } from "lucide-react";
+import useNearViewport from "./useNearViewport";
+import useTelaGrande from "./useTelaGrande";
+import { EMAIL, TELEFONE, WHATSAPP } from "./contato";
+
+// Mesmo motivo do hero: three.js + R3F só entram quando as dunas chegam perto.
+const ShaderImage = dynamic(() => import("./ShaderImage"), { ssr: false });
 
 // Geometria oficial do Simple Icons (simpleicons.org), copiada em vez de
 // instalada: o lucide-react do projeto não traz mais ícones de marca, e o
@@ -17,24 +26,41 @@ const SOCIAIS = [
   },
 ];
 
-export default function Footer() {
-  return (
-    <footer className="w-full border-t border-brand-line/25 bg-surface">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-24">
-        <Image
-          src="/logoclov.svg"
-          alt="Clov"
-          width={260}
-          height={104}
-          unoptimized
-          className="h-9 w-auto"
-        />
+const LINKS = [
+  { label: "Quem somos", href: "#quem-somos" },
+  { label: "Metodologia", href: "#metodologia" },
+  { label: "Soluções", href: "#solucoes" },
+  { label: "Projetos", href: "#projetos" },
+  { label: "Depoimentos", href: "#depoimentos" },
+  { label: "FAQ", href: "#faq" },
+];
 
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-sm text-white/40">
-          <span>© 2026 Clov</span>
-          <Link href="#" className="transition-colors hover:text-white/70">
-            Política de privacidade
-          </Link>
+const CONTATOS = [
+  { Icon: Phone, label: TELEFONE, href: WHATSAPP },
+  { Icon: Mail, label: EMAIL, href: `mailto:${EMAIL}` },
+  { Icon: MapPin, label: "São Paulo, Brasil" },
+];
+
+export default function Footer() {
+  const [dunasRef, perto] = useNearViewport<HTMLDivElement>();
+  const telaGrande = useTelaGrande();
+
+  return (
+    <footer className="relative z-10 w-full overflow-hidden border-t border-brand-line/25 bg-surface">
+      <div className="mx-auto grid w-full max-w-[1200px] gap-10 px-6 py-14 sm:grid-cols-2 sm:px-10 lg:grid-cols-3 lg:gap-0 lg:px-24">
+        <div className="flex flex-col items-start gap-5 lg:pr-12">
+          <Image
+            src="/logoclov.svg"
+            alt="Clov"
+            width={260}
+            height={104}
+            unoptimized
+            className="h-9 w-auto"
+          />
+
+          <p className="max-w-[26ch] font-mono text-[13px] leading-relaxed text-white/40">
+            Software sob medida para empresas que precisam de resultado, não de promessa.
+          </p>
 
           <div className="flex items-center gap-4">
             {SOCIAIS.map((s) => (
@@ -52,7 +78,74 @@ export default function Footer() {
               </a>
             ))}
           </div>
+
+          <span className="font-mono text-[13px] text-white/25">© 2026 Clov</span>
         </div>
+
+        <nav className="flex flex-col gap-4 lg:border-l lg:border-brand-line/25 lg:pl-12">
+          <h3 className="font-mono text-[13px] uppercase tracking-[0.18em] text-ink">Links rápidos</h3>
+          {LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="font-mono text-[13px] text-white/40 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex flex-col gap-4 lg:border-l lg:border-brand-line/25 lg:pl-12">
+          <h3 className="font-mono text-[13px] uppercase tracking-[0.18em] text-ink">Contato</h3>
+          {CONTATOS.map(({ Icon, label, href }) => {
+            const conteudo = (
+              <>
+                <Icon className="h-[14px] w-[14px] shrink-0 text-brand/70" aria-hidden />
+                {label}
+              </>
+            );
+            const classe = "flex items-center gap-2.5 font-mono text-[13px] text-white/40";
+
+            return href ? (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className={`${classe} transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand`}
+              >
+                {conteudo}
+              </a>
+            ) : (
+              <span key={label} className={classe}>
+                {conteudo}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Dunas: mesma trama de pontos verdes das mãos do hero, desenhada por
+          cima da foto para ela entrar na paleta do site. */}
+      <div ref={dunasRef} className="relative aspect-[1817/866] w-full">
+        <Image
+          src="/deserto.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-[0.18] grayscale"
+        />
+        {perto && telaGrande && (
+          <div className="absolute inset-0 opacity-70">
+            <ShaderImage
+              src="/deserto.webp"
+              className="h-full w-full"
+              overrides={{ uGridSize: 2.5, uContrast: 1.15, uBrightness: -0.04 }}
+            />
+          </div>
+        )}
+        {/* Dissolve o topo da foto no preto da seção. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-surface to-transparent" />
       </div>
     </footer>
   );

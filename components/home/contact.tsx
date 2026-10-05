@@ -8,11 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import timelineDeCobertura from "../coverTransition";
 import useTelaGrande from "../useTelaGrande";
+import { EMAIL, WHATSAPP } from "../contato";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
-
-const EMAIL = "oi@clov.studio";
-const WHATSAPP = "https://wa.me/5511999999999";
 
 export default function Contact() {
   const sceneRef = useRef<HTMLDivElement>(null);
