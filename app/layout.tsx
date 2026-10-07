@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import localfont from "next/font/local";
+import { Silkscreen } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import IntroReveal from "@/components/IntroReveal";
@@ -27,6 +28,13 @@ const ppmori = localfont({
   variable: "--font-ppmori",
 })
 
+// Pixel do título do hero: conversa com a trama de pontos das mãos.
+const silkscreen = Silkscreen({
+  weight: "700",
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-silkscreen",
+})
+
 export const metadata: Metadata = {
   title: "Clov | Sistemas digitais para empresas em crescimento",
   description:
@@ -40,7 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${ppmori.variable} h-full antialiased`}
+      className={`${ppmori.variable} ${silkscreen.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {/* Google Tag Manager (noscript) — o GTM pede como 1º elemento do body. */}

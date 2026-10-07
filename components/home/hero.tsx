@@ -32,11 +32,13 @@ export default function Hero() {
                     <div className="bg-noise absolute inset-0 opacity-[0.55]" />
                 </div>
 
-                <div className="relative z-10 flex flex-col items-center px-6 text-center">
+                <div data-hero-texto className="relative z-10 flex flex-col items-center px-6 text-center">
                     {/* Os delays esperam a intro (3s em IntroReveal) abrir o trevo. */}
                     <Reveal split delay={2.3}>
-                        <h1 className="max-w-[900px] text-[30px] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[40px] lg:text-[48px]">
-                            Construímos os sistemas digitais por trás de empresas que estão crescendo.
+                        {/* A Silkscreen vem com muito respiro entre letras; apertado, o
+                            título lê como palavras em bloco, não letra por letra. */}
+                        <h1 className="max-w-[920px] text-balance font-pixel text-[28px] font-bold uppercase leading-[1.1] tracking-[-0.07em] text-ink sm:text-[40px] lg:text-[52px]">
+                            Tecnologia que trabalha por você
                         </h1>
                     </Reveal>
 
@@ -46,7 +48,7 @@ export default function Hero() {
                         </p>
 
                         <div className="mt-8">
-                            <StartChallengeButton href="#contato">Fale conosco</StartChallengeButton>
+                            <StartChallengeButton href="#contato">Quero iniciar um projeto</StartChallengeButton>
                         </div>
                     </Reveal>
                 </div>

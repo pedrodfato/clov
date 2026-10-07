@@ -68,7 +68,7 @@ export default function Header() {
                     ))}
                 </div>
 
-                <StartChallengeButton href="#contato" className="text-[14px]">
+                <StartChallengeButton href="#contato" className="text-[11px]! sm:text-[12px]!">
                     Fale conosco
                 </StartChallengeButton>
             </div>
