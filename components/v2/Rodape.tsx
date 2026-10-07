@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
-import FreeTrialButton from "../FreeTrialButton";
 import { EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
 
 const LINKS = [
@@ -32,15 +31,12 @@ export default function Rodape() {
       </div>
 
       <div className="border-t border-white/[0.06]">
-        <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-4 px-6 py-16 text-center sm:px-10">
+        {/* <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-4 px-6 py-16 text-center sm:px-10">
           <h2 className="text-[24px] font-normal tracking-[-0.02em] text-ink">Fale direto com quem constrói</h2>
           <p className="max-w-[46ch] text-[14px] text-white/45">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
-          <FreeTrialButton href={WHATSAPP} className="mt-2">
-            Chamar no WhatsApp
-          </FreeTrialButton>
-        </div>
+        </div> */}
 
-        <div className="mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
+        <div className="pt-16 mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
           <div className="flex flex-col items-start gap-4">
             <Image src="/logoclov.svg" alt="Clov" width={260} height={104} unoptimized className="h-8 w-auto" />
             <p className="max-w-[26ch] text-[13px] leading-relaxed text-white/40">

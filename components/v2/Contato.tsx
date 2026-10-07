@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
-import FreeTrialButton from "../FreeTrialButton";
-import { EMAIL, WHATSAPP } from "../contato";
+import { EMAIL } from "../contato";
 
 // Cena do planeta com estrelas (mesmo vocabulário da v1, que já existia em
 // globals.css) e o trevo aceso, como o "Join us today" da referência.
@@ -41,7 +40,6 @@ export default function Contato() {
           <StartChallengeButton href={`mailto:${EMAIL}?subject=Agendar%20diagn%C3%B3stico`}>
             Agendar diagnóstico
           </StartChallengeButton>
-          <FreeTrialButton href={WHATSAPP}>WhatsApp</FreeTrialButton>
         </div>
       </Reveal>
     </section>

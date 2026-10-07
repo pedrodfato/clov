@@ -5,9 +5,8 @@ import gsap from "gsap";
 import { Check, ArrowDown } from "lucide-react";
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
-import FreeTrialButton from "../FreeTrialButton";
 import Etiqueta from "./Etiqueta";
-import { SOCIAIS, WHATSAPP } from "../contato";
+import { SOCIAIS } from "../contato";
 
 // Símbolos de código flutuando ao fundo, no lugar das contas da referência.
 // `p` é a profundidade: quanto maior, mais anda com o mouse e mais nítido.
@@ -58,10 +57,9 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-28 text-center">
-      {/* Luz: holofote verde de cima, um foco suave atrás do título e a grade. */}
+      {/* Luz: um foco suave atrás do título e a grade. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="v2-grade absolute inset-0" />
-        <div className="v2-holofote animate-breathe absolute left-1/2 top-0 h-[85%] w-[110%] -translate-x-1/2" />
         <div className="absolute left-1/2 top-[42%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(0,232,122,0.16),transparent)]" />
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
       </div>
@@ -114,7 +112,6 @@ export default function Hero() {
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <StartChallengeButton href="#contato">Quero iniciar um projeto</StartChallengeButton>
-            <FreeTrialButton href={WHATSAPP}>WhatsApp</FreeTrialButton>
           </div>
         </Reveal>
       </div>

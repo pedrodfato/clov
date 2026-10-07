@@ -1,7 +1,6 @@
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
-import FreeTrialButton from "../FreeTrialButton";
-import { EMAIL, WHATSAPP } from "../contato";
+import { EMAIL } from "../contato";
 
 // Hélice de pontos (CSS 3D): dois fios defasados meia volta, girando juntos.
 const PONTOS = 18;
@@ -46,7 +45,6 @@ export default function Diagnostico() {
             <StartChallengeButton href={`mailto:${EMAIL}?subject=Agendar%20diagn%C3%B3stico`}>
               Agendar diagnóstico
             </StartChallengeButton>
-            <FreeTrialButton href={WHATSAPP}>WhatsApp</FreeTrialButton>
           </div>
         </Reveal>
 
