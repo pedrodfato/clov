@@ -33,8 +33,7 @@ export default function Contato() {
           <span className="titulo-brilho">Conte o que precisa</span> <br /> A gente responde em 24h
         </h2>
         <p data-r className="max-w-[52ch] text-[15px] leading-relaxed text-white/70">
-          A primeira conversa é um diagnóstico de 30 minutos, sem custo. A gente olha o seu cenário e diz se é caso para
-          nós, inclusive quando a resposta é não.
+          A primeira conversa tem 30 minutos e não custa nada. Depois dela, a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.
         </p>
         <div data-r className="mt-2 flex flex-wrap items-center justify-center gap-3">
           <StartChallengeButton href={WHATSAPP}>
