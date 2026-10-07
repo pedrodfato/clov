@@ -2,6 +2,7 @@ import DotGrid from "../DotGrid"
 import StartChallengeButton from "../StartChallengeButton"
 import HeroHands from "./heroHands"
 import Reveal from "../Reveal"
+import { WHATSAPP } from "../contato"
 
 export default function Hero() {
     return (
@@ -43,12 +44,12 @@ export default function Hero() {
                     </Reveal>
 
                     <Reveal delay={2.8} stagger={0.14} className="flex flex-col items-center">
-                        <p className="mt-6 max-w-[520px] font-mono text-base text-white/55 sm:text-lg">
+                        <p className="mt-6 max-w-[520px] font-mono text-base text-white/70 sm:text-lg">
                             Site, integrações e automação na mesma arquitetura. Time pequeno, contato direto com quem constrói.
                         </p>
 
                         <div className="mt-8">
-                            <StartChallengeButton href="#contato">Quero iniciar um projeto</StartChallengeButton>
+                            <StartChallengeButton href={WHATSAPP}>Quero iniciar um projeto</StartChallengeButton>
                         </div>
                     </Reveal>
                 </div>

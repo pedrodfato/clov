@@ -2,7 +2,7 @@
 export const EMAIL = "contato@clov.com.br";
 export const TELEFONE = "+55 14 99184-7482";
 
-const MENSAGEM = "Olá vim pelo website e gostaria de saber mais sobre os serviços!";
+const MENSAGEM = "Olá! Vim pelo site da Clov e gostaria de conversar sobre um projeto.";
 export const WHATSAPP = `https://wa.me/5514991847482?text=${encodeURIComponent(MENSAGEM)}`;
 
 // Geometria oficial do Simple Icons (simpleicons.org), copiada em vez de

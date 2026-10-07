@@ -44,7 +44,7 @@ export default function Depoimentos() {
                   : "border-white/[0.07] bg-white/[0.02]"
               }`}
             >
-              <blockquote className="text-[16px] leading-relaxed text-white/75">
+              <blockquote className="text-[16px] leading-relaxed text-white/85">
                 <span className="text-brand">&ldquo;</span>
                 {d.texto}
                 <span className="text-brand">&rdquo;</span>
@@ -55,7 +55,7 @@ export default function Depoimentos() {
                 </span>
                 <span>
                   <span className="block text-[14px] text-ink">{d.autor}</span>
-                  <span className="block text-[12px] text-white/40">{d.contexto}</span>
+                  <span className="block text-[12px] text-white/60">{d.contexto}</span>
                 </span>
               </figcaption>
             </figure>

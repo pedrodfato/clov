@@ -13,7 +13,7 @@ export default function About() {
         </div>
 
         <div className="flex flex-col gap-10 md:pt-1">
-          <Reveal targets="p" stagger={0.16} className="flex max-w-[58ch] flex-col gap-5 font-mono text-[15px] leading-relaxed text-white/50">
+          <Reveal targets="p" stagger={0.16} className="flex max-w-[58ch] flex-col gap-5 font-mono text-[15px] leading-relaxed text-white/65">
             <p>
               Design, engenharia e automação no mesmo time. Você fala direto com quem constrói, sem camada de atendimento no meio do caminho e sem o projeto trocar de mão três vezes até sair.
             </p>

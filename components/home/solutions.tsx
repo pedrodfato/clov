@@ -124,7 +124,7 @@ export default function Solutions() {
               Três camadas do mesmo sistema.
             </h2>
           </div>
-          <p className="max-w-[46ch] font-mono text-[15px] leading-relaxed text-white/45 md:pb-2">
+          <p className="max-w-[46ch] font-mono text-[15px] leading-relaxed text-white/65 md:pb-2">
             Quase sempre o trabalho começa em uma camada e o problema estava na de baixo.
           </p>
         </div>
@@ -146,14 +146,14 @@ export default function Solutions() {
               />
 
               <summary className="relative flex cursor-pointer list-none items-center gap-4 py-7 pr-1 transition-[padding] duration-500 ease-out group-open:pl-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:gap-6 sm:py-9 [&::-webkit-details-marker]:hidden">
-                <h3 className="text-[32px] font-semibold leading-none tracking-tight text-white/45 transition-colors duration-500 group-hover:text-white/75 group-open:text-ink sm:text-[52px]">
+                <h3 className="text-[32px] font-semibold leading-none tracking-tight text-white/65 transition-colors duration-500 group-hover:text-white/85 group-open:text-ink sm:text-[52px]">
                   {s.title}
                 </h3>
                 <span className="mt-auto pb-1 font-mono text-xs text-white/30 transition-colors duration-500 group-open:text-brand sm:pb-2 sm:text-[13px]">
                   {s.category}
                 </span>
 
-                <span className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-line/50 text-white/50 transition-colors duration-500 group-hover:border-brand/60 group-hover:text-brand group-open:border-brand group-open:text-brand">
+                <span className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-line/50 text-white/65 transition-colors duration-500 group-hover:border-brand/60 group-hover:text-brand group-open:border-brand group-open:text-brand">
                   <span className="relative block h-3 w-3 transition-transform duration-500 ease-out group-open:rotate-90">
                     <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
                     <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 rounded-full bg-current transition-transform duration-500 ease-out group-open:scale-y-0" />
@@ -162,7 +162,7 @@ export default function Solutions() {
               </summary>
 
               <div className="relative flex flex-col gap-10 pb-12 group-open:pl-5 md:flex-row md:justify-between md:gap-16">
-                <div className="flex max-w-[58ch] flex-col gap-4 font-mono text-[15px] leading-relaxed text-white/50">
+                <div className="flex max-w-[58ch] flex-col gap-4 font-mono text-[15px] leading-relaxed text-white/65">
                   {s.desc.map((p, i) => (
                     <p key={i}>{p}</p>
                   ))}
@@ -170,7 +170,7 @@ export default function Solutions() {
 
                 <ul className="grid shrink-0 grid-cols-1 gap-x-12 gap-y-3 sm:grid-cols-2 md:w-[340px] md:pr-14">
                   {s.items.map((item) => (
-                    <li key={item} className="flex items-center gap-3 font-mono text-[15px] text-white/70">
+                    <li key={item} className="flex items-center gap-3 font-mono text-[15px] text-white/80">
                       <span className="h-1 w-1 shrink-0 rounded-full bg-brand" />
                       {item}
                     </li>

@@ -17,13 +17,13 @@ export default function Home() {
     <>
       <Hero />
       <Numeros />
-      <Letreiro texto="Site · Integrações · Automação ·" />
+      <Letreiro partes={["Sites", "Integrações", "Inteligência Artificial"]} />
       <QuemSomos />
       <Diagnostico />
       <ComoFunciona />
       <Solucoes />
       <Projetos />
-      <Letreiro texto="Fale direto com quem constrói ·" sentido={-1} />
+      <Letreiro linhas={["Site ou sistema, o método é o mesmo.", "Entender primeiro. Construir depois."]} />
       <Contato />
       <Faq />
       <Rodape />

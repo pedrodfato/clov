@@ -36,7 +36,7 @@ function Cartao({ etapa }: { etapa: number }) {
 
   const conteudo = [
     <>
-      <p className="text-[12px] text-white/40">Leitura do cenário · exemplo</p>
+      <p className="text-[12px] text-white/60">Leitura do cenário · exemplo</p>
       <div className="mt-3">
         {[
           ["CRM e financeiro", "sem integração"],
@@ -44,8 +44,8 @@ function Cartao({ etapa }: { etapa: number }) {
           ["Site", "lento no celular"],
         ].map(([a, b]) => (
           <div key={a} className={linha}>
-            <span className="text-white/70">{a}</span>
-            <span className="flex items-center gap-2 text-white/45">
+            <span className="text-white/80">{a}</span>
+            <span className="flex items-center gap-2 text-white/65">
               <span className="h-1.5 w-1.5 rounded-full bg-[#ffb454]" />
               {b}
             </span>
@@ -54,32 +54,32 @@ function Cartao({ etapa }: { etapa: number }) {
       </div>
     </>,
     <>
-      <p className="text-[12px] text-white/40">Proposta</p>
+      <p className="text-[12px] text-white/60">Proposta</p>
       <div className="mt-3">
         {["Prazo", "Preço", "Entregas"].map((a) => (
           <div key={a} className={linha}>
-            <span className="text-white/70">{a}</span>
-            <span className="flex items-center gap-2 text-white/45">definido {ok}</span>
+            <span className="text-white/80">{a}</span>
+            <span className="flex items-center gap-2 text-white/65">definido {ok}</span>
           </div>
         ))}
       </div>
     </>,
     <>
-      <p className="text-[12px] text-white/40">Entrega da semana</p>
+      <p className="text-[12px] text-white/60">Entrega da semana</p>
       <p className="mt-3 text-[22px] tracking-[-0.02em] text-ink">Versão navegável no ar</p>
       <div className="mt-5 flex gap-1.5">
         {Array.from({ length: 8 }, (_, i) => (
           <span key={i} className={`h-1.5 flex-1 rounded-full ${i < 5 ? "bg-brand shadow-[0_0_8px_rgba(0,232,122,0.6)]" : "bg-white/10"}`} />
         ))}
       </div>
-      <p className="mt-3 text-[12px] text-white/40">Ajuste de rota com você, toda semana</p>
+      <p className="mt-3 text-[12px] text-white/60">Ajuste de rota com você, toda semana</p>
     </>,
     <>
-      <p className="text-[12px] text-white/40">Encerramento</p>
+      <p className="text-[12px] text-white/60">Encerramento</p>
       <div className="mt-3">
         {["Documentação", "Acessos no seu nome", "60 dias de suporte"].map((a) => (
           <div key={a} className={linha}>
-            <span className="text-white/70">{a}</span>
+            <span className="text-white/80">{a}</span>
             {ok}
           </div>
         ))}
@@ -155,7 +155,7 @@ export default function ComoFunciona() {
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
             Como funciona?
           </h2>
-          <p className="mt-3 text-[15px] text-white/45">As mesmas quatro etapas em todo projeto.</p>
+          <p className="mt-3 text-[15px] text-white/65">As mesmas quatro etapas em todo projeto.</p>
         </Reveal>
 
         <div className="relative mt-12 flex h-[340px] w-full items-center justify-center overflow-hidden rounded-3xl border border-brand/20 bg-[#070b09] shadow-[inset_0_0_80px_rgba(0,232,122,0.06)] md:h-[400px]">
@@ -192,7 +192,7 @@ export default function ComoFunciona() {
                 </span>
                 <div className={`transition-opacity duration-500 ${acesa ? "opacity-100" : "opacity-35"}`}>
                   <h3 className="text-[17px] text-ink">{e.titulo}</h3>
-                  <p className="mt-1.5 text-[14px] leading-relaxed text-white/50">{e.texto}</p>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-white/65">{e.texto}</p>
                 </div>
               </li>
             );

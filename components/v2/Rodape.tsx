@@ -1,6 +1,13 @@
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
-import { Mail, MapPin, Phone } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const LINKS = [
   { label: "Quem somos", href: "#quem-somos" },
@@ -14,7 +21,24 @@ const LINKS = [
 // Rodapé da referência: frase gigante cortada no topo com luz verde por trás,
 // convite no meio e colunas embaixo.
 export default function Rodape() {
-  const link = "text-[14px] text-white/45 transition-colors hover:text-brand";
+  const link = "text-[14px] text-white/65 transition-colors hover:text-brand";
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const faq = document.querySelector("#faq");
+    const letreiro = document.querySelector(".v2-letreiro-rodape");
+    if (!faq || !letreiro) return;
+
+    const trigger = ScrollTrigger.create({
+      trigger: faq,
+      start: "top 80%",
+      once: true,
+      onEnter: () => letreiro.classList.add("is-playing"),
+    });
+
+    return () => trigger.kill();
+  }, []);
 
   return (
     <footer className="relative w-full overflow-hidden bg-surface">
@@ -22,8 +46,8 @@ export default function Rodape() {
         <div className="absolute left-[18%] top-[30%] h-[40vw] w-[40vw] rounded-full bg-[radial-gradient(closest-side,rgba(0,232,122,0.45),transparent)] blur-2xl" />
         <div className="absolute right-[12%] top-[10%] h-[30vw] w-[30vw] rounded-full bg-[radial-gradient(closest-side,rgba(125,255,191,0.3),transparent)] blur-2xl" />
         {/* Duas cópias lado a lado: a animação anda metade e emenda sem salto. */}
-        <div className="absolute bottom-[-0.12em] left-0 flex select-none whitespace-nowrap text-[19vw] font-normal leading-none tracking-[-0.06em] text-ink">
-          <div className="v2-letreiro flex shrink-0">
+        <div className="absolute bottom-[-0.12em] left-[20%] flex select-none whitespace-nowrap text-[19vw] font-normal leading-none tracking-[-0.06em] text-ink">
+          <div className="v2-letreiro v2-letreiro-rodape flex shrink-0">
             <span className="pr-[0.4em]">Vamos conversar</span>
             <span className="pr-[0.4em]">Vamos conversar</span>
           </div>
@@ -33,15 +57,22 @@ export default function Rodape() {
       <div className="border-t border-white/[0.06]">
         {/* <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-4 px-6 py-16 text-center sm:px-10">
           <h2 className="text-[24px] font-normal tracking-[-0.02em] text-ink">Fale direto com quem constrói</h2>
-          <p className="max-w-[46ch] text-[14px] text-white/45">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
+          <p className="max-w-[46ch] text-[14px] text-white/65">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
         </div> */}
 
         <div className="pt-16 mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
           <div className="flex flex-col items-start gap-4">
             <Image src="/logoclov.svg" alt="Clov" width={260} height={104} unoptimized className="h-8 w-auto" />
-            <p className="max-w-[26ch] text-[13px] leading-relaxed text-white/40">
+            <p className="max-w-[26ch] text-[13px] leading-relaxed text-white/60">
               Os sistemas digitais por trás de empresas que estão crescendo.
             </p>
+            <a
+              href={WHATSAPP}
+              className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-[12px] text-white/75 transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+            >
+              Entre em contato
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+            </a>
           </div>
 
           <nav className="flex flex-col gap-3">
@@ -63,7 +94,7 @@ export default function Rodape() {
               <Mail className="h-3.5 w-3.5 text-brand/70" aria-hidden />
               {EMAIL}
             </a>
-            <span className="flex items-center gap-2 text-[14px] text-white/45">
+            <span className="flex items-center gap-2 text-[14px] text-white/65">
               <MapPin className="h-3.5 w-3.5 text-brand/70" aria-hidden />
               São Paulo, Brasil
             </span>
@@ -79,7 +110,7 @@ export default function Rodape() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.nome}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors hover:border-brand/50 hover:text-brand"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:border-brand/50 hover:text-brand"
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
                     <path d={s.path} />

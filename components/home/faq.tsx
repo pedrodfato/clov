@@ -104,17 +104,17 @@ export default function Faq() {
             /* `name` compartilhado deixa o accordion exclusivo sem uma linha de JS. */
             <details key={p.q} name="faq" className="group border-b border-brand-line/25">
               <summary className="flex cursor-pointer list-none items-center gap-6 py-5 text-left transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
-                <span className="flex-1 font-mono text-[15px] leading-snug text-white/70 transition-colors duration-300 group-hover:text-ink group-open:text-ink">
+                <span className="flex-1 font-mono text-[15px] leading-snug text-white/80 transition-colors duration-300 group-hover:text-ink group-open:text-ink">
                   {p.q}
                 </span>
 
-                <span className="relative block h-3 w-3 shrink-0 text-white/40 transition-colors duration-300 group-hover:text-brand group-open:text-brand">
+                <span className="relative block h-3 w-3 shrink-0 text-white/60 transition-colors duration-300 group-hover:text-brand group-open:text-brand">
                   <span className="absolute left-0 top-1/2 h-px w-3 -translate-y-1/2 bg-current" />
                   <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-current transition-transform duration-300 ease-out group-open:scale-y-0" />
                 </span>
               </summary>
 
-              <p className="max-w-[62ch] pb-6 pr-9 font-mono text-[15px] leading-relaxed text-white/45">
+              <p className="max-w-[62ch] pb-6 pr-9 font-mono text-[15px] leading-relaxed text-white/65">
                 {p.a}
               </p>
             </details>

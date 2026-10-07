@@ -39,7 +39,7 @@ export default function Projetos() {
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
             O que já colocamos no ar
           </h2>
-          <p className="mt-3 text-[15px] text-white/45">Clientes reais, todos no ar hoje.</p>
+          <p className="mt-3 text-[15px] text-white/65">Clientes reais, todos no ar hoje.</p>
         </Reveal>
 
         <Reveal targets="a" stagger={0.14} className="mt-16 grid w-full grid-cols-1 gap-8 md:grid-cols-3">
@@ -66,7 +66,7 @@ export default function Projetos() {
               <div className="flex items-baseline justify-between gap-4 px-1">
                 <div>
                   <h3 className="text-[20px] tracking-[-0.02em] text-ink">{p.nome}</h3>
-                  <p className="text-[13px] text-white/40">{p.desc}</p>
+                  <p className="text-[13px] text-white/60">{p.desc}</p>
                 </div>
                 <span className="flex items-center gap-1 text-[12px] text-white/35 transition-colors group-hover:text-brand">
                   {p.dominio}

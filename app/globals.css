@@ -296,6 +296,51 @@ body {
    v2: luz de cima, texto que brilha, letreiros gigantes.
    ============================================================ */
 
+/* Título em destaque: degradê do branco ao verde da marca, recortado nas
+   letras, com brilho em volta. Classe do Tailwind (@utility), então aceita
+   variantes: `titulo-brilho`, `md:titulo-brilho`, etc.
+   Use junto com um tamanho e peso de fonte; ela não define nenhum dos dois.
+   Dispensa text-ink: a cor passa a vir do degradê.
+
+   Não use com <Reveal split>: ele quebra o título em palavras e desloca cada
+   uma, e um pedaço deslocado redesenha o degradê inteiro dentro de si, o que
+   empilha as palavras umas sobre as outras. Use <Reveal> sem split, que anima
+   o título como um bloco só. */
+@keyframes titulo-brilho {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 22px rgba(0, 232, 122, 0.26)) drop-shadow(0 0 56px rgba(0, 232, 122, 0.12));
+  }
+  50% {
+    filter: drop-shadow(0 0 30px rgba(0, 232, 122, 0.42)) drop-shadow(0 0 78px rgba(0, 232, 122, 0.2));
+  }
+}
+
+@utility titulo-brilho {
+  background-image: linear-gradient(
+    118deg,
+    #ffffff 0%,
+    #ffffff 26%,
+    #d6ffec 46%,
+    #5cf0a6 72%,
+    #00e87a 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* drop-shadow, e não text-shadow: ele enxerga o degradê já recortado nas
+     letras. O text-shadow seria pintado por cima do degradê. */
+  filter: drop-shadow(0 0 22px rgba(0, 232, 122, 0.26)) drop-shadow(0 0 56px rgba(0, 232, 122, 0.12));
+  animation: titulo-brilho 7s ease-in-out infinite;
+  will-change: filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo-brilho {
+    animation: none;
+  }
+}
+
 /* Brilho do título: halo verde largo e um fio branco colado na letra. */
 .v2-glow {
   text-shadow:
@@ -309,6 +354,23 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.v2-letreiro-linha {
+  transform: translateX(100vw);
+}
+
+@media (min-width: 1800px) {
+  .v2-letreiro-linha {
+    font-size: 108px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-letreiro-linha {
+    transform: none;
+  }
+
 }
 
 /* Grade fina de fundo, apagada nas bordas. */
@@ -331,6 +393,14 @@ body {
   animation: v2-letreiro 45s linear infinite;
 }
 
+.v2-letreiro-rodape {
+  animation-play-state: paused;
+}
+
+.v2-letreiro-rodape.is-playing {
+  animation-play-state: running;
+}
+
 .v2-letreiro-reverso {
   animation: v2-letreiro 45s linear infinite reverse;
 }
@@ -349,39 +419,109 @@ body {
   animation: v2-flutua 9s ease-in-out infinite;
 }
 
-/* Cubo de arame: seis faces só com borda, girando devagar. */
-@keyframes v2-gira {
-  from {
-    transform: rotateX(-24deg) rotateY(0deg);
-  }
-  to {
-    transform: rotateX(-24deg) rotateY(360deg);
-  }
-}
-
-.v2-cubo {
-  transform-style: preserve-3d;
-  animation: v2-gira 28s linear infinite;
-}
-
-/* Hélice: dois fios de pontos girando em torno do eixo vertical. */
-@keyframes v2-helice {
-  to {
-    transform: rotateY(360deg);
-  }
-}
-
-.v2-helice {
-  transform-style: preserve-3d;
-  animation: v2-helice 14s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .v2-letreiro,
   .v2-letreiro-reverso,
-  .v2-flutua,
-  .v2-cubo,
-  .v2-helice {
+  .v2-flutua {
+    animation: none;
+  }
+}
+
+/* Palavras em cubos 3D empilhados: cada cubo mostra três faces e gira, e o
+   atraso entre eles faz a pilha ondular. Adaptado de um efeito do GSAP.
+   O `perspective` do .v2-die também é o que ancora o .v2-cube absoluto. */
+.v2-pov {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sem medidas fixas: a caixa nasce do próprio texto (ver .v2-medida), então
+   mudar o corpo das palavras ajusta junto o espaço entre as linhas. */
+.v2-die {
+  width: max-content;
+  perspective: 999px;
+}
+
+/* Cópia invisível das palavras, em fluxo, só para dar tamanho ao cubo: as
+   faces são absolutas e não mediriam nada. Empilhadas em grid, a maior manda.
+   A entrelinha de 1.07 é o respiro entre um cubo e o seguinte. */
+.v2-medida {
+  display: grid;
+  visibility: hidden;
+}
+
+.v2-medida > * {
+  grid-area: 1 / 1;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.07;
+}
+
+.v2-cube {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+.v2-face {
+  position: absolute;
+  font-weight: 600;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  backface-visibility: hidden;
+}
+
+/* Aurora: manchas verdes que derivam devagar no fundo de uma seção. Três
+   tempos diferentes para o conjunto nunca repetir o mesmo desenho. O
+   posicionamento fica no elemento de fora; aqui só o movimento, senão um
+   apaga o outro (os dois escrevem transform). */
+@keyframes v2-aurora-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(7%, -5%, 0) scale(1.14);
+  }
+  66% {
+    transform: translate3d(-6%, 6%, 0) scale(0.93);
+  }
+}
+
+@keyframes v2-aurora-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  40% {
+    transform: translate3d(-9%, 7%, 0) scale(0.9);
+  }
+  75% {
+    transform: translate3d(5%, -8%, 0) scale(1.18);
+  }
+}
+
+.v2-aurora-a {
+  animation: v2-aurora-a 26s ease-in-out infinite;
+  will-change: transform;
+}
+
+.v2-aurora-b {
+  animation: v2-aurora-b 34s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-aurora-a,
+  .v2-aurora-b {
     animation: none;
   }
 }

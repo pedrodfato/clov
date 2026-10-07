@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
-import { EMAIL } from "../contato";
+import { WHATSAPP } from "../contato";
 
 // Cena do planeta com estrelas (mesmo vocabulário da v1, que já existia em
 // globals.css) e o trevo aceso, como o "Join us today" da referência.
@@ -30,14 +30,14 @@ export default function Contato() {
           data-r
           className="v2-glow text-balance text-[36px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[54px]"
         >
-          Conte o que precisa. A gente responde em 24h.
+          <span className="titulo-brilho">Conte o que precisa</span> <br /> A gente responde em 24h
         </h2>
-        <p data-r className="max-w-[52ch] text-[15px] leading-relaxed text-white/55">
+        <p data-r className="max-w-[52ch] text-[15px] leading-relaxed text-white/70">
           A primeira conversa é um diagnóstico de 30 minutos, sem custo. A gente olha o seu cenário e diz se é caso para
           nós, inclusive quando a resposta é não.
         </p>
         <div data-r className="mt-2 flex flex-wrap items-center justify-center gap-3">
-          <StartChallengeButton href={`mailto:${EMAIL}?subject=Agendar%20diagn%C3%B3stico`}>
+          <StartChallengeButton href={WHATSAPP}>
             Agendar diagnóstico
           </StartChallengeButton>
         </div>

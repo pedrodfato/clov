@@ -6,7 +6,7 @@ const CAMADAS = [
     categoria: "o que o cliente vê",
     texto:
       "A camada visível: site, loja, as telas por onde o seu cliente passa. Rápidas, responsivas, com uma estrutura que leva o visitante até a ação.",
-    itens: ["Design UI/UX", "Landing Pages", "Performance & SEO"],
+    itens: ["Design UI/UX", "Landing Pages", "E-commerce", "Sites institucionais", "Performance & SEO"],
   },
   {
     titulo: "Systems",
@@ -20,7 +20,7 @@ const CAMADAS = [
     categoria: "o que automatiza e decide",
     texto:
       "Agentes e fluxos que conversam com as ferramentas que você já tem, cortam retrabalho e encurtam o tempo entre a informação chegar e a decisão sair.",
-    itens: ["Automações (n8n, Make)", "Agentes & chatbots", "Fluxos com IA", "Relatórios automáticos"],
+    itens: ["Automações", "Agentes & chatbots", "Fluxos com IA", "Relatórios automáticos"],
   },
 ];
 
@@ -32,9 +32,9 @@ export default function Solucoes() {
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center">
         <Reveal split className="text-center">
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
-            Três camadas do mesmo sistema.
+            Três camadas do mesmo sistema
           </h2>
-          <p className="mx-auto mt-3 max-w-[48ch] text-[15px] text-white/45">
+          <p className="mx-auto mt-3 max-w-[48ch] text-[15px] text-white/65">
             Quase sempre o trabalho começa em uma camada e o problema estava na de baixo.
           </p>
         </Reveal>
@@ -57,10 +57,10 @@ export default function Solucoes() {
               <div className="relative mt-auto flex flex-col gap-4">
                 <span className="text-[12px] text-brand">{c.categoria}</span>
                 <h3 className="text-[32px] font-normal leading-none tracking-[-0.03em] text-ink">{c.titulo}</h3>
-                <p className="text-[14px] leading-relaxed text-white/50">{c.texto}</p>
+                <p className="text-[14px] leading-relaxed text-white/65">{c.texto}</p>
                 <ul className="mt-2 flex flex-wrap gap-2">
                   {c.itens.map((item) => (
-                    <li key={item} className="rounded-full border border-white/10 px-3 py-1 text-[12px] text-white/60">
+                    <li key={item} className="rounded-full border border-white/10 px-3 py-1 text-[12px] text-white/72">
                       {item}
                     </li>
                   ))}

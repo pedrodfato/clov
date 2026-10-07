@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import timelineDeCobertura from "../coverTransition";
 import useTelaGrande from "../useTelaGrande";
-import { EMAIL, WHATSAPP } from "../contato";
+import { WHATSAPP } from "../contato";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -112,11 +112,11 @@ export default function Contact() {
           <h2 className="text-balance text-[34px] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[52px] lg:text-[60px]">
             Conte o que precisa. A gente responde em 24h.
           </h2>
-          <p className="max-w-[52ch] font-mono text-[15px] leading-relaxed text-white/55">
+          <p className="max-w-[52ch] font-mono text-[15px] leading-relaxed text-white/70">
             A primeira conversa é um diagnóstico de 30 minutos, sem custo. A gente olha o seu cenário e diz se é caso para nós, inclusive quando a resposta é não.
           </p>
           <div className="cta-row mt-2 flex flex-wrap items-center justify-center gap-3">
-            <StartChallengeButton href={`mailto:${EMAIL}?subject=Agendar%20diagn%C3%B3stico`}>
+            <StartChallengeButton href={WHATSAPP}>
               Agendar diagnóstico
             </StartChallengeButton>
             <FreeTrialButton href={WHATSAPP}>WhatsApp</FreeTrialButton>

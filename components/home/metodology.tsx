@@ -42,7 +42,7 @@ export default function Metodology() {
               >
                 <span className="font-mono text-xs text-brand">{s.number}</span>
                 <h3 className="text-xl font-semibold tracking-tight text-ink">{s.title}</h3>
-                <p className="max-w-[34ch] font-mono text-[15px] leading-relaxed text-white/50">{s.desc}</p>
+                <p className="max-w-[34ch] font-mono text-[15px] leading-relaxed text-white/65">{s.desc}</p>
               </li>
             ))}
           </ol>

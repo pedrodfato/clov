@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import StartChallengeButton from "./StartChallengeButton"
+import { WHATSAPP } from "./contato"
 
 const NAV_LINKS = [
     { label: "Início", href: "#" },
@@ -95,7 +96,7 @@ export default function Header() {
                                     className={`rounded-full px-4 py-1.5 text-[13px] transition-colors ${
                                         aceso
                                             ? "bg-white/[0.09] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-                                            : "text-white/55 hover:text-white"
+                                            : "text-white/70 hover:text-white"
                                     }`}
                                 >
                                     {aceso && <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-brand align-middle shadow-[0_0_8px_rgba(0,232,122,0.9)]" />}
@@ -106,7 +107,7 @@ export default function Header() {
                     </div>
                 </div>
 
-                <StartChallengeButton href="#contato" className="text-[11px]! sm:text-[12px]!">
+                <StartChallengeButton href={WHATSAPP} className="text-[11px]! sm:text-[12px]!">
                     Fale conosco
                 </StartChallengeButton>
             </div>

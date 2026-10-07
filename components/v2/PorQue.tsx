@@ -48,7 +48,7 @@ export default function PorQue() {
               </div>
               <div className="relative mt-auto">
                 <h3 className="text-[19px] tracking-[-0.02em] text-ink">{titulo}</h3>
-                <p className="mt-2 max-w-[40ch] text-[14px] leading-relaxed text-white/50">{texto}</p>
+                <p className="mt-2 max-w-[40ch] text-[14px] leading-relaxed text-white/65">{texto}</p>
               </div>
             </article>
           ))}

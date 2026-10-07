@@ -6,7 +6,7 @@ import { Check, ArrowDown } from "lucide-react";
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
 import Etiqueta from "./Etiqueta";
-import { SOCIAIS } from "../contato";
+import { SOCIAIS, WHATSAPP } from "../contato";
 
 // Símbolos de código flutuando ao fundo, no lugar das contas da referência.
 // `p` é a profundidade: quanto maior, mais anda com o mouse e mais nítido.
@@ -90,18 +90,21 @@ export default function Hero() {
           <Etiqueta>Digital systems studio</Etiqueta>
         </Reveal>
 
-        <Reveal split delay={2.3}>
-          <h1 className="v2-glow mt-7 max-w-[13ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] text-ink sm:text-[68px] lg:text-[88px]">
+        {/* Sem `split`: com titulo-brilho o degradê precisa de uma camada só.
+              Dividido em palavras, cada pedaço deslocado redesenha o degradê
+              dentro de si e elas empilham enquanto a animação roda. */}
+          <Reveal delay={2.3}>
+          <h1 className="titulo-brilho mt-7 max-w-[13ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[68px] lg:text-[88px]">
             Tecnologia que trabalha por você
           </h1>
         </Reveal>
 
         <Reveal delay={2.8} stagger={0.12} className="flex flex-col items-center">
-          <p className="mt-7 max-w-[46ch] text-base leading-relaxed text-white/55 sm:text-lg">
+          <p className="mt-7 max-w-[46ch] text-base leading-relaxed text-white/70 sm:text-lg">
             Criamos seu site, o sistema que sua empresa precisa e a automação que tira o trabalho repetitivo da sua mão.
           </p>
 
-          <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-white/45">
+          <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-white/65">
             {PROMESSAS.map((t) => (
               <li key={t} className="flex items-center gap-1.5">
                 <Check className="h-3.5 w-3.5 text-brand" strokeWidth={2.5} aria-hidden />
@@ -111,13 +114,13 @@ export default function Hero() {
           </ul>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <StartChallengeButton href="#contato">Quero iniciar um projeto</StartChallengeButton>
+            <StartChallengeButton href={WHATSAPP}>Quero iniciar um projeto</StartChallengeButton>
           </div>
         </Reveal>
       </div>
 
       {/* Rodapé do hero: redes à esquerda, convite para rolar à direita. */}
-      <div className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[12px] text-white/40 md:flex">
+      <div className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[12px] text-white/60 md:flex">
         <div className="flex items-center gap-3">
           <span>Siga</span>
           {SOCIAIS.map((s) => (
@@ -127,7 +130,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={s.nome}
-              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors hover:border-brand/50 hover:text-brand"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:border-brand/50 hover:text-brand"
             >
               <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
                 <path d={s.path} />
@@ -135,7 +138,7 @@ export default function Hero() {
             </a>
           ))}
         </div>
-        <a href="#numeros" className="flex items-center gap-2 transition-colors hover:text-white/70">
+        <a href="#numeros" className="flex items-center gap-2 transition-colors hover:text-white/80">
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" aria-hidden />
         </a>

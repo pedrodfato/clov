@@ -96,7 +96,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
           <ArrowUpRight className="h-3 w-3" />
         </span>
       </div>
-      <p className="-mt-2 font-mono text-[13px] text-white/40">{project.desc}</p>
+      <p className="-mt-2 font-mono text-[13px] text-white/60">{project.desc}</p>
     </a>
   );
 }
@@ -114,7 +114,7 @@ export default function Projects() {
               </h2>
             </Reveal>
           </div>
-          <p className="max-w-[40ch] font-mono text-[15px] leading-relaxed text-white/45 md:pb-2">
+          <p className="max-w-[40ch] font-mono text-[15px] leading-relaxed text-white/65 md:pb-2">
             Clientes reais, todos no ar hoje.
             {/* A dica só aparece em aparelho que tem mouse pra passar. */}
             <span className="hidden [@media(hover:hover)]:inline">

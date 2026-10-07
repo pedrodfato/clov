@@ -42,7 +42,7 @@ export default function Footer() {
             className="h-9 w-auto"
           />
 
-          <p className="max-w-[26ch] font-mono text-[13px] leading-relaxed text-white/40">
+          <p className="max-w-[26ch] font-mono text-[13px] leading-relaxed text-white/60">
             Software sob medida para empresas que precisam de resultado, não de promessa.
           </p>
 
@@ -54,7 +54,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.nome}
-                className="text-white/40 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+                className="text-white/60 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
               >
                 <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden>
                   <path d={s.path} />
@@ -72,7 +72,7 @@ export default function Footer() {
             <a
               key={l.href}
               href={l.href}
-              className="font-mono text-[13px] text-white/40 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+              className="font-mono text-[13px] text-white/60 transition-colors hover:text-brand focus-visible:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
             >
               {l.label}
             </a>
@@ -88,7 +88,7 @@ export default function Footer() {
                 {label}
               </>
             );
-            const classe = "flex items-center gap-2.5 font-mono text-[13px] text-white/40";
+            const classe = "flex items-center gap-2.5 font-mono text-[13px] text-white/60";
 
             return href ? (
               <a

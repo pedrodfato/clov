@@ -158,7 +158,7 @@ export default function Reviews() {
 
         <div className="mt-6 flex flex-col items-center gap-1">
           <p className="font-mono text-sm text-white/85">{current.author}</p>
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-white/40">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-white/60">
             {current.context}
           </p>
         </div>
@@ -168,7 +168,7 @@ export default function Reviews() {
             type="button"
             onClick={() => go(-1)}
             aria-label="Depoimento anterior"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-line/40 font-mono text-lg text-white/50 transition-colors hover:border-brand/60 hover:text-brand"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-line/40 font-mono text-lg text-white/65 transition-colors hover:border-brand/60 hover:text-brand"
           >
             &lsaquo;
           </button>
@@ -192,7 +192,7 @@ export default function Reviews() {
             type="button"
             onClick={() => go(1)}
             aria-label="Próximo depoimento"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-line/40 font-mono text-lg text-white/50 transition-colors hover:border-brand/60 hover:text-brand"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-line/40 font-mono text-lg text-white/65 transition-colors hover:border-brand/60 hover:text-brand"
           >
             &rsaquo;
           </button>

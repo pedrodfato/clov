@@ -48,15 +48,15 @@ export default function Faq() {
               className="accordion-row group rounded-2xl border border-white/[0.07] bg-white/[0.02] transition-colors duration-300 open:border-brand/30 open:bg-[#0b130f]"
             >
               <summary className="flex cursor-pointer list-none items-center gap-6 px-6 py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
-                <span className="flex-1 text-[15px] text-white/75 transition-colors group-hover:text-ink group-open:text-ink">
+                <span className="flex-1 text-[15px] text-white/85 transition-colors group-hover:text-ink group-open:text-ink">
                   {p.q}
                 </span>
                 <Plus
-                  className="h-4 w-4 shrink-0 text-white/40 transition-[transform,color] duration-300 group-open:rotate-45 group-open:text-brand"
+                  className="h-4 w-4 shrink-0 text-white/60 transition-[transform,color] duration-300 group-open:rotate-45 group-open:text-brand"
                   aria-hidden
                 />
               </summary>
-              <p className="max-w-[62ch] px-6 pb-6 text-[14px] leading-relaxed text-white/50">{p.a}</p>
+              <p className="max-w-[62ch] px-6 pb-6 text-[14px] leading-relaxed text-white/65">{p.a}</p>
             </details>
           ))}
         </div>

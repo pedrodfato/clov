@@ -22,7 +22,7 @@ const CORPO =
   `flex h-[64px] items-end font-mono text-[56px] font-semibold leading-none tracking-tight tabular-nums ` +
   `sm:h-[112px] sm:text-[88px] lg:text-[112px] ${PONTOS}`;
 const MENOR = "text-[34px] sm:text-[58px] lg:text-[74px]";
-const RODAPE = "flex items-start gap-2.5 max-w-[30ch] font-mono text-[13px] leading-relaxed text-white/45";
+const RODAPE = "flex items-start gap-2.5 max-w-[30ch] font-mono text-[13px] leading-relaxed text-white/65";
 const MARCA = "mt-[7px] h-[5px] w-[5px] shrink-0 bg-brand";
 
 // De quanto em quanto tempo a contagem anda, e quantas linhas por vez.
@@ -102,7 +102,7 @@ export default function Numeros() {
           <h2 className="max-w-[20ch] text-[28px] font-semibold leading-[1.15] tracking-tight text-ink sm:text-[38px]">
             A Clov é nova. A experiência por trás não.
           </h2>
-          <p className="font-mono text-[15px] leading-relaxed text-white/45">
+          <p className="font-mono text-[15px] leading-relaxed text-white/65">
             Os números abaixo são do fundador e vêm de antes da empresa existir. A
             Clov é o formato novo de um trabalho que já vinha sendo feito.
           </p>
