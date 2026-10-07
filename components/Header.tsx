@@ -6,8 +6,9 @@ import Link from "next/link"
 import StartChallengeButton from "./StartChallengeButton"
 
 const NAV_LINKS = [
-    { label: "Metodologia", href: "#metodologia" },
+    { label: "Como funciona", href: "#metodologia" },
     { label: "Soluções", href: "#solucoes" },
+    { label: "Projetos", href: "#projetos" },
     { label: "Contato", href: "#contato" },
 ]
 

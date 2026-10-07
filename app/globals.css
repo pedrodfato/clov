@@ -291,3 +291,107 @@ body {
   }
 }
 
+
+/* ============================================================
+   v2: luz de cima, texto que brilha, letreiros gigantes.
+   ============================================================ */
+
+/* Brilho do título: halo verde largo e um fio branco colado na letra. */
+.v2-glow {
+  text-shadow:
+    0 0 28px rgba(0, 232, 122, 0.35),
+    0 0 2px rgba(255, 255, 255, 0.45);
+}
+
+/* Letreiro em degradê da marca, do verde cheio ao quase branco. */
+.v2-degrade {
+  background: linear-gradient(90deg, #00e87a 0%, #7dffbf 45%, #e9fff4 70%, rgba(233, 255, 244, 0.35) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Grade fina de fundo, apagada nas bordas. */
+.v2-grade {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: radial-gradient(70% 60% at 50% 45%, #000 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 45%, #000 30%, transparent 85%);
+}
+
+/* Holofote: cone de luz verde caindo do topo. */
+.v2-holofote {
+  background:
+    radial-gradient(30% 22% at 50% 0%, rgba(150, 255, 200, 0.45), transparent 70%),
+    conic-gradient(from 180deg at 50% 0%, transparent 158deg, rgba(0, 232, 122, 0.32) 174deg, rgba(190, 255, 220, 0.5) 180deg, rgba(0, 232, 122, 0.32) 186deg, transparent 202deg);
+  mask-image: linear-gradient(#000, transparent 85%);
+  -webkit-mask-image: linear-gradient(#000, transparent 85%);
+  filter: blur(18px);
+}
+
+@keyframes v2-letreiro {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.v2-letreiro {
+  animation: v2-letreiro 45s linear infinite;
+}
+
+.v2-letreiro-reverso {
+  animation: v2-letreiro 45s linear infinite reverse;
+}
+
+@keyframes v2-flutua {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.v2-flutua {
+  animation: v2-flutua 9s ease-in-out infinite;
+}
+
+/* Cubo de arame: seis faces só com borda, girando devagar. */
+@keyframes v2-gira {
+  from {
+    transform: rotateX(-24deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-24deg) rotateY(360deg);
+  }
+}
+
+.v2-cubo {
+  transform-style: preserve-3d;
+  animation: v2-gira 28s linear infinite;
+}
+
+/* Hélice: dois fios de pontos girando em torno do eixo vertical. */
+@keyframes v2-helice {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.v2-helice {
+  transform-style: preserve-3d;
+  animation: v2-helice 14s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-letreiro,
+  .v2-letreiro-reverso,
+  .v2-flutua,
+  .v2-cubo,
+  .v2-helice {
+    animation: none;
+  }
+}

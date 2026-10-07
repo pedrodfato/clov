@@ -5,9 +5,9 @@ import Reveal from "../Reveal";
 
 // TROQUE PELOS VALORES REAIS antes de publicar. O contador de linhas sobe
 // sozinho a partir daqui, então a base precisa ser um número que você assine.
-const ANOS = 5;
-const PROJETOS = 200;
-const LINHAS_BASE = 1_284_390;
+export const ANOS = 5;
+export const PROJETOS = 200;
+export const LINHAS_BASE = 1_284_390;
 
 // Máscara de pontos sobre o texto: o glifo é recortado numa matriz, que é o
 // mesmo vocabulário do halftone das mãos e dos cards de projeto. Evita trazer
@@ -29,7 +29,7 @@ const MARCA = "mt-[7px] h-[5px] w-[5px] shrink-0 bg-brand";
 const TICK_MS = 1600;
 const LINHAS_POR_TICK = [1, 4] as const;
 
-function useContador(alvo: number, ref: React.RefObject<HTMLSpanElement | null>, continua = false) {
+export function useContador(alvo: number, ref: React.RefObject<HTMLSpanElement | null>, continua = false) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
