@@ -36,9 +36,9 @@ const silkscreen = Silkscreen({
 })
 
 export const metadata: Metadata = {
-  title: "Clov | Sistemas digitais para empresas em crescimento",
+  title: "Clov | Site, sistema próprio e IA para o seu negócio",
   description:
-    "A Clov projeta e constrói a camada digital de empresas que já vendem: site, integrações e automação na mesma arquitetura.",
+    "A Clov cria o site, o sistema próprio e a automação com IA do seu negócio. Time pequeno, preço fechado, entrega toda semana.",
   icons: {
     icon: "/faviconclov.svg",
   },

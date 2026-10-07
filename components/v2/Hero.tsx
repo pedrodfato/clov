@@ -98,7 +98,7 @@ export default function Hero() {
 
         <Reveal delay={2.8} stagger={0.12} className="flex flex-col items-center">
           <p className="mt-7 max-w-[46ch] text-base leading-relaxed text-white/55 sm:text-lg">
-            Site, integrações e automação na mesma arquitetura. Time pequeno, contato direto com quem constrói.
+            Criamos seu site, o sistema que sua empresa precisa e a automação que tira o trabalho repetitivo da sua mão.
           </p>
 
           <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-white/45">

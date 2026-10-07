@@ -56,11 +56,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       if (!hash) return;
       const alvo = alvoDe(hash);
       if (alvo === null) return;
+      // stopPropagation + fase de captura: o <Link> do Next trata o clique no
+      // próprio <a> e rolaria por conta dele. Precisamos chegar antes.
       e.preventDefault();
+      e.stopPropagation();
       // Sem gravar o #secao na URL: recarregar volta ao topo, como antes.
       smoother.scrollTo(alvo, true, "top top");
     };
-    document.addEventListener("click", irPara);
+    document.addEventListener("click", irPara, true);
 
     // Página aberta já com #secao na URL (link de fora). O navegador salta
     // antes do React, mas depois os pins entram e empurram as seções de baixo,
@@ -89,7 +92,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       clearTimeout(pendente);
       observer.disconnect();
       window.removeEventListener("load", refresh);
-      document.removeEventListener("click", irPara);
+      document.removeEventListener("click", irPara, true);
       pararHash();
       smoother?.kill();
     };
