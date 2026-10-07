@@ -21,12 +21,32 @@ gsap.registerPlugin(ScrollTrigger);
 const DESLOCA_X = 0.2; // fração da largura da tela
 const DESLOCA_Y = 0.25; // fração da altura da tela
 
+// Entrada das mãos, em segundos depois do início da intro (3s): saem das
+// laterais quando o trevo já abriu a tela, junto com o título. A direita vem
+// com atraso para não espelhar a outra.
+const ENTRADA_ESQUERDA = 2.3;
+const ENTRADA_DIREITA = 2.5;
+const ENTRADA_DURACAO = 2;
+
+// A intro começa na hidratação, não no carregamento da página, então o
+// relógio certo é o da própria animação CSS. Se ela já acabou (ou não rodou),
+// as mãos entram na hora.
+function inicioDaIntro() {
+  const intro = document
+    .getAnimations()
+    .find((a) => a instanceof CSSAnimation && a.animationName === "intro-clover");
+  return intro?.startTime != null ? Number(intro.startTime) / 1000 : -Infinity;
+}
+
 export default function HeroHands() {
   const esquerda = useRef<HTMLDivElement>(null);
   const direita = useRef<HTMLDivElement>(null);
-  const [ocioso, setOcioso] = useState(false);
+  // Início da intro, lido quando as mãos montam; null até lá.
+  const [intro, setIntro] = useState<number | null>(null);
   const permitido = useTelaGrande();
-  const pronto = ocioso && permitido;
+  const pronto = intro !== null && permitido;
+  // Só é lido quando `pronto`, que nunca é true no servidor.
+  const semMovimento = pronto && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useEffect(() => {
     const janela = window as Window & {
@@ -34,10 +54,10 @@ export default function HeroHands() {
       cancelIdleCallback?: (id: number) => void;
     };
     if (janela.requestIdleCallback) {
-      const id = janela.requestIdleCallback(() => setOcioso(true), { timeout: 2500 });
+      const id = janela.requestIdleCallback(() => setIntro(inicioDaIntro()), { timeout: 2500 });
       return () => janela.cancelIdleCallback?.(id);
     }
-    const id = setTimeout(() => setOcioso(true), 1200);
+    const id = setTimeout(() => setIntro(inicioDaIntro()), 1200);
     return () => clearTimeout(id);
   }, []);
 
@@ -75,6 +95,7 @@ export default function HeroHands() {
               src="/bracorobo.webp"
               className="h-full w-full"
               overrides={{ uBrightness: 0.01, uContrast: 0.6 }}
+              reveal={semMovimento ? undefined : { from: "left", at: intro + ENTRADA_ESQUERDA, duration: ENTRADA_DURACAO }}
             />
           )}
         </div>
@@ -82,7 +103,13 @@ export default function HeroHands() {
 
       <div className="absolute right-[-14%] top-[60%] aspect-[1671/941] w-[76%] -translate-y-1/2 opacity-[0.22] [&_canvas]:rotate-[5deg] sm:right-[-5%] sm:w-[54%] sm:opacity-[0.4] lg:w-[46%]">
         <div ref={direita} className="h-full w-full">
-          {pronto && <ShaderImage src="/maohumano.webp" className="h-full w-full" />}
+          {pronto && (
+            <ShaderImage
+              src="/maohumano.webp"
+              className="h-full w-full"
+              reveal={semMovimento ? undefined : { from: "right", at: intro + ENTRADA_DIREITA, duration: ENTRADA_DURACAO }}
+            />
+          )}
         </div>
       </div>
     </>

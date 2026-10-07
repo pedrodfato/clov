@@ -12,6 +12,8 @@ export const imageShader = {
         uBrightness: { value: 0 },
         uEffectStrength: { value: 1 },
         uInvert: { value: 0 },
+        uReveal: { value: 1 },
+        uRevealFrom: { value: 0 },
         uColor: { value: new THREE.Color("#00ff66") },
         uTime: { value: 0 },
     },
@@ -37,6 +39,8 @@ export const imageShader = {
         uniform float uBrightness;
         uniform float uEffectStrength;
         uniform float uInvert;
+        uniform float uReveal;
+        uniform float uRevealFrom;
         uniform vec3 uColor;
         uniform float uTime;
 
@@ -55,6 +59,21 @@ export const imageShader = {
             }
 
             return (uv - 0.5) * scale + 0.5;
+        }
+
+        // Entrada esticada: a imagem nasce na borda de origem (uRevealFrom 0 =
+        // esquerda, 1 = direita) e a frente avança até uReveal. A parte já
+        // revelada da textura cresce mais devagar (p²) que a área na tela (p),
+        // então a ponta chega primeiro, esticada, e relaxa até a proporção real.
+        // Em uReveal = 1 o mapeamento é a identidade.
+        vec2 revealUv(vec2 uv, out float inside) {
+            float p = clamp(uReveal, 0.0001, 1.0);
+            float s = mix(uv.x, 1.0 - uv.x, uRevealFrom);
+            inside = 1.0 - smoothstep(p - 0.03, p, s) * step(p, 0.9999);
+            float lag = p * p;
+            float t = 1.0 - lag + (s / p) * lag;
+            uv.x = mix(t, 1.0 - t, uRevealFrom);
+            return uv;
         }
 
         float lumaOf(vec3 color) {
@@ -92,8 +111,12 @@ export const imageShader = {
             // Pixelize: sample the color at the center of each grid cell.
             vec2 cell = floor(pixel / grid);
             vec2 cellCenter = (cell + 0.5) * grid;
-            vec4 pixelated = texture2D(uTexture, coverUv(cellCenter / uResolution));
-            vec4 original = texture2D(uTexture, coverUv(vUv));
+            // A máscara vem do centro da célula: os pontos da frente aparecem
+            // inteiros, em vez de cortados ao meio.
+            float inside;
+            float unused;
+            vec4 pixelated = texture2D(uTexture, coverUv(revealUv(cellCenter / uResolution, inside)));
+            vec4 original = texture2D(uTexture, coverUv(revealUv(vUv, unused)));
 
             float lum = lumaOf(pixelated.rgb);
             // Site de fundo claro satura tudo no raio máximo e vira um bloco
@@ -121,7 +144,7 @@ export const imageShader = {
             vec3 color = mix(original.rgb, effectColor, uEffectStrength);
             float alpha = mix(original.a, effectAlpha, uEffectStrength);
 
-            gl_FragColor = vec4(color, alpha);
+            gl_FragColor = vec4(color * inside, alpha * inside);
         }
     `,
 }

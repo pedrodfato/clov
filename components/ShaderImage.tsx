@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js"
@@ -21,14 +21,21 @@ const settings = {
 // Sobrescreve os settings acima para uma imagem específica.
 type Overrides = Partial<Omit<typeof settings, "uColor">> & { uColor?: string }
 
+// Entrada esticada (ver revealUv no shader). `at` é em segundos desde o
+// carregamento da página, para sincronizar com a intro; se a textura chegar
+// depois disso, a animação começa quando ela chegar, sem pular etapas.
+type Reveal = { from: "left" | "right"; at: number; duration: number }
+
 type Props = {
     src: string
     className?: string
     overrides?: Overrides
+    reveal?: Reveal
 }
 
-function ImageEffect({ src, overrides }: { src: string; overrides?: Overrides }) {
+function ImageEffect({ src, overrides, reveal }: { src: string; overrides?: Overrides; reveal?: Reveal }) {
     const { gl, size } = useThree()
+    const inicio = useRef<number | null>(null)
 
     const texture = useMemo(() => new THREE.TextureLoader().load(src), [src])
 
@@ -92,13 +99,22 @@ function ImageEffect({ src, overrides }: { src: string; overrides?: Overrides })
 
     useFrame((_, delta) => {
         pass.uniforms.uTime.value += delta
+
+        if (reveal) {
+            const agora = performance.now() / 1000
+            if (inicio.current === null && texture.image) inicio.current = Math.max(agora, reveal.at)
+            const t = inicio.current === null ? 0 : Math.min(Math.max((agora - inicio.current) / reveal.duration, 0), 1)
+            pass.uniforms.uRevealFrom.value = reveal.from === "right" ? 1 : 0
+            pass.uniforms.uReveal.value = 1 - Math.pow(1 - t, 3)
+        }
+
         composer.render()
     }, 1)
 
     return null
 }
 
-export default function ShaderImage({ src, className = "", overrides }: Props) {
+export default function ShaderImage({ src, className = "", overrides, reveal }: Props) {
     return (
         <Canvas
             className={className}
@@ -110,7 +126,7 @@ export default function ShaderImage({ src, className = "", overrides }: Props) {
             dpr={1}
             onCreated={({ gl }) => gl.setClearAlpha(0)}
         >
-            <ImageEffect src={src} overrides={overrides} />
+            <ImageEffect src={src} overrides={overrides} reveal={reveal} />
         </Canvas>
     )
 }
