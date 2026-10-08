@@ -142,7 +142,7 @@ export default function HeroToque({ children }: { children: React.ReactNode }) {
   return (
     <>
     {/* z-20: durante o pin a seção seguinte sobe por baixo do hero, não por cima. */}
-    <div ref={palcoRef} className="relative z-20 flex min-h-[100dvh] flex-col">
+    <div ref={palcoRef} className="relative z-20 flex min-h-[100svh] flex-col">
       {children}
       {/* A luz fica fixa na tela enquanto a próxima seção sobe. Dentro do
           ScrollSmoother o conteúdo é transformado e `fixed` passaria a valer

@@ -80,7 +80,7 @@ export default function Contact() {
       {/* Cena espacial: estrelas, cometas e o planeta com atmosfera verde no rodapé. */}
       <div
         ref={sceneRef}
-        className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-24 text-center sm:px-10"
+        className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-24 text-center sm:px-10"
       >
         <div data-scene-bg className="pointer-events-none absolute inset-0">
           {/* Brilho ambiente no topo. */}

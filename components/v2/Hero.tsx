@@ -61,24 +61,22 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-28 text-center">
+    <section className="relative flex min-h-[100svh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-28 text-center">
       {/* Mesmo fundo do Reviews da home 1: feixes de luz + foco verde. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        {telaGrande && (
-          <SideRays
-            speed={0.3}
-            rayColor1="#00e87a"
-            rayColor2="#00ed9e"
-            intensity={1.2}
-            spread={0.45}
-            origin={[0.5, 1.4]}
-            tilt={0}
-            saturation={1.5}
-            blend={0.75}
-            falloff={0.95}
-            opacity={0.5}
-          />
-        )}
+        <SideRays
+          speed={0.3}
+          rayColor1="#00e87a"
+          rayColor2="#00ed9e"
+          intensity={1.2}
+          spread={0.45}
+          origin={[0.5, 1.4]}
+          tilt={0}
+          saturation={1.5}
+          blend={0.75}
+          falloff={0.95}
+          opacity={telaGrande ? 0.5 : 0.2}
+        />
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
       </div>
 

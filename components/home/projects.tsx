@@ -103,7 +103,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
 
 export default function Projects() {
   return (
-    <section id="projetos" className="flex min-h-[100dvh] w-full flex-col justify-center px-6 sm:px-10 lg:px-24 py-24 md:py-32">
+    <section id="projetos" className="flex min-h-[100svh] w-full flex-col justify-center px-6 sm:px-10 lg:px-24 py-24 md:py-32">
       <div data-projetos-content className="mx-auto flex w-full max-w-[1200px] flex-col gap-14 md:gap-16">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-16">
           <div className="flex flex-col gap-4">

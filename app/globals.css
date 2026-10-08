@@ -279,6 +279,19 @@ body {
   }
 }
 
+/* ponytail: teste da hipótese do tremor no celular. Se confirmar, deixar
+   assim; se não, reverter este bloco. */
+@media (max-width: 767px) {
+  .animate-twinkle,
+  .animate-twinkle-slow {
+    animation: none;
+    opacity: 0.7;
+  }
+  .comet {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-twinkle,
   .animate-twinkle-slow {

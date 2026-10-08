@@ -92,7 +92,7 @@ export default function Faq() {
     <section
       ref={secaoRef}
       id="faq"
-      className="relative z-10 flex min-h-[100dvh] w-full flex-col justify-center bg-surface px-6 sm:px-10 lg:px-24 py-24 md:py-32"
+      className="relative z-10 flex min-h-[100svh] w-full flex-col justify-center bg-surface px-6 sm:px-10 lg:px-24 py-24 md:py-32"
     >
       <div className="mx-auto flex w-full max-w-[820px] flex-col items-center gap-12">
         <h2 className="max-w-[22ch] text-balance text-center text-[26px] font-semibold leading-[1.2] tracking-tight text-ink sm:text-[34px]">

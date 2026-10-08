@@ -148,7 +148,7 @@ export default function ComoFunciona() {
     <section
       ref={secaoRef}
       id="metodologia"
-      className="relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden bg-surface px-6 py-24 sm:px-10"
+      className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden bg-surface px-6 py-24 sm:px-10"
     >
       <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center">
         <Reveal split className="text-center">
@@ -177,7 +177,7 @@ export default function ComoFunciona() {
         </div>
 
         {/* Linha de etapas: a barra de cima enche com o scroll. */}
-        <ol className="mt-8 grid w-full grid-cols-1 gap-8 md:grid-cols-4 md:gap-6">
+        <ol className="mt-8 grid w-full grid-cols-1 gap-16 md:grid-cols-4 md:gap-6">
           {ETAPAS.map((e, i) => {
             const enche = Math.min(1, Math.max(0, progresso * ETAPAS.length - i));
             const acesa = !telaGrande || i === ativa;

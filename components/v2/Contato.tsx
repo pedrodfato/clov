@@ -9,7 +9,7 @@ export default function Contato() {
   return (
     <section
       id="contato"
-      className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-40 text-center sm:px-10"
+      className="relative flex min-h-[100svh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-40 text-center sm:px-10"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="starfield-a animate-twinkle absolute inset-0" />

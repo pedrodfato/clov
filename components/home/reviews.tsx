@@ -88,7 +88,7 @@ export default function Reviews() {
     <section
       ref={sectionRef}
       id="depoimentos"
-      className="relative z-10 flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 py-24 sm:px-10 md:py-32 lg:px-24"
+      className="relative z-10 flex min-h-[100svh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 py-24 sm:px-10 md:py-32 lg:px-24"
     >
       <div data-reviews-bg>
       {/* Feixes de luz saindo do canto superior direito, atrás da citação. */}
