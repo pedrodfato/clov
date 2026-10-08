@@ -37,7 +37,8 @@ export default function Letreiro({ partes, linhas }: Props) {
           scrollTrigger: {
             trigger: secao,
             start: "top 95%",
-            end: "top 15%",
+            // A segunda linha encosta na esquerda com a seção centrada na tela.
+            end: "center center",
             scrub: 1,
             invalidateOnRefresh: true,
           },
@@ -91,7 +92,7 @@ export default function Letreiro({ partes, linhas }: Props) {
           {linhas.map((linha) => (
             <div
               key={linha}
-              className="v2-degrade v2-letreiro-linha text-left text-[11vw] font-normal leading-[1.05] tracking-[-0.04em] md:w-max md:whitespace-nowrap md:text-[clamp(4rem,10vw,12rem)] md:leading-[0.92] md:tracking-[-0.05em]"
+              className="v2-degrade v2-letreiro-linha text-left text-[11vw] font-normal leading-[1.05] tracking-[-0.04em] md:w-max md:whitespace-nowrap md:text-[13.5vw] md:leading-[0.92] md:tracking-[-0.05em]"
             >
               {linha}
             </div>
