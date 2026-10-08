@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import useTelaGrande from "../useTelaGrande";
 
 // As três etapas, cada uma numa face do cubo. O corpo é por palavra: as três
 // têm comprimentos bem diferentes. A caixa do cubo se mede pelo maior, então
@@ -14,7 +15,10 @@ const PALAVRAS = [
 
 // Quantos cubos empilhados e quanto a pilha inclina, em graus. O giro entra
 // na conta da escala: inclinada, a pilha ocupa muito mais largura.
-const N = 12;
+// A pilha cheia só no desktop: na coluna estreita do celular ela vira um
+// borrão de texto. O mesmo corte de 1024px que o resto do site usa.
+const N_DESKTOP = 19;
+const N_CELULAR = 12;
 const GIRO = 9;
 
 // Giro de cada face e seu brilho quando está nessa posição: a da frente quase
@@ -27,11 +31,12 @@ const ROTS = [
 ];
 
 // Verde da marca variando pouco ao longo da pilha, do mais quente ao mais frio.
-const cor = (i: number, luz: number) => `hsl(${(i / N) * 28 + 142}, 88%, ${100 * luz}%)`;
+const cor = (i: number, n: number, luz: number) => `hsl(${(i / n) * 28 + 142}, 88%, ${100 * luz}%)`;
 
 export default function PalavrasGirando() {
   const povRef = useRef<HTMLDivElement>(null);
   const trayRef = useRef<HTMLDivElement>(null);
+  const n = useTelaGrande() ? N_DESKTOP : N_CELULAR;
 
   useEffect(() => {
     const pov = povRef.current;
@@ -58,7 +63,7 @@ export default function PalavrasGirando() {
         });
 
         if (parado) {
-          gsap.set(faces, { color: (j: number) => cor(i, ROTS[(j + 1) % 4].luz) });
+          gsap.set(faces, { color: (j: number) => cor(i, n, ROTS[(j + 1) % 4].luz) });
           return;
         }
 
@@ -69,12 +74,12 @@ export default function PalavrasGirando() {
           .fromTo(cubo, { rotateY: -90 }, { rotateY: 90, ease: "power1.inOut", duration: 3 })
           .fromTo(
             faces,
-            { color: (j: number) => cor(i, [ROTS[3].luz, ROTS[0].luz, ROTS[1].luz][j]) },
-            { color: (j: number) => cor(i, [ROTS[0].luz, ROTS[1].luz, ROTS[2].luz][j]) },
+            { color: (j: number) => cor(i, n, [ROTS[3].luz, ROTS[0].luz, ROTS[1].luz][j]) },
+            { color: (j: number) => cor(i, n, [ROTS[0].luz, ROTS[1].luz, ROTS[2].luz][j]) },
             0
           )
-          .to(faces, { color: (j: number) => cor(i, [ROTS[1].luz, ROTS[2].luz, ROTS[3].luz][j]) }, 1)
-          .progress(i / N);
+          .to(faces, { color: (j: number) => cor(i, n, [ROTS[1].luz, ROTS[2].luz, ROTS[3].luz][j]) }, 1)
+          .progress(i / n);
       });
 
       if (parado) return;
@@ -93,7 +98,7 @@ export default function PalavrasGirando() {
     const medir = () => {
       const die = tray.querySelector<HTMLElement>(".v2-die");
       if (!die) return;
-      const h = N * die.offsetHeight;
+      const h = n * die.offsetHeight;
       gsap.set(tray, { height: h });
 
       // Largura que a pilha ocupa já inclinada: a altura dela entra na conta
@@ -113,12 +118,12 @@ export default function PalavrasGirando() {
       ctx.revert();
       gsap.set(pov, { clearProps: "transform" });
     };
-  }, []);
+  }, [n]);
 
   return (
     <div ref={povRef} aria-hidden className="v2-pov">
       <div ref={trayRef}>
-        {Array.from({ length: N }, (_, i) => (
+        {Array.from({ length: n }, (_, i) => (
           <div key={i} className="v2-die">
             <div className="v2-medida" aria-hidden>
               {PALAVRAS.map((p) => (
