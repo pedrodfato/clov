@@ -75,7 +75,7 @@ export default function Hero() {
           saturation={1.5}
           blend={0.75}
           falloff={0.95}
-          opacity={telaGrande ? 0.5 : 0.2}
+          opacity={telaGrande ? 0.25 : 0.2}
         />
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
       </div>
