@@ -7,6 +7,10 @@ import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
 import Etiqueta from "./Etiqueta";
 import { SOCIAIS, WHATSAPP } from "../contato";
+import dynamic from "next/dynamic";
+import useTelaGrande from "../useTelaGrande";
+
+const SideRays = dynamic(() => import("../SideRays"), { ssr: false });
 
 // Símbolos de código flutuando ao fundo, no lugar das contas da referência.
 // `p` é a profundidade: quanto maior, mais anda com o mouse e mais nítido.
@@ -29,6 +33,7 @@ const PROMESSAS = ["Diagnóstico sem custo", "Escopo fechado", "Entrega toda sem
 
 export default function Hero() {
   const camposRef = useRef<HTMLDivElement>(null);
+  const telaGrande = useTelaGrande();
 
   // Paralaxe: cada símbolo anda na direção do mouse na proporção da profundidade.
   useEffect(() => {
@@ -57,10 +62,23 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-surface px-6 pt-32 pb-28 text-center">
-      {/* Luz: um foco suave atrás do título e a grade. */}
+      {/* Mesmo fundo do Reviews da home 1: feixes de luz + foco verde. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="v2-grade absolute inset-0" />
-        <div className="absolute left-1/2 top-[42%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(0,232,122,0.16),transparent)]" />
+        {telaGrande && (
+          <SideRays
+            speed={0.3}
+            rayColor1="#00e87a"
+            rayColor2="#00ed9e"
+            intensity={1.2}
+            spread={0.45}
+            origin={[0.5, 1.4]}
+            tilt={0}
+            saturation={1.5}
+            blend={0.75}
+            falloff={0.95}
+            opacity={0.5}
+          />
+        )}
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
       </div>
 
@@ -94,7 +112,7 @@ export default function Hero() {
               Dividido em palavras, cada pedaço deslocado redesenha o degradê
               dentro de si e elas empilham enquanto a animação roda. */}
           <Reveal delay={2.3}>
-          <h1 className="titulo-brilho mt-7 max-w-[13ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[68px] lg:text-[88px]">
+          <h1 className="titulo-brilho filter-none! animate-none! mt-7 max-w-[13ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[68px] lg:text-[88px]">
             Tecnologia que trabalha por você
           </h1>
         </Reveal>
