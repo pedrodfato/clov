@@ -42,11 +42,18 @@ export default function Rodape() {
 
   return (
     <footer className="relative w-full overflow-hidden bg-surface">
-      <div aria-hidden className="relative h-[22vw] min-h-[120px] overflow-hidden">
+      <div aria-hidden className="relative h-[40vw] min-h-[170px] overflow-hidden md:h-[22vw] md:min-h-[120px]">
         <div className="absolute left-[18%] top-[30%] h-[40vw] w-[40vw] rounded-full bg-[radial-gradient(closest-side,rgba(0,232,122,0.45),transparent)] blur-2xl" />
         <div className="absolute right-[12%] top-[10%] h-[30vw] w-[30vw] rounded-full bg-[radial-gradient(closest-side,rgba(125,255,191,0.3),transparent)] blur-2xl" />
+        {/* No celular a frase fica parada e centrada, "Vamos" sobre
+            "conversar": correndo, só dava para ler um pedaço por vez. */}
+        <div className="absolute inset-x-0 bottom-[-0.12em] select-none text-center text-[19vw] font-normal leading-[0.92] tracking-[-0.06em] text-ink md:hidden">
+          <div>Vamos</div>
+          <div>conversar</div>
+        </div>
+
         {/* Duas cópias lado a lado: a animação anda metade e emenda sem salto. */}
-        <div className="absolute bottom-[-0.12em] left-[20%] flex select-none whitespace-nowrap text-[19vw] font-normal leading-none tracking-[-0.06em] text-ink">
+        <div className="absolute bottom-[-0.12em] left-[20%] hidden select-none whitespace-nowrap text-[19vw] font-normal leading-none tracking-[-0.06em] text-ink md:flex">
           <div className="v2-letreiro v2-letreiro-rodape flex shrink-0">
             <span className="pr-[0.4em]">Vamos conversar</span>
             <span className="pr-[0.4em]">Vamos conversar</span>

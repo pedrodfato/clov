@@ -42,7 +42,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     // Sem create() os dois divs ficam no fluxo normal — o site segue funcionando.
     const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const smoother = reduzido ? null : ScrollSmoother.create({ smooth: 1.1, smoothTouch: 0 });
+    const smoother = reduzido ? null : ScrollSmoother.create({ smooth: 0.8, smoothTouch: 0 });
 
     // Âncoras (#secao): o salto nativo do navegador rola o #smooth-wrapper,
     // que é fixo e sem barra, em vez da janela. O conteúdo ia parar milhares
@@ -60,10 +60,28 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       // próprio <a> e rolaria por conta dele. Precisamos chegar antes.
       e.preventDefault();
       e.stopPropagation();
+      // A rolagem é animada à mão, e não com o scrollTo do ScrollSmoother: ele
+      // deriva a duração do `smooth` da roda, que é curto de propósito, e o
+      // salto do menu saía seco. Aqui a curva acelera e assenta, e a duração
+      // acompanha a distância — um pulo curto não pode demorar o mesmo que
+      // atravessar a página inteira.
+      const destino = alvo === 0 ? 0 : smoother.offset(alvo as Element, "top top");
+      const distancia = Math.abs(destino - smoother.scrollTop());
       // Sem gravar o #secao na URL: recarregar volta ao topo, como antes.
-      smoother.scrollTo(alvo, true, "top top");
+      gsap.to(smoother, {
+        scrollTop: destino,
+        duration: Math.min(2.1, Math.max(0.8, distancia / 2600)),
+        ease: "power2.inOut",
+        overwrite: true,
+      });
     };
     document.addEventListener("click", irPara, true);
+
+    // Rolar no meio da animação cancela: sem isso, a roda do usuário e a
+    // animação disputam o scroll e a página treme.
+    const cancelar = () => gsap.killTweensOf(smoother);
+    const eventosDeScroll = ["wheel", "touchstart"] as const;
+    eventosDeScroll.forEach((ev) => window.addEventListener(ev, cancelar, { passive: true }));
 
     // Página aberta já com #secao na URL (link de fora). O navegador salta
     // antes do React, mas depois os pins entram e empurram as seções de baixo,
@@ -93,6 +111,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       observer.disconnect();
       window.removeEventListener("load", refresh);
       document.removeEventListener("click", irPara, true);
+      eventosDeScroll.forEach((ev) => window.removeEventListener(ev, cancelar));
       pararHash();
       smoother?.kill();
     };

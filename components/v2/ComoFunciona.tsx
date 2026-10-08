@@ -158,7 +158,9 @@ export default function ComoFunciona() {
           <p className="mt-3 text-[15px] text-white/65">As mesmas quatro etapas em todo projeto.</p>
         </Reveal>
 
-        <div className="relative mt-12 flex h-[340px] w-full items-center justify-center overflow-hidden rounded-3xl border border-brand/20 bg-[#070b09] shadow-[inset_0_0_80px_rgba(0,232,122,0.06)] md:h-[400px]">
+        {/* Painel único: no celular ele sai de cena e cada etapa leva o seu
+            próprio cartão, porque lá não há scroll preso para trocá-los. */}
+        <div className="relative mt-12 hidden h-[340px] w-full items-center justify-center overflow-hidden rounded-3xl border border-brand/20 bg-[#070b09] shadow-[inset_0_0_80px_rgba(0,232,122,0.06)] md:flex md:h-[400px]">
           <Onda />
           <div className="relative">
             {ETAPAS.map((_, i) => (
@@ -187,6 +189,15 @@ export default function ComoFunciona() {
                     style={{ width: `${(telaGrande ? enche : 1) * 100}%` }}
                   />
                 </span>
+                {/* A tela da etapa, em cima do card. Só no celular: no desktop
+                    um painel só troca de cartão conforme o scroll. */}
+                <div className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-brand/20 bg-[#070b09] px-4 py-7 shadow-[inset_0_0_60px_rgba(0,232,122,0.06)] md:hidden">
+                  <Onda />
+                  <div className="relative">
+                    <Cartao etapa={i} />
+                  </div>
+                </div>
+
                 <span className={`text-[11px] uppercase tracking-[0.2em] ${acesa ? "text-brand" : "text-white/30"}`}>
                   Etapa {i + 1}
                 </span>
@@ -194,6 +205,7 @@ export default function ComoFunciona() {
                   <h3 className="text-[17px] text-ink">{e.titulo}</h3>
                   <p className="mt-1.5 text-[14px] leading-relaxed text-white/65">{e.texto}</p>
                 </div>
+
               </li>
             );
           })}

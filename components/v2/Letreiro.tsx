@@ -10,6 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
  * Frase gigante em degradê que atravessa a tela: entra inteira pela direita e
  * sai pela esquerda enquanto a seção está à vista. Entre as partes, uma
  * bolinha verde fluorescente.
+ *
+ * No celular ela não corre: a frase é mais larga que a tela, e deslizando
+ * nunca dava para ler inteira. Lá ela fica parada, quebrada em linhas e
+ * alinhada à esquerda.
  */
 type Props = { partes?: string[]; linhas?: string[] };
 
@@ -20,8 +24,9 @@ export default function Letreiro({ partes, linhas }: Props) {
   useEffect(() => {
     const secao = secaoRef.current;
     if (!secao) return;
-    // Sem movimento a frase fica parada e legível, alinhada à esquerda.
+    // Sem movimento, e no celular, a frase fica parada e legível.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(min-width: 768px)").matches) return;
 
     const ctx = gsap.context(() => {
       if (linhas?.length) {
@@ -77,8 +82,8 @@ export default function Letreiro({ partes, linhas }: Props) {
       aria-hidden
       className={
         linhas?.length
-          ? "relative flex min-h-[42vh] w-full items-center overflow-hidden bg-surface py-10 sm:py-14"
-          : "relative flex min-h-[60vh] w-full items-center overflow-hidden bg-surface"
+          ? "relative flex w-full items-center overflow-hidden bg-surface px-6 py-16 sm:px-10 md:min-h-[42vh] md:px-0 md:py-14"
+          : "relative flex w-full items-center overflow-hidden bg-surface px-6 py-16 sm:px-10 md:min-h-[60vh] md:px-0 md:py-0"
       }
     >
       {linhas?.length ? (
@@ -86,7 +91,7 @@ export default function Letreiro({ partes, linhas }: Props) {
           {linhas.map((linha) => (
             <div
               key={linha}
-              className="v2-degrade v2-letreiro-linha w-max whitespace-nowrap text-[clamp(4rem,10vw,12rem)] font-normal leading-[0.92] tracking-[-0.05em]"
+              className="v2-degrade v2-letreiro-linha text-left text-[11vw] font-normal leading-[1.05] tracking-[-0.04em] md:w-max md:whitespace-nowrap md:text-[clamp(4rem,10vw,12rem)] md:leading-[0.92] md:tracking-[-0.05em]"
             >
               {linha}
             </div>
@@ -97,12 +102,14 @@ export default function Letreiro({ partes, linhas }: Props) {
            leading folgado: o degradê só pinta dentro da caixa do elemento. */
         <div
           ref={faixaRef}
-          className="v2-degrade flex w-max items-center whitespace-nowrap text-[13vw] font-normal leading-[1.2] tracking-[-0.04em] md:text-[13.5vw]"
+          className="v2-degrade flex flex-col items-start text-left text-[13vw] font-normal leading-[1.1] tracking-[-0.04em] md:w-max md:flex-row md:items-center md:whitespace-nowrap md:text-[13.5vw] md:leading-[1.2]"
         >
           {(partes ?? []).map((parte, i) => (
             <span key={parte} className="flex items-center">
+              {/* A bolinha separa as partes em linha; empilhadas no celular,
+                  elas já se separam pela quebra. */}
               {i > 0 && (
-                <span className="mx-[0.34em] h-[0.13em] w-[0.13em] shrink-0 rounded-full bg-[#4bff9f] shadow-[0_0_0.22em_0.04em_rgba(75,255,159,0.9)]" />
+                <span className="mx-[0.34em] hidden h-[0.13em] w-[0.13em] shrink-0 rounded-full bg-[#4bff9f] shadow-[0_0_0.22em_0.04em_rgba(75,255,159,0.9)] md:block" />
               )}
               {parte}
             </span>

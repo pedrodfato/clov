@@ -53,7 +53,9 @@ export default function QuemSomos() {
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-24 select-none whitespace-nowrap text-center text-[19vw] font-normal leading-none tracking-[-0.05em] text-white/[0.04] md:top-12"
+        /* No celular a foto é o último bloco, logo acima das faixas, então a
+           palavra acompanha ela para baixo; no desktop as duas ficam no topo. */
+        className="pointer-events-none absolute inset-x-0 bottom-[22%] select-none whitespace-nowrap text-center text-[19vw] font-normal leading-none tracking-[-0.05em] text-white/[0.04] md:bottom-auto md:top-12"
       >
         Fundador
       </div>
@@ -73,7 +75,7 @@ export default function QuemSomos() {
         </Reveal>
 
         {/* Foto recortada e opaca, acima do brilho e da palavra ao fundo. */}
-        <div className="relative z-10 order-first mx-auto w-[min(505px,82vw)] md:order-none">
+        <div className="relative z-10 order-last mx-auto -mb-20 w-[min(505px,82vw)] md:order-none md:mb-0">
           <Image
             src="/fundador.webp"
             alt="Fundador da Clov"

@@ -14,7 +14,7 @@ const PALAVRAS = [
 
 // Quantos cubos empilhados e quanto a pilha inclina, em graus. O giro entra
 // na conta da escala: inclinada, a pilha ocupa muito mais largura.
-const N = 19;
+const N = 12;
 const GIRO = 9;
 
 // Giro de cada face e seu brilho quando está nessa posição: a da frente quase
