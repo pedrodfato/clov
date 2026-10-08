@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import ParticulasRodape from "./ParticulasRodape";
 import { EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -42,9 +43,8 @@ export default function Rodape() {
 
   return (
     <footer className="relative w-full overflow-hidden bg-surface">
-      <div aria-hidden className="relative h-[40vw] min-h-[170px] overflow-hidden md:h-[22vw] md:min-h-[120px]">
-        <div className="absolute left-[18%] top-[30%] h-[40vw] w-[40vw] rounded-full bg-[radial-gradient(closest-side,rgba(0,232,122,0.45),transparent)] blur-2xl" />
-        <div className="absolute right-[12%] top-[10%] h-[30vw] w-[30vw] rounded-full bg-[radial-gradient(closest-side,rgba(125,255,191,0.3),transparent)] blur-2xl" />
+      <div aria-hidden className="relative z-10 h-[40vw] min-h-[170px] overflow-hidden md:h-[22vw] md:min-h-[120px]">
+        <ParticulasRodape />
         {/* No celular a frase fica parada e centrada, "Vamos" sobre
             "conversar": correndo, só dava para ler um pedaço por vez. */}
         <div className="absolute inset-x-0 bottom-[-0.12em] select-none text-center text-[19vw] font-normal leading-[0.92] tracking-[-0.06em] text-ink md:hidden">
@@ -61,7 +61,7 @@ export default function Rodape() {
         </div>
       </div>
 
-      <div className="border-t border-white/[0.06]">
+      <div className="relative z-0 border-t border-white/[0.06] bg-surface shadow-[0_-24px_72px_rgba(0,232,122,0.14)]">
         {/* <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-4 px-6 py-16 text-center sm:px-10">
           <h2 className="text-[24px] font-normal tracking-[-0.02em] text-ink">Fale direto com quem constrói</h2>
           <p className="max-w-[46ch] text-[14px] text-white/65">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
