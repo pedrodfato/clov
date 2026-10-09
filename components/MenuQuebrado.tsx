@@ -68,11 +68,12 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 peca.className = "absolute inset-0 will-change-transform"
                 peca.style.transformOrigin = `${cx}px ${cy}px`
 
-                // Sombra deslocada em verde, como a das peças da referência.
+                // Sombra preta deslocada: dá altura ao caco. Em verde, os cacos grandes
+                // viravam blocos verdes na tela enquanto se mexiam.
                 const sombra = document.createElement("div")
-                sombra.className = "absolute inset-0 bg-brand"
+                sombra.className = "absolute inset-0 bg-black"
                 sombra.style.clipPath = clip
-                sombra.style.transform = "translate(5px, 8px)"
+                sombra.style.transform = "translate(6px, 10px)"
                 sombra.style.opacity = "0"
 
                 const img = foto.el.cloneNode(true) as HTMLElement
@@ -126,7 +127,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                     ease: "expo.out",
                     stagger: 0.025,
                 }, "solta")
-                .to(sombras, { opacity: 0.35, duration: 0.5 }, "solta")
+                .to(sombras, { opacity: 0.7, duration: 0.5 }, "solta")
                 .to(veus, { opacity: 0.4, duration: 0.7 }, "solta")
                 .fromTo(itens, { y: 28, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, stagger: 0.06, ease: "power3.out" }, "solta+=0.3")
                 // Depois de assentar, os cacos ficam boiando.
