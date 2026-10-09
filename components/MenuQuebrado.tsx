@@ -61,12 +61,22 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
             const sombras: HTMLElement[] = []
             const veus: HTMLElement[] = []
             const destinos = cacos.map((poly) => {
-                const clip = `polygon(${poly.map(([x, y]) => `${x}px ${y}px`).join(",")})`
                 const [cx, cy] = centro(poly)
+                // Cada caco é uma caixa do tamanho do seu retângulo, não da tela.
+                // Com ~15 camadas de tela cheia, a GPU do celular ficava sem
+                // memória, descartava camadas e o texto do menu piscava.
+                const xs = poly.map((p) => p[0])
+                const ys = poly.map((p) => p[1])
+                const bx = Math.max(0, Math.floor(Math.min(...xs)))
+                const by = Math.max(0, Math.floor(Math.min(...ys)))
+                const bw = Math.min(W, Math.ceil(Math.max(...xs))) - bx
+                const bh = Math.min(H, Math.ceil(Math.max(...ys))) - by
+                const clip = `polygon(${poly.map(([x, y]) => `${x - bx}px ${y - by}px`).join(",")})`
 
                 const peca = document.createElement("div")
-                peca.className = "absolute inset-0 will-change-transform"
-                peca.style.transformOrigin = `${cx}px ${cy}px`
+                peca.className = "absolute"
+                Object.assign(peca.style, { left: `${bx}px`, top: `${by}px`, width: `${bw}px`, height: `${bh}px` })
+                peca.style.transformOrigin = `${cx - bx}px ${cy - by}px`
 
                 // Sombra preta deslocada: dá altura ao caco. Em verde, os cacos grandes
                 // viravam blocos verdes na tela enquanto se mexiam.
@@ -76,8 +86,14 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 sombra.style.transform = "translate(6px, 10px)"
                 sombra.style.opacity = "0"
 
+                // O print continua do tamanho da tela, deslocado para o caco
+                // mostrar o pedaço certo.
                 const img = foto.el.cloneNode(true) as HTMLElement
-                img.style.clipPath = clip
+                Object.assign(img.style, { inset: "auto", left: `${-bx}px`, top: `${-by}px`, width: `${W}px`, height: `${H}px` })
+                const recorte = document.createElement("div")
+                recorte.className = "absolute inset-0 overflow-hidden"
+                recorte.style.clipPath = clip
+                recorte.append(img)
                 copiarCanvas(foto.canvases, img)
 
                 const veu = document.createElement("div")
@@ -85,7 +101,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 veu.style.clipPath = clip
                 veu.style.opacity = "0"
 
-                peca.append(sombra, img, veu)
+                peca.append(sombra, recorte, veu)
                 camada.append(peca)
                 pecas.push(peca)
                 sombras.push(sombra)
@@ -93,9 +109,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
 
                 // Cada caco vai para a borda do seu lado e encolhe até caber nela,
                 // deixando a coluna do meio livre para os links.
-                const xs = poly.map((p) => p[0])
-                const ys = poly.map((p) => p[1])
-                const maior = Math.max(Math.min(W, Math.max(...xs)) - Math.max(0, Math.min(...xs)), Math.min(H, Math.max(...ys)) - Math.max(0, Math.min(...ys)))
+                const maior = Math.max(bw, bh)
                 const escala = Math.min(0.78, (W * 0.3) / Math.max(maior, 1))
                 const esquerda = cx < W / 2
                 const tx = esquerda ? gsap.utils.random(-0.04, 0.13) * W : gsap.utils.random(0.87, 1.04) * W
@@ -129,7 +143,10 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 }, "solta")
                 .to(sombras, { opacity: 0.7, duration: 0.5 }, "solta")
                 .to(veus, { opacity: 0.4, duration: 0.7 }, "solta")
-                .fromTo(itens, { y: 28, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, stagger: 0.06, ease: "power3.out" }, "solta+=0.3")
+                // opacity em vez de autoAlpha e force3D fixo: cada link fica numa
+                // camada própria do começo ao fim. Trocar de camada no meio (o
+                // que o GSAP faz ao terminar) piscava o texto no Android.
+                .fromTo(itens, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.06, ease: "power3.out", force3D: true }, "solta+=0.3")
                 // Depois de assentar, os cacos ficam boiando.
                 .add(() => {
                     pecas.forEach((p) =>
@@ -148,7 +165,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 tl.kill()
                 gsap.killTweensOf(pecas)
                 const fim = gsap.timeline({ onComplete: onFechado })
-                fim.to(itens, { autoAlpha: 0, y: -12, duration: 0.2, stagger: 0.02, ease: "power2.in" })
+                fim.to(itens, { opacity: 0, y: -12, duration: 0.2, stagger: 0.02, ease: "power2.in", force3D: true })
 
                 if (modo === "remontar") {
                     // Os cacos voltam ao lugar e a tela "cola" de novo.
