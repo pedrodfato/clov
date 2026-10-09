@@ -82,7 +82,9 @@ export default function Header() {
                 hidden ? "-translate-y-[120%]" : "translate-y-0"
             }`}
         >
-            <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-6 sm:px-10">
+            {/* Só no celular: o menu fica sobre o conteúdo e precisa de contraste. */}
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/90 via-black/50 to-transparent lg:hidden" />
+            <div className="relative mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-6 sm:px-10">
                 <div className="flex items-center gap-6">
                     <Link href="/" className="flex flex-shrink-0 items-center">
                         <Image
