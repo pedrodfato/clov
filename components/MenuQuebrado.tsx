@@ -96,7 +96,6 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 recorte.className = "absolute inset-0 overflow-hidden"
                 recorte.style.clipPath = clip
                 recorte.append(img)
-                copiarCanvas(foto.canvases, img)
 
                 const veu = document.createElement("div")
                 veu.className = "absolute inset-0 bg-black"
@@ -335,7 +334,6 @@ function desenharRachaduras(svg: SVGSVGElement, P: Ponto, aneis: Ponto[][]) {
 function fotografar(nav: HTMLElement | null, W: number, H: number) {
     const el = document.createElement("div")
     el.className = "print-congelado absolute inset-0 overflow-hidden bg-surface"
-    const canvases: HTMLCanvasElement[] = []
 
     const conteudo = document.getElementById("smooth-content")
     const fontes = [...(conteudo?.children ?? []), ...(nav ? [nav] : [])] as HTMLElement[]
@@ -354,11 +352,14 @@ function fotografar(nav: HTMLElement | null, W: number, H: number) {
         })
         achatar(fonte, copia)
         el.append(copia)
-        canvases.push(...fonte.querySelectorAll("canvas"))
     }
     // Âncoras e leitores de tela não podem achar a cópia.
     el.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"))
-    return { el, canvases }
+    // Canvas fica de fora: cada cópia vira uma camada da GPU do tamanho dele,
+    // vezes ~15 cacos (os raios da hero somavam 16 telas). E o WebGL nem deixa
+    // ler o que desenhou, a cópia sairia vazia de qualquer jeito.
+    el.querySelectorAll("canvas").forEach((n) => n.remove())
+    return { el }
 }
 
 // Troca todo 3D da cópia pela sua projeção 2D naquele instante (vista sem
@@ -409,19 +410,5 @@ function achatar(fonte: HTMLElement, copia: HTMLElement) {
     })
     copia.querySelectorAll<HTMLElement>("*").forEach((c) => {
         if (c.style.transformStyle === "flat") c.parentElement?.style.setProperty("perspective", "none")
-    })
-}
-
-// cloneNode não leva o que está pintado num canvas. WebGL sem
-// preserveDrawingBuffer sai vazio; aí o caco mostra só o fundo, o que passa.
-function copiarCanvas(origens: HTMLCanvasElement[], destino: HTMLElement) {
-    destino.querySelectorAll("canvas").forEach((c, i) => {
-        const o = origens[i]
-        if (!o || !o.width || !o.height) return
-        c.width = o.width
-        c.height = o.height
-        try {
-            c.getContext("2d")?.drawImage(o, 0, 0)
-        } catch {}
     })
 }
