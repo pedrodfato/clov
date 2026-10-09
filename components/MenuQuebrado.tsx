@@ -380,7 +380,14 @@ function achatar(fonte: HTMLElement, copia: HTMLElement) {
         const st = getComputedStyle(o)
         const pai = o.parentElement
         const dentro3d = pai ? acumulado.get(pai) : undefined
-        if (!dentro3d && !st.transform.startsWith("matrix3d")) return
+        if (!dentro3d && !st.transform.startsWith("matrix3d")) {
+            // translate3d(0,0,0) que o GSAP deixa inline: o estilo computado diz
+            // 2D, mas o Chrome cria camada para ele, e tudo que fica por cima
+            // vira camada também ("overlap") — as faces dos cubos viravam ~170
+            // telas de memória de vídeo. Grava o mesmo valor, em 2D de verdade.
+            if (c.style.transform.includes("3d")) c.style.transform = st.transform
+            return
+        }
 
         let local = new DOMMatrix()
         if (st.transform !== "none") {

@@ -557,4 +557,6 @@ body {
   transition: none !important;
   backdrop-filter: none !important;
   will-change: auto !important;
+  /* Também vira camada da GPU; as faces de costas o achatar() já esconde. */
+  backface-visibility: visible !important;
 }
