@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import StartChallengeButton from "./StartChallengeButton"
 import { WHATSAPP } from "./contato"
+import MenuQuebrado from "./MenuQuebrado"
 
 const NAV_LINKS = [
     { label: "Início", href: "#" },
@@ -20,6 +21,13 @@ export default function Header() {
     // Link da seção que está no meio da tela; "#" (Início) no topo da página.
     const [ativo, setAtivo] = useState("#")
     const lastScrollY = useRef(0)
+    const [menu, setMenu] = useState(false)
+    const navRef = useRef<HTMLElement>(null)
+    const botaoRef = useRef<HTMLButtonElement>(null)
+    const fecharMenu = useCallback(() => {
+        setMenu(false)
+        botaoRef.current?.focus()
+    }, [])
 
     useEffect(() => {
         lastScrollY.current = window.scrollY
@@ -66,8 +74,10 @@ export default function Header() {
     }, [])
 
     return (
-        // Sem faixa de fundo: o vidro fica só na pílula dos links, como na referência.
+        <>
+        {/* Sem faixa de fundo: o vidro fica só na pílula dos links, como na referência. */}
         <nav
+            ref={navRef}
             className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
                 hidden ? "-translate-y-[120%]" : "translate-y-0"
             }`}
@@ -107,10 +117,30 @@ export default function Header() {
                     </div>
                 </div>
 
-                <StartChallengeButton href={WHATSAPP} className="text-[11px]! sm:text-[12px]!">
-                    Fale conosco
-                </StartChallengeButton>
+                {/* No celular o botão vai para dentro do menu. */}
+                <div className="hidden lg:block">
+                    <StartChallengeButton href={WHATSAPP} className="text-[12px]!">
+                        Fale conosco
+                    </StartChallengeButton>
+                </div>
+
+                <button
+                    ref={botaoRef}
+                    type="button"
+                    onClick={() => setMenu(true)}
+                    aria-label="Abrir menu"
+                    aria-expanded={menu}
+                    className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:hidden"
+                >
+                    <span className="h-px w-4 bg-white" />
+                    <span className="h-px w-4 bg-white" />
+                </button>
             </div>
         </nav>
+
+        {/* Fora do <nav>: o translate dele viraria o bloco de contenção do
+            overlay fixo, que passaria a medir o header em vez da tela. */}
+        {menu && <MenuQuebrado links={NAV_LINKS} navRef={navRef} origemRef={botaoRef} onFechado={fecharMenu} />}
+        </>
     )
 }
