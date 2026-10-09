@@ -21,7 +21,7 @@ export default function Numeros() {
   return (
     <section id="numeros" className="relative w-full overflow-hidden bg-surface px-6 py-28 sm:px-10 md:py-36">
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center">
-        <Reveal className="flex flex-col items-center text-center">
+        <Reveal className="flex w-full flex-col items-start text-left">
           <h2 className="max-w-[22ch] text-balance text-[32px] font-normal leading-[1.08] tracking-[-0.03em] text-ink sm:text-[46px]">
             <span className="titulo-brilho">A Clov é nova</span> <br /> A experiência por trás não
           </h2>
