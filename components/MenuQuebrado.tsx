@@ -38,7 +38,6 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
         const H = window.innerHeight
         const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-        let mostrarDeNovo = () => {}
         const ctx = gsap.context(() => {
             const tl = gsap.timeline()
 
@@ -130,14 +129,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
 
             navigator.vibrate?.(12)
 
-            // Com os cacos cobrindo tudo, a página de verdade some: cubos girando,
-            // raios em WebGL e partículas param de pintar por trás do menu.
-            const pagina = [document.getElementById("smooth-wrapper"), navRef.current]
-            const mostrarPagina = (v: boolean) => pagina.forEach((el) => el && (el.style.visibility = v ? "" : "hidden"))
-            mostrarDeNovo = () => mostrarPagina(true)
-
             tl.set(overlay, { autoAlpha: 1 })
-                .add(() => mostrarPagina(false))
                 .fromTo(linhas, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.26, stagger: 0.012, ease: "power2.out" })
                 .fromTo(camada, { x: 7, y: -5 }, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" }, 0)
                 .addLabel("solta", "+=0.1")
@@ -174,9 +166,6 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
             fecharRef.current = (modo) => {
                 tl.kill()
                 gsap.killTweensOf(pecas)
-                // Volta já: ao remontar os cacos se afastam do fundo, e ao sair
-                // por um link a página rola por trás enquanto eles voam.
-                mostrarPagina(true)
                 const fim = gsap.timeline({ onComplete: onFechado })
                 fim.to(itens, { opacity: 0, y: -12, duration: 0.2, stagger: 0.02, ease: "power2.in", force3D: true })
 
@@ -203,7 +192,6 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
         }, overlay)
 
         return () => {
-            mostrarDeNovo()
             ctx.revert()
             // Os cacos são DOM criado à mão: o revert do GSAP não os remove.
             camada.replaceChildren()
