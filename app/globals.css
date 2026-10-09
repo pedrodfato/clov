@@ -547,3 +547,14 @@ body {
     animation: none;
   }
 }
+
+/* "Print" dentro dos cacos do menu do celular (MenuQuebrado). É uma foto:
+   nada ali dentro pode animar. Com ~15 cópias da página, cada brilho ou
+   símbolo flutuando repintava 15 vezes por quadro e os cacos piscavam. */
+.print-congelado,
+.print-congelado * {
+  animation: none !important;
+  transition: none !important;
+  backdrop-filter: none !important;
+  will-change: auto !important;
+}

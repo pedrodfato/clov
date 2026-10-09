@@ -74,7 +74,9 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 const clip = `polygon(${poly.map(([x, y]) => `${x - bx}px ${y - by}px`).join(",")})`
 
                 const peca = document.createElement("div")
-                peca.className = "absolute"
+                // Camada fixa do começo ao fim: promover e despromover no meio da
+                // animação faz o Chrome repintar o caco, e ele pisca.
+                peca.className = "absolute will-change-transform"
                 Object.assign(peca.style, { left: `${bx}px`, top: `${by}px`, width: `${bw}px`, height: `${bh}px` })
                 peca.style.transformOrigin = `${cx - bx}px ${cy - by}px`
 
@@ -332,7 +334,7 @@ function desenharRachaduras(svg: SVGSVGElement, P: Ponto, aneis: Ponto[][]) {
 // das animações, que vêm nos estilos inline).
 function fotografar(nav: HTMLElement | null, W: number, H: number) {
     const el = document.createElement("div")
-    el.className = "absolute inset-0 overflow-hidden bg-surface"
+    el.className = "print-congelado absolute inset-0 overflow-hidden bg-surface"
     const canvases: HTMLCanvasElement[] = []
 
     const conteudo = document.getElementById("smooth-content")
