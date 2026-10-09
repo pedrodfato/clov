@@ -38,6 +38,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
         const H = window.innerHeight
         const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
+        let mostrarDeNovo = () => {}
         const ctx = gsap.context(() => {
             const tl = gsap.timeline()
 
@@ -129,7 +130,14 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
 
             navigator.vibrate?.(12)
 
+            // Com os cacos cobrindo tudo, a página de verdade some: cubos girando,
+            // raios em WebGL e partículas param de pintar por trás do menu.
+            const pagina = [document.getElementById("smooth-wrapper"), navRef.current]
+            const mostrarPagina = (v: boolean) => pagina.forEach((el) => el && (el.style.visibility = v ? "" : "hidden"))
+            mostrarDeNovo = () => mostrarPagina(true)
+
             tl.set(overlay, { autoAlpha: 1 })
+                .add(() => mostrarPagina(false))
                 .fromTo(linhas, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.26, stagger: 0.012, ease: "power2.out" })
                 .fromTo(camada, { x: 7, y: -5 }, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" }, 0)
                 .addLabel("solta", "+=0.1")
@@ -166,6 +174,9 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
             fecharRef.current = (modo) => {
                 tl.kill()
                 gsap.killTweensOf(pecas)
+                // Volta já: ao remontar os cacos se afastam do fundo, e ao sair
+                // por um link a página rola por trás enquanto eles voam.
+                mostrarPagina(true)
                 const fim = gsap.timeline({ onComplete: onFechado })
                 fim.to(itens, { opacity: 0, y: -12, duration: 0.2, stagger: 0.02, ease: "power2.in", force3D: true })
 
@@ -192,6 +203,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
         }, overlay)
 
         return () => {
+            mostrarDeNovo()
             ctx.revert()
             // Os cacos são DOM criado à mão: o revert do GSAP não os remove.
             camada.replaceChildren()
@@ -352,12 +364,57 @@ function fotografar(nav: HTMLElement | null, W: number, H: number) {
             margin: "0",
             transform: "none",
         })
+        achatar(fonte, copia)
         el.append(copia)
         canvases.push(...fonte.querySelectorAll("canvas"))
     }
     // Âncoras e leitores de tela não podem achar a cópia.
     el.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"))
     return { el, canvases }
+}
+
+// Troca todo 3D da cópia pela sua projeção 2D naquele instante (vista sem
+// perspectiva). O Chrome põe cada elemento com transform 3D numa camada própria
+// da GPU: os cubos de palavras do Diagnóstico são 36 delas, vezes ~15 cacos, e
+// o celular deixava os cacos pretos sem conseguir desenhá-las a tempo.
+// Dentro de um preserve-3d a transformação se acumula pelos ancestrais, então
+// o contêiner fica sem transform e cada filho recebe o acumulado projetado.
+// ponytail: supõe que o filho ocupa a mesma caixa do contêiner 3D (vale para
+// cubo e faces); outro layout 3D precisaria somar o deslocamento entre as caixas.
+function achatar(fonte: HTMLElement, copia: HTMLElement) {
+    const origens = [fonte, ...fonte.querySelectorAll<HTMLElement>("*")]
+    const copias = [copia, ...copia.querySelectorAll<HTMLElement>("*")]
+    const acumulado = new Map<Element, DOMMatrix>()
+
+    origens.forEach((o, i) => {
+        const c = copias[i]
+        if (!c || i === 0) return
+        const st = getComputedStyle(o)
+        const pai = o.parentElement
+        const dentro3d = pai ? acumulado.get(pai) : undefined
+        if (!dentro3d && !st.transform.startsWith("matrix3d")) return
+
+        let local = new DOMMatrix()
+        if (st.transform !== "none") {
+            const [ox, oy, oz = 0] = st.transformOrigin.split(" ").map(parseFloat)
+            local = new DOMMatrix().translate(ox, oy, oz).multiply(new DOMMatrix(st.transform)).translate(-ox, -oy, -oz)
+        }
+        const m = dentro3d ? dentro3d.multiply(local) : local
+
+        if (st.transformStyle === "preserve-3d") {
+            acumulado.set(o, m)
+            c.style.transform = "none"
+        } else {
+            c.style.transformOrigin = "0 0"
+            c.style.transform = `matrix(${m.a},${m.b},${m.c},${m.d},${m.e},${m.f})`
+            // De costas para a tela: no 3D ele não aparecia.
+            if (m.a * m.d - m.b * m.c <= 0) c.style.visibility = "hidden"
+        }
+        c.style.transformStyle = "flat"
+    })
+    copia.querySelectorAll<HTMLElement>("*").forEach((c) => {
+        if (c.style.transformStyle === "flat") c.parentElement?.style.setProperty("perspective", "none")
+    })
 }
 
 // cloneNode não leva o que está pintado num canvas. WebGL sem
