@@ -369,32 +369,6 @@ body {
   color: transparent;
 }
 
-/* Começa fora da tela, à direita, e o GSAP traz para o lugar conforme o
-   scroll. No celular não há essa travessia, então a linha nasce no lugar —
-   sem isto ela ficava empurrada para fora e a seção aparecia vazia. */
-.v2-letreiro-linha {
-  transform: none;
-}
-
-@media (min-width: 768px) {
-  .v2-letreiro-linha {
-    transform: translateX(100vw);
-  }
-}
-
-@media (min-width: 1800px) {
-  .v2-letreiro-linha {
-    font-size: 108px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .v2-letreiro-linha {
-    transform: none;
-  }
-
-}
-
 /* Grade fina de fundo, apagada nas bordas. */
 .v2-grade {
   background-image:

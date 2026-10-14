@@ -14,6 +14,8 @@ gsap.registerPlugin(ScrollTrigger);
  * No celular ela não corre: a frase é mais larga que a tela, e deslizando
  * nunca dava para ler inteira. Lá ela fica parada, quebrada em linhas e
  * alinhada à esquerda.
+ *
+ * Com `linhas`, a frase fica centralizada e cada linha sobe do pé da tela.
  */
 type Props = { partes?: string[]; linhas?: string[] };
 
@@ -24,31 +26,40 @@ export default function Letreiro({ partes, linhas }: Props) {
   useEffect(() => {
     const secao = secaoRef.current;
     if (!secao) return;
-    // Sem movimento, e no celular, a frase fica parada e legível.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!window.matchMedia("(min-width: 768px)").matches) return;
 
     const ctx = gsap.context(() => {
+      // As linhas sobem do pé da tela acendendo, uma depois da outra, e
+      // assentam quando a seção chega ao centro. Sem travessia lateral, então
+      // vale também no celular.
       if (linhas?.length) {
         const itens = gsap.utils.toArray<HTMLElement>(".v2-letreiro-linha", secao);
-        gsap.set(itens, { x: () => secao.offsetWidth });
-
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: secao,
-            start: "top 95%",
-            // A segunda linha encosta na esquerda com a seção centrada na tela.
-            end: "center center",
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        itens.forEach((item, index) => {
-          timeline.to(item, { x: 0, duration: 1, ease: "none" }, index);
-        });
+        // set separado: num fromTo com stagger, só a primeira linha nascia
+        // escondida e a segunda aparecia pronta antes da hora.
+        // Distância fixa, não yPercent: no celular cada frase quebra em duas
+        // ou três linhas e 90% da altura empurrava o texto para fora da seção.
+        gsap.set(itens, { y: 120, opacity: 0 });
+        gsap.to(
+          itens,
+          {
+            y: 0,
+            opacity: 1,
+            ease: "power2.out",
+            stagger: 0.35,
+            scrollTrigger: {
+              trigger: secao,
+              start: "top bottom",
+              end: "center center",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
         return;
       }
+
+      // No celular a faixa não corre: fica parada e legível.
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
 
       const faixa = faixaRef.current;
       if (!faixa) return;
@@ -83,16 +94,17 @@ export default function Letreiro({ partes, linhas }: Props) {
       aria-hidden
       className={
         linhas?.length
-          ? "relative flex w-full items-center overflow-hidden bg-surface px-6 py-16 sm:px-10 md:min-h-[42vh] md:px-0 md:py-14"
+          ? "relative flex w-full items-center bg-surface px-6 py-16 sm:px-10 md:min-h-[42vh] md:px-0 md:py-14"
           : "relative flex w-full items-center overflow-hidden bg-surface px-6 py-16 sm:px-10 md:min-h-[60vh] md:px-0 md:py-0"
       }
     >
       {linhas?.length ? (
-        <div className="grid w-full gap-1 overflow-hidden">
-          {linhas.map((linha) => (
+        <div className="grid w-full justify-items-center gap-1">
+          {/* Primeira frase branca; o degradê só na segunda. */}
+          {linhas.map((linha, i) => (
             <div
               key={linha}
-              className="v2-degrade v2-letreiro-linha text-left text-[11vw] font-normal leading-[1.05] tracking-[-0.04em] md:w-max md:whitespace-nowrap md:text-[13.5vw] md:leading-[0.92] md:tracking-[-0.05em]"
+              className={`${i === 0 ? "text-ink" : "v2-degrade"} v2-letreiro-linha text-center text-[11vw] font-normal leading-[1.05] tracking-[-0.04em] md:w-max md:whitespace-nowrap md:text-[5.6vw] md:leading-[0.92] md:tracking-[-0.05em]`}
             >
               {linha}
             </div>
