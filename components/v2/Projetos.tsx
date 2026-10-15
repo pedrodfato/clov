@@ -8,6 +8,7 @@ const PROJETOS = [
   { nome: "FinalForms", desc: "Plataforma para escolas", href: "https://www.finalforms.com/", dominio: "finalforms.com", img: "/projects/finalforms.jpg" },
   { nome: "IH Roma", desc: "Escola de idiomas", href: "https://ihroma.it/", dominio: "ihroma.it", img: "/projects/ihroma.jpg" },
   { nome: "Dazze Móveis", desc: "E-commerce de móveis", href: "https://dazzemoveis.com.br/", dominio: "dazzemoveis.com.br", img: "/projects/dazze.jpg" },
+  { nome: "Borba Services", desc: "Telhados, calhas e pisos", href: "https://borbaservicesllc.com/", dominio: "borbaservicesllc.com", img: "/projects/borba.jpg" },
 ];
 
 // Inclina o card na direção do mouse, como o certificado da referência.
@@ -42,7 +43,7 @@ export default function Projetos() {
           <p className="mt-3 text-[15px] text-white/65">Clientes reais, todos no ar hoje.</p>
         </Reveal>
 
-        <Reveal targets="a" stagger={0.14} className="mt-16 grid w-full grid-cols-1 gap-8 md:grid-cols-3">
+        <Reveal targets="a" stagger={0.14} className="mt-16 grid w-full grid-cols-1 gap-8 sm:grid-cols-2">
           {PROJETOS.map((p) => (
             <a
               key={p.nome}
@@ -58,7 +59,7 @@ export default function Projetos() {
                   src={p.img}
                   alt={`Site da ${p.nome}`}
                   fill
-                  sizes="(max-width: 768px) 100vw, 380px"
+                  sizes="(max-width: 640px) 100vw, 580px"
                   className="object-cover object-top opacity-80 transition-opacity duration-500 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#070b09] via-transparent to-transparent" />
