@@ -77,7 +77,7 @@ function Cartao({ etapa }: { etapa: number }) {
     <>
       <p className="text-[12px] text-white/60">Encerramento</p>
       <div className="mt-3">
-        {["Documentação", "Acessos no seu nome", "60 dias de suporte"].map((a) => (
+        {["Documentação", "Acessos no seu nome", "30 dias de suporte"].map((a) => (
           <div key={a} className={linha}>
             <span className="text-white/80">{a}</span>
             {ok}
