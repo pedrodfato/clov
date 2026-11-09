@@ -24,7 +24,7 @@ const ETAPAS = [
   },
   {
     titulo: "Você sai com tudo",
-    texto: "Documentação, acessos e 60 dias de suporte depois da entrega.",
+    texto: "Documentação, acessos e 30 dias de suporte depois da entrega.",
   },
 ];
 
