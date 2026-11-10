@@ -41,7 +41,7 @@ export default function Projetos() {
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
             O que já colocamos no ar
           </h2>
-          <p className="mt-3 text-[15px] text-white/65">Clientes reais, todos no ar hoje.</p>
+          <p className="mt-3 text-[15px] text-white/65">Projetos que passaram pela clov e saíram com o nosso selo.</p>
         </Reveal>
 
         <Reveal targets="a" stagger={0.14} className="mt-16 grid w-full grid-cols-1 gap-8 sm:grid-cols-2">
