@@ -9,6 +9,7 @@ const PROJETOS = [
   { nome: "IH Roma", desc: "Escola de idiomas", href: "https://ihroma.it/", dominio: "ihroma.it", img: "/projects/ihroma.jpg" },
   { nome: "Dazze Móveis", desc: "E-commerce de móveis", href: "https://dazzemoveis.com.br/", dominio: "dazzemoveis.com.br", img: "/projects/dazze.jpg" },
   { nome: "Borba Services", desc: "Telhados, calhas e pisos", href: "https://borbaservicesllc.com/", dominio: "borbaservicesllc.com", img: "/projects/borba.jpg" },
+  { nome: "MedTracker", desc: "App de lembretes de remédios", href: "https://med.clov.com.br/", dominio: "med.clov.com.br", img: "/projects/medtracker.jpg" },
 ];
 
 // Inclina o card na direção do mouse, como o certificado da referência.
@@ -52,7 +53,7 @@ export default function Projetos() {
               rel="noopener noreferrer"
               onPointerMove={inclina}
               onPointerLeave={solta}
-              className="group flex flex-col gap-4 rounded-2xl transition-transform duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+              className="group flex flex-col gap-4 rounded-2xl sm:last:odd:col-span-2 sm:last:odd:w-[calc(50%-1rem)] sm:last:odd:justify-self-center transition-transform duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
             >
               <div className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-brand/25 bg-[#0b100d] shadow-[0_0_0_1px_rgba(0,232,122,0.05),0_30px_70px_-30px_rgba(0,232,122,0.45)] transition-shadow duration-500 group-hover:shadow-[0_0_0_1px_rgba(0,232,122,0.3),0_30px_80px_-20px_rgba(0,232,122,0.6)]">
                 <Image
