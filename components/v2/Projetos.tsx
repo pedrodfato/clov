@@ -10,13 +10,33 @@ import useTelaGrande from "../useTelaGrande";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-const PROJETOS = [
+type Projeto = { nome: string; desc: string; img: string; href?: string; dominio?: string };
+
+// Sem href = ainda em desenvolvimento: card cinza, faixa WIP e nenhum link.
+const PROJETOS: Projeto[] = [
   { nome: "FinalForms", desc: "Plataforma para escolas", href: "https://www.finalforms.com/", dominio: "finalforms.com", img: "/projects/finalforms.jpg" },
   { nome: "IH Roma", desc: "Escola de idiomas", href: "https://ihroma.it/", dominio: "ihroma.it", img: "/projects/ihroma.jpg" },
   { nome: "Dazze Móveis", desc: "E-commerce de móveis", href: "https://dazzemoveis.com.br/", dominio: "dazzemoveis.com.br", img: "/projects/dazze.jpg" },
   { nome: "Borba Services", desc: "Telhados, calhas e pisos", href: "https://borbaservicesllc.com/", dominio: "borbaservicesllc.com", img: "/projects/borba.jpg" },
   { nome: "MedTracker", desc: "App de lembretes de remédios", href: "https://med.clov.com.br/", dominio: "med.clov.com.br", img: "/projects/medtracker.jpg" },
+  { nome: "Marina Alves", desc: "Estúdio de yoga e pilates", img: "/projects/marina-alves.jpg" },
+  { nome: "Rafael Andrade", desc: "Escritório de advocacia", img: "/projects/rafael-andrade.jpg" },
 ];
+
+// Fita atravessada no card, como obra interditada.
+function FaixaWip() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+      <div className="flex w-[140%] -rotate-[8deg] justify-around gap-8 bg-[repeating-linear-gradient(-45deg,#00e87a_0_14px,#061910_14px_28px)] py-1">
+        <div className="flex w-full justify-around gap-8 bg-[#0a0a0a]/90 py-2.5 font-mono text-[13px] font-semibold uppercase tracking-[0.35em] text-brand">
+          {Array.from({ length: 6 }, (_, i) => (
+            <span key={i} className="shrink-0">WIP · Em desenvolvimento</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const dois = (n: number) => String(n).padStart(2, "0");
 
@@ -132,18 +152,18 @@ export default function Projetos() {
           ref={trilhoRef}
           className="flex gap-[4vw] px-6 py-6 sm:px-10 lg:px-[calc((100vw-var(--card))/2)]"
         >
-          {PROJETOS.map((proj, i) => (
-            <a
+          {PROJETOS.map((proj, i) => {
+            const CardTag = proj.href ? "a" : "div";
+            return (
+            <CardTag
               key={proj.nome}
-              href={proj.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(proj.href ? { href: proj.href, target: "_blank", rel: "noopener noreferrer" } : {})}
               className="group flex w-[82vw] shrink-0 snap-center flex-col gap-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand lg:w-[var(--card)]"
             >
               <div
                 data-card
                 className={`relative aspect-[16/10] overflow-hidden rounded-2xl border bg-[#0b100d] transition-shadow duration-500 will-change-transform ${
-                  animado && i === ativo
+                  animado && i === ativo && proj.href
                     ? "border-brand/30 shadow-[0_0_0_1px_rgba(0,232,122,0.15),0_40px_90px_-30px_rgba(0,232,122,0.5)]"
                     : "border-white/10"
                 }`}
@@ -153,9 +173,10 @@ export default function Projetos() {
                   alt={`Site da ${proj.nome}`}
                   fill
                   sizes="(max-width: 1024px) 82vw, 900px"
-                  className="object-cover object-top"
+                  className={`object-cover object-top ${proj.href ? "" : "opacity-60 grayscale"}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#070b09]/70 via-transparent to-transparent" />
+                {!proj.href && <FaixaWip />}
               </div>
 
               {/* Sem pin, a ficha vai embaixo de cada card. */}
@@ -166,13 +187,14 @@ export default function Projetos() {
                     <p className="text-[13px] text-white/60">{proj.desc}</p>
                   </div>
                   <span className="flex items-center gap-1 text-[12px] text-white/35">
-                    {proj.dominio}
-                    <ArrowUpRight className="h-3 w-3" aria-hidden />
+                    {proj.dominio ?? "Em desenvolvimento"}
+                    {proj.href && <ArrowUpRight className="h-3 w-3" aria-hidden />}
                   </span>
                 </div>
               )}
-            </a>
-          ))}
+            </CardTag>
+            );
+          })}
         </div>
       </div>
 
@@ -189,15 +211,19 @@ export default function Projetos() {
           </div>
           <div>
             <span className="text-white/40">Site</span>
-            <a
-              href={p.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 flex items-center gap-1 text-white/75 transition-colors hover:text-brand"
-            >
-              {p.dominio}
-              <ArrowUpRight className="h-3 w-3" aria-hidden />
-            </a>
+            {p.href ? (
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 flex items-center gap-1 text-white/75 transition-colors hover:text-brand"
+              >
+                {p.dominio}
+                <ArrowUpRight className="h-3 w-3" aria-hidden />
+              </a>
+            ) : (
+              <p className="mt-2 text-white/40">Em desenvolvimento</p>
+            )}
           </div>
           <div className="flex gap-2">
             {PROJETOS.map((proj, i) => (
