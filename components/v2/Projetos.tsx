@@ -162,9 +162,9 @@ export default function Projetos() {
             >
               <div
                 data-card
-                className={`relative aspect-[16/10] overflow-hidden rounded-2xl border bg-[#0b100d] transition-shadow duration-500 will-change-transform ${
+                className={`relative aspect-[16/10] overflow-hidden rounded-2xl border bg-[#0b100d] will-change-transform ${
                   animado && i === ativo && proj.href
-                    ? "border-brand/30 shadow-[0_0_0_1px_rgba(0,232,122,0.15),0_40px_90px_-30px_rgba(0,232,122,0.5)]"
+                    ? "v2-borda-viva border-transparent"
                     : "border-white/10"
                 }`}
               >

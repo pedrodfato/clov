@@ -534,3 +534,47 @@ body {
   /* Também vira camada da GPU; as faces de costas o achatar() já esconde. */
   backface-visibility: visible !important;
 }
+
+/* Borda viva do card de projeto em destaque: um degradê cônico de verdes gira
+   em volta do frame. O ::before é só o anel (a máscara recorta o miolo). */
+@property --v2-borda {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes v2-borda-gira {
+  to {
+    --v2-borda: 360deg;
+  }
+}
+
+.v2-borda-viva::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--v2-borda),
+    #061910,
+    #00e87a,
+    #b9ffd9,
+    #0b5a34,
+    #4bff9f,
+    #061910 60%,
+    #061910
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: v2-borda-gira 4s linear infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-borda-viva::before {
+    animation: none;
+  }
+}
