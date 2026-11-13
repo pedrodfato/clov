@@ -94,7 +94,7 @@ export default function Letreiro({ partes, linhas }: Props) {
       aria-hidden
       className={
         linhas?.length
-          ? "relative flex w-full items-center bg-surface px-6 py-16 sm:px-10 md:min-h-[42vh] md:px-0 md:py-14"
+          ? "relative flex w-full items-center bg-surface px-6 py-16 sm:px-10 md:min-h-[42vh] md:px-0 md:pb-14 md:pt-40"
           : "relative flex w-full items-center overflow-hidden bg-surface px-6 py-16 sm:px-10 md:min-h-[60vh] md:px-0 md:py-0"
       }
     >

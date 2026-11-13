@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ArrowUpRight } from "lucide-react";
-import Reveal from "../Reveal";
 import useTelaGrande from "../useTelaGrande";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -106,26 +105,29 @@ export default function Projetos() {
     <section
       ref={secaoRef}
       id="projetos"
-      className="relative flex w-full flex-col overflow-hidden bg-surface py-24 [--card:min(62vw,calc((100svh-340px)*1.6))] lg:h-[100svh] lg:py-0"
+      className="relative flex w-full flex-col overflow-hidden bg-surface py-24 [--card:min(62vw,calc((100svh-300px)*1.6))] lg:h-[100svh] lg:pb-0 lg:pt-20"
     >
       {/* Sala: chão mais claro e cantos escuros. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_115%,rgba(255,255,255,0.07),transparent_55%),radial-gradient(ellipse_at_50%_40%,transparent_40%,rgba(0,0,0,0.6))]" />
 
-      <div className="relative flex items-end justify-between gap-6 px-6 sm:px-10 lg:pt-24">
-        <Reveal split>
-          <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
-            O que já colocamos no ar
-          </h2>
-          <p className="mt-3 text-[15px] text-white/65">Projetos que passaram pela clov e saíram com o nosso selo.</p>
-        </Reveal>
-        {animado && (
-          <span className="hidden font-mono text-[12px] tracking-[0.2em] text-white/50 lg:block">
-            {dois(ativo + 1)} / {dois(PROJETOS.length)}
-          </span>
-        )}
-      </div>
+      {/* O título fica só para leitores de tela; quem vê tem o PROJETOS na lateral. */}
+      <h2 className="sr-only">O que já colocamos no ar</h2>
+
+      {animado && (
+        <span className="absolute right-10 top-24 font-mono text-[12px] tracking-[0.2em] text-white/50">
+          {dois(ativo + 1)} / {dois(PROJETOS.length)}
+        </span>
+      )}
 
       <div className={`relative flex flex-1 items-center ${animado ? "" : "snap-x snap-mandatory overflow-x-auto"}`}>
+        {animado && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0 flex w-[calc((100vw-var(--card))/2)] select-none items-center justify-center text-[clamp(64px,13svh,140px)] leading-none tracking-[-0.03em] text-white/[0.06] [writing-mode:vertical-rl] rotate-180"
+          >
+            PROJETOS
+          </span>
+        )}
         <div
           ref={trilhoRef}
           className="flex gap-[4vw] px-6 py-6 sm:px-10 lg:px-[calc((100vw-var(--card))/2)]"
