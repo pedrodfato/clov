@@ -32,7 +32,7 @@ export default function Contato() {
         >
           <span className="titulo-brilho">Conte o que precisa</span> <br /> A gente responde em até 24h
         </h2>
-        <p data-r className="max-w-[52ch] text-[15px] leading-relaxed text-white/70">
+        <p data-r className="max-w-[52ch] text-[17px] leading-relaxed text-white/82">
           A primeira conversa dura em média 30 minutos e não custa nada. Depois dela, a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.
         </p>
         <div data-r className="mt-2 flex flex-wrap items-center justify-center gap-3">

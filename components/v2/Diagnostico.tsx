@@ -14,9 +14,9 @@ export default function Diagnostico() {
           <h2 data-r className="max-w-[16ch] text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[44px]">
             Pare de ser a ponte entre dois sistemas
           </h2>
-          <p data-r className="max-w-[44ch] text-[15px] leading-relaxed text-white/65">
-            A primeira conversa é um diagnóstico de 30 minutos em média, sem custo. A gente olha o seu cenário e diz se é caso
-            para nós, inclusive quando a resposta é não.
+          <p data-r className="max-w-[44ch] text-[17px] leading-relaxed text-white/78">
+            A primeira conversa é um diagnóstico de 30 minutos em média, sem custo. A gente analisa o seu cenário e, junto com você,
+            encontra a melhor forma de resolver o problema.
           </p>
           <div data-r className="flex flex-wrap gap-3">
             <StartChallengeButton href={WHATSAPP}>

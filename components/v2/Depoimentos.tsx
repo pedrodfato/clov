@@ -44,18 +44,18 @@ export default function Depoimentos() {
                   : "border-white/[0.07] bg-white/[0.02]"
               }`}
             >
-              <blockquote className="text-[16px] leading-relaxed text-white/85">
+              <blockquote className="text-[18px] leading-relaxed text-white/90">
                 <span className="text-brand">&ldquo;</span>
                 {d.texto}
                 <span className="text-brand">&rdquo;</span>
               </blockquote>
               <figcaption className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-brand/30 bg-brand/10 text-[14px] text-brand">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-brand/30 bg-brand/10 text-[16px] text-brand">
                   {d.autor[0]}
                 </span>
                 <span>
-                  <span className="block text-[14px] text-ink">{d.autor}</span>
-                  <span className="block text-[12px] text-white/60">{d.contexto}</span>
+                  <span className="block text-[16px] text-ink">{d.autor}</span>
+                  <span className="block text-[14px] text-white/75">{d.contexto}</span>
                 </span>
               </figcaption>
             </figure>

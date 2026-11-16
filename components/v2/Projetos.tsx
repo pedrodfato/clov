@@ -28,7 +28,7 @@ function FaixaWip() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
       <div className="flex w-[140%] -rotate-[8deg] justify-around gap-8 bg-[repeating-linear-gradient(-45deg,#00e87a_0_14px,#061910_14px_28px)] py-1">
-        <div className="flex w-full justify-around gap-8 bg-[#0a0a0a]/90 py-2.5 font-mono text-[13px] font-semibold uppercase tracking-[0.35em] text-brand">
+        <div className="flex w-full justify-around gap-8 bg-[#0a0a0a]/90 py-2.5 font-mono text-[15px] font-semibold uppercase tracking-[0.35em] text-brand">
           {Array.from({ length: 6 }, (_, i) => (
             <span key={i} className="shrink-0">WIP · Em desenvolvimento</span>
           ))}
@@ -147,7 +147,7 @@ export default function Projetos() {
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
             <span className="titulo-brilho">Projetos</span>
           </h2>
-          <span className="flex shrink-0 items-center gap-2 pb-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">
+          <span className="flex shrink-0 items-center gap-2 pb-1.5 font-mono text-[13px] uppercase tracking-[0.18em] text-white/65">
             Arraste
             <ArrowRight className="v2-cutuca h-3.5 w-3.5 text-brand" aria-hidden />
           </span>
@@ -155,7 +155,7 @@ export default function Projetos() {
       )}
 
       {animado && (
-        <span className="absolute right-10 top-24 font-mono text-[12px] tracking-[0.2em] text-white/50">
+        <span className="absolute right-10 top-24 font-mono text-[14px] tracking-[0.2em] text-white/65">
           {dois(ativo + 1)} / {dois(PROJETOS.length)}
         </span>
       )}
@@ -212,9 +212,9 @@ export default function Projetos() {
                 <div className="flex items-baseline justify-between gap-4 px-1">
                   <div>
                     <h3 className="text-[20px] tracking-[-0.02em] text-ink">{proj.nome}</h3>
-                    <p className="text-[13px] text-white/60">{proj.desc}</p>
+                    <p className="text-[15px] text-white/75">{proj.desc}</p>
                   </div>
-                  <span className="flex items-center gap-1 text-[12px] text-white/35">
+                  <span className="flex items-center gap-1 text-[14px] text-white/50">
                     {proj.dominio ?? "Em desenvolvimento"}
                     {proj.href && <ArrowUpRight className="h-3 w-3" aria-hidden />}
                   </span>
@@ -240,29 +240,29 @@ export default function Projetos() {
 
       {/* Ficha do projeto da vez, no rodapé da sala. */}
       {animado && (
-        <div className="relative grid grid-cols-[1fr_1.4fr_1fr_auto] items-start gap-10 border-t border-white/10 px-10 pb-10 pt-6 font-mono text-[11px] uppercase tracking-[0.18em]">
+        <div className="relative grid grid-cols-[1fr_1.4fr_1fr_auto] items-start gap-10 border-t border-white/10 px-10 pb-10 pt-6 font-mono text-[13px] uppercase tracking-[0.18em]">
           <div>
-            <span className="text-white/40">Projeto</span>
+            <span className="text-white/55">Projeto</span>
             <p className="mt-2 font-sans text-[22px] normal-case tracking-[-0.02em] text-ink">{p.nome}</p>
           </div>
           <div>
-            <span className="text-white/40">Sobre</span>
-            <p className="mt-2 text-white/75">{p.desc}</p>
+            <span className="text-white/55">Sobre</span>
+            <p className="mt-2 text-white/85">{p.desc}</p>
           </div>
           <div>
-            <span className="text-white/40">Site</span>
+            <span className="text-white/55">Site</span>
             {p.href ? (
               <a
                 href={p.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 flex items-center gap-1 text-white/75 transition-colors hover:text-brand"
+                className="mt-2 flex items-center gap-1 text-white/85 transition-colors hover:text-brand"
               >
                 {p.dominio}
                 <ArrowUpRight className="h-3 w-3" aria-hidden />
               </a>
             ) : (
-              <p className="mt-2 text-white/40">Em desenvolvimento</p>
+              <p className="mt-2 text-white/55">Em desenvolvimento</p>
             )}
           </div>
           <div className="flex gap-2">

@@ -22,7 +22,7 @@ function Faixa({ itens, reverso = false }: { itens: string[]; reverso?: boolean 
         {[...metade, ...metade].map((f, i) => (
           <span
             key={i}
-            className="flex items-center gap-2 whitespace-nowrap rounded-full border border-white/[0.07] bg-white/[0.02] px-4 py-2 text-[13px] text-white/65"
+            className="flex items-center gap-2 whitespace-nowrap rounded-full border border-white/[0.07] bg-white/[0.02] px-4 py-2 text-[15px] text-white/78"
           >
             <span className="h-1 w-1 rounded-full bg-brand/70" />
             {f}
@@ -94,7 +94,7 @@ export default function QuemSomos() {
         <Reveal
           targets="p"
           stagger={0.14}
-          className="flex max-w-[60ch] flex-col gap-5 text-[15px] leading-relaxed text-white/65 md:justify-self-end md:pb-28"
+          className="flex max-w-[60ch] flex-col gap-5 text-[17px] leading-relaxed text-white/78 md:justify-self-end md:pb-28"
         >
           <p>
             Sou Pedro, desenvolvedor e fundador da Clov.</p><p>

@@ -116,11 +116,11 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={2.8} stagger={0.12} className="flex flex-col items-center">
-          <p className="mt-7 max-w-[46ch] text-base leading-relaxed text-white/70 sm:text-lg">
+          <p className="mt-7 max-w-[46ch] text-lg leading-relaxed text-white/82 sm:text-xl">
             Criamos seu site, o sistema que sua empresa precisa e a automação que tira o trabalho repetitivo da sua mão.
           </p>
 
-          <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-white/65">
+          <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[15px] text-white/78">
             {PROMESSAS.map((t) => (
               <li key={t} className="flex items-center gap-1.5">
                 <Check className="h-3.5 w-3.5 text-brand" strokeWidth={2.5} aria-hidden />
@@ -136,7 +136,7 @@ export default function Hero() {
       </div>
 
       {/* Rodapé do hero: redes à esquerda, convite para rolar à direita. */}
-      <div className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[12px] text-white/60 md:flex">
+      <div className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[14px] text-white/75 md:flex">
         <div className="flex items-center gap-3">
           <span>Siga</span>
           {SOCIAIS.map((s) => (
@@ -146,7 +146,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={s.nome}
-              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:border-brand/50 hover:text-brand"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-white/78 transition-colors hover:border-brand/50 hover:text-brand"
             >
               <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
                 <path d={s.path} />
@@ -154,7 +154,7 @@ export default function Hero() {
             </a>
           ))}
         </div>
-        <a href="#numeros" className="flex items-center gap-2 transition-colors hover:text-white/80">
+        <a href="#numeros" className="flex items-center gap-2 transition-colors hover:text-white/88">
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" aria-hidden />
         </a>

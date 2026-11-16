@@ -22,7 +22,7 @@ const LINKS = [
 // Rodapé da referência: frase gigante cortada no topo com luz verde por trás,
 // convite no meio e colunas embaixo.
 export default function Rodape() {
-  const link = "text-[14px] text-white/65 transition-colors hover:text-brand";
+  const link = "text-[16px] text-white/78 transition-colors hover:text-brand";
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -64,18 +64,18 @@ export default function Rodape() {
       <div className="relative z-0 border-t border-white/[0.06] bg-surface shadow-[0_-24px_72px_rgba(0,232,122,0.14)]">
         {/* <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-4 px-6 py-16 text-center sm:px-10">
           <h2 className="text-[24px] font-normal tracking-[-0.02em] text-ink">Fale direto com quem constrói</h2>
-          <p className="max-w-[46ch] text-[14px] text-white/65">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
+          <p className="max-w-[46ch] text-[16px] text-white/78">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
         </div> */}
 
         <div className="pt-16 mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
           <div className="flex flex-col items-start gap-4">
             <Image src="/logoclov.svg" alt="Clov" width={260} height={104} unoptimized className="h-8 w-auto" />
-            <p className="max-w-[26ch] text-[13px] leading-relaxed text-white/60">
+            <p className="max-w-[26ch] text-[15px] leading-relaxed text-white/75">
               Os sistemas digitais por trás de empresas que estão crescendo.
             </p>
             <a
               href={WHATSAPP}
-              className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-[12px] text-white/75 transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+              className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-[14px] text-white/85 transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
             >
               Entre em contato
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
@@ -101,7 +101,7 @@ export default function Rodape() {
               <Mail className="h-3.5 w-3.5 text-brand/70" aria-hidden />
               {EMAIL}
             </a>
-            <span className="flex items-center gap-2 text-[14px] text-white/65">
+            <span className="flex items-center gap-2 text-[16px] text-white/78">
               <MapPin className="h-3.5 w-3.5 text-brand/70" aria-hidden />
               São Paulo, Brasil
             </span>
@@ -117,7 +117,7 @@ export default function Rodape() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.nome}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:border-brand/50 hover:text-brand"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/78 transition-colors hover:border-brand/50 hover:text-brand"
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
                     <path d={s.path} />
@@ -128,7 +128,7 @@ export default function Rodape() {
           </div>
         </div>
 
-        <div className="mx-auto flex w-full max-w-[1200px] justify-between border-t border-white/[0.06] px-6 py-6 text-[12px] text-white/30 sm:px-10">
+        <div className="mx-auto flex w-full max-w-[1200px] justify-between border-t border-white/[0.06] px-6 py-6 text-[14px] text-white/45 sm:px-10">
           <span>© 2026 Clov</span>
           <span>clov.com.br</span>
         </div>

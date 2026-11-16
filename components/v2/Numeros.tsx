@@ -16,7 +16,7 @@ export default function Numeros() {
   useContador(LINHAS_BASE, linhasRef, true);
 
   const numero = "text-[44px] font-normal leading-none tracking-[-0.03em] text-ink tabular-nums sm:text-[56px]";
-  const legenda = "mt-3 max-w-[24ch] text-[13px] leading-relaxed text-white/65";
+  const legenda = "mt-3 max-w-[24ch] text-[15px] leading-relaxed text-white/78";
 
   return (
     <section id="numeros" className="relative w-full overflow-hidden bg-surface px-6 py-28 sm:px-10 md:py-36">
@@ -25,7 +25,7 @@ export default function Numeros() {
           <h2 className="max-w-[22ch] text-balance text-[32px] font-normal leading-[1.08] tracking-[-0.03em] text-ink sm:text-[46px]">
             <span className="titulo-brilho">A Clov é nova</span> <br /> A experiência por trás não
           </h2>
-          <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-white/65">
+          <p className="mt-5 max-w-[56ch] text-[17px] leading-relaxed text-white/78">
             Os números abaixo são do fundador e vêm de antes da empresa existir. A Clov é o formato novo de um trabalho
             que já vinha sendo feito. 
           </p>
