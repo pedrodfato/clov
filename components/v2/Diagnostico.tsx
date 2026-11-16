@@ -15,7 +15,7 @@ export default function Diagnostico() {
             Pare de ser a ponte entre dois sistemas
           </h2>
           <p data-r className="max-w-[44ch] text-[15px] leading-relaxed text-white/65">
-            A primeira conversa é um diagnóstico de 30 minutos, sem custo. A gente olha o seu cenário e diz se é caso
+            A primeira conversa é um diagnóstico de 30 minutos em média, sem custo. A gente olha o seu cenário e diz se é caso
             para nós, inclusive quando a resposta é não.
           </p>
           <div data-r className="flex flex-wrap gap-3">

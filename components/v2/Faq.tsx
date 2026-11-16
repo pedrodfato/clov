@@ -20,11 +20,11 @@ const PERGUNTAS = [
   },
   {
     q: "Como é o primeiro passo, na prática?",
-    a: "Uma conversa de 30 minutos, sem custo. Depois dela a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.",
+    a: "Uma conversa de 30 minutos em média, sem custo. Depois dela a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.",
   },
   {
     q: "O que acontece depois que vocês entregam?",
-    a: "Você fica com a documentação, os acessos no seu nome e 60 dias de suporte. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
+    a: "Você fica com a documentação, os acessos no seu nome e 30 dias de suporte. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
   },
 ];
 
