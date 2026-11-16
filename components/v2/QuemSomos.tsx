@@ -75,7 +75,7 @@ export default function QuemSomos() {
         </Reveal>
 
         {/* Foto recortada e opaca, acima do brilho e da palavra ao fundo. */}
-        <div className="relative z-10 order-last mx-auto -mb-20 w-[min(505px,82vw)] md:order-none md:mb-0">
+        <div className="relative z-10 order-last mx-auto w-[min(505px,82vw)] md:order-none">
           <Image
             src="/fundador.webp"
             alt="Fundador da Clov"
@@ -105,7 +105,7 @@ Há mais de 5 anos construo sites, sistemas e automações para empresas no Bras
         </Reveal>
       </div>
 
-      <div className="relative z-0 mt-10 flex flex-col gap-3 bg-[#0A0A0A] pt-8 pb-8 shadow-[0_-24px_72px_rgba(0,232,122,0.14)] md:mt-0 md:pt-8 md:pb-10">
+      <div className="relative z-0 flex flex-col gap-3 bg-[#0A0A0A] pt-8 pb-8 shadow-[0_-24px_72px_rgba(0,232,122,0.14)] md:pt-8 md:pb-10">
         <Faixa itens={PLATAFORMAS} />
         <Faixa itens={CODIGO} reverso />
       </div>

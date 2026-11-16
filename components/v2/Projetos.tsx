@@ -5,7 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import useTelaGrande from "../useTelaGrande";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -127,11 +127,32 @@ export default function Projetos() {
       id="projetos"
       className="relative flex w-full flex-col overflow-hidden bg-surface py-24 [--card:min(62vw,calc((100svh-300px)*1.6))] lg:h-[100svh] lg:pb-0 lg:pt-20"
     >
-      {/* Sala: chão mais claro e cantos escuros. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_115%,rgba(255,255,255,0.07),transparent_55%),radial-gradient(ellipse_at_50%_40%,transparent_40%,rgba(0,0,0,0.6))]" />
+      {/* Sala: chão mais claro e cantos escuros. No celular, sem a sala, um
+          brilho verde atrás da fila. */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 ${
+          animado
+            ? "bg-[radial-gradient(ellipse_at_50%_115%,rgba(255,255,255,0.07),transparent_55%),radial-gradient(ellipse_at_50%_40%,transparent_40%,rgba(0,0,0,0.6))]"
+            : "bg-[radial-gradient(70%_45%_at_15%_45%,rgba(0,232,122,0.16),transparent_70%),radial-gradient(60%_40%_at_95%_70%,rgba(75,255,159,0.1),transparent_70%)]"
+        }`}
+      />
 
-      {/* O título fica só para leitores de tela; quem vê tem o PROJETOS na lateral. */}
-      <h2 className="sr-only">O que já colocamos no ar</h2>
+      {/* Na tela grande o título fica só para leitores de tela (quem vê tem o
+          PROJETOS na lateral); no celular ele aparece, com o aviso de arrastar. */}
+      {animado ? (
+        <h2 className="sr-only">O que já colocamos no ar</h2>
+      ) : (
+        <div className="relative flex items-end justify-between gap-6 px-6 sm:px-10">
+          <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
+            <span className="titulo-brilho">Projetos</span>
+          </h2>
+          <span className="flex shrink-0 items-center gap-2 pb-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">
+            Arraste
+            <ArrowRight className="v2-cutuca h-3.5 w-3.5 text-brand" aria-hidden />
+          </span>
+        </div>
+      )}
 
       {animado && (
         <span className="absolute right-10 top-24 font-mono text-[12px] tracking-[0.2em] text-white/50">
@@ -139,7 +160,14 @@ export default function Projetos() {
         </span>
       )}
 
-      <div className={`relative flex flex-1 items-center ${animado ? "" : "snap-x snap-mandatory overflow-x-auto"}`}>
+      <div
+        onScroll={animado ? undefined : (e) => {
+          const el = e.currentTarget;
+          const fim = el.scrollWidth - el.clientWidth;
+          setAtivo(fim > 0 ? Math.round((el.scrollLeft / fim) * (PROJETOS.length - 1)) : 0);
+        }}
+        className={`relative flex flex-1 items-center ${animado ? "" : "snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"}`}
+      >
         {animado && (
           <span
             aria-hidden
@@ -197,6 +225,18 @@ export default function Projetos() {
           })}
         </div>
       </div>
+
+      {/* Celular: pontos que andam com a fila, para dizer que tem mais ao lado. */}
+      {!animado && (
+        <div aria-hidden className="relative flex items-center gap-1.5 px-6 sm:px-10">
+          {PROJETOS.map((proj, i) => (
+            <span
+              key={proj.nome}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === ativo ? "w-6 bg-brand shadow-[0_0_8px_rgba(0,232,122,0.7)]" : "w-1.5 bg-white/20"}`}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Ficha do projeto da vez, no rodapé da sala. */}
       {animado && (

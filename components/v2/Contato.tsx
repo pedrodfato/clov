@@ -16,7 +16,7 @@ export default function Contato() {
         <div className="starfield-b animate-twinkle-slow absolute inset-0" />
         <span className="comet comet-1" />
         <span className="comet comet-2" />
-        <div className="absolute left-1/2 top-[74%] aspect-square w-[300vw] -translate-x-1/2 overflow-hidden rounded-full border-t border-brand/40 bg-[radial-gradient(120%_120%_at_50%_0%,#07100b_0%,#020302_45%)] shadow-[inset_0_3px_28px_-8px_rgba(0,232,122,0.4),0_-8px_70px_-14px_rgba(0,232,122,0.3)] sm:w-[240vw] lg:w-[200vw]" />
+        <div className="absolute left-1/2 top-[82%] aspect-square sm:top-[74%] w-[300vw] -translate-x-1/2 overflow-hidden rounded-full border-t border-brand/40 bg-[radial-gradient(120%_120%_at_50%_0%,#07100b_0%,#020302_45%)] shadow-[inset_0_3px_28px_-8px_rgba(0,232,122,0.4),0_-8px_70px_-14px_rgba(0,232,122,0.3)] sm:w-[240vw] lg:w-[200vw]" />
       </div>
 
       <Reveal targets="[data-r]" stagger={0.12} className="relative z-10 flex max-w-[760px] flex-col items-center gap-6">

@@ -120,7 +120,7 @@ function Onda() {
 export default function ComoFunciona() {
   const secaoRef = useRef<HTMLElement>(null);
   const [ativa, setAtiva] = useState(0);
-  const [progresso, setProgresso] = useState(0);
+  const barrasRef = useRef<(HTMLSpanElement | null)[]>([]);
   const telaGrande = useTelaGrande();
 
   // Em tela grande a seção fica presa e o scroll avança as etapas. No celular
@@ -130,18 +130,27 @@ export default function ComoFunciona() {
     if (!secao || !telaGrande) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const barras = barrasRef.current;
     const st = ScrollTrigger.create({
       trigger: secao,
       start: "top top",
       end: `+=${ETAPAS.length * 70}%`,
       pin: true,
       scrub: true,
+      // As barras enchem direto no estilo: guardar o progresso em estado
+      // redesenhava a seção inteira a cada pixel de scroll e a fazia engasgar.
+      // O estado só muda quando troca de etapa.
       onUpdate: (self) => {
-        setProgresso(self.progress);
+        barras.forEach((b, i) => {
+          if (b) b.style.width = `${Math.min(1, Math.max(0, self.progress * ETAPAS.length - i)) * 100}%`;
+        });
         setAtiva(Math.min(ETAPAS.length - 1, Math.floor(self.progress * ETAPAS.length)));
       },
     });
-    return () => st.kill();
+    return () => {
+      st.kill();
+      barras.forEach((b) => b?.style.removeProperty("width"));
+    };
   }, [telaGrande]);
 
   return (
@@ -162,12 +171,14 @@ export default function ComoFunciona() {
             próprio cartão, porque lá não há scroll preso para trocá-los. */}
         <div className="relative mt-12 hidden h-[340px] w-full items-center justify-center overflow-hidden rounded-3xl border border-brand/20 bg-[#070b09] shadow-[inset_0_0_80px_rgba(0,232,122,0.06)] md:flex md:h-[400px]">
           <Onda />
-          <div className="relative">
+          {/* Os cartões ficam empilhados na mesma célula da grade: o painel
+              mede o maior e não muda de tamanho na troca, só a opacidade anda. */}
+          <div className="relative grid items-center">
             {ETAPAS.map((_, i) => (
               <div
                 key={i}
-                className={`transition-all duration-500 ease-out ${
-                  i === ativa ? "relative opacity-100" : "pointer-events-none absolute inset-0 translate-y-4 opacity-0"
+                className={`[grid-area:1/1] transition-[opacity,transform] duration-500 ease-out ${
+                  i === ativa ? "opacity-100" : "pointer-events-none translate-y-4 opacity-0"
                 }`}
               >
                 <Cartao etapa={i} />
@@ -179,14 +190,15 @@ export default function ComoFunciona() {
         {/* Linha de etapas: a barra de cima enche com o scroll. */}
         <ol className="mt-8 grid w-full grid-cols-1 gap-16 md:grid-cols-4 md:gap-6">
           {ETAPAS.map((e, i) => {
-            const enche = Math.min(1, Math.max(0, progresso * ETAPAS.length - i));
             const acesa = !telaGrande || i === ativa;
             return (
               <li key={e.titulo} className="flex flex-col gap-3">
                 <span className="relative block h-px w-full bg-white/10">
                   <span
-                    className="absolute inset-y-0 left-0 bg-brand shadow-[0_0_8px_rgba(0,232,122,0.8)]"
-                    style={{ width: `${(telaGrande ? enche : 1) * 100}%` }}
+                    ref={(el) => {
+                      barrasRef.current[i] = el;
+                    }}
+                    className={`absolute inset-y-0 left-0 bg-brand shadow-[0_0_8px_rgba(0,232,122,0.8)] ${telaGrande ? "w-0" : "w-full"}`}
                   />
                 </span>
                 {/* A tela da etapa, em cima do card. Só no celular: no desktop
