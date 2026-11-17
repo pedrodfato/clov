@@ -40,7 +40,12 @@ export default function Hero() {
     const campo = camposRef.current;
     if (!campo) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!window.matchMedia("(hover: hover)").matches) return;
+
+    // Os símbolos acendem devagar depois que a intro abre o trevo. revert, não
+    // kill, na limpeza: o StrictMode monta duas vezes, e um kill deixava a
+    // opacidade em 0 para o segundo from ler como valor final.
+    const acende = gsap.from(campo, { opacity: 0, duration: 1.8, delay: 2.6, ease: "power2.out" });
+    if (!window.matchMedia("(hover: hover)").matches) return () => void acende.revert();
 
     const itens = [...campo.querySelectorAll<HTMLElement>("[data-p]")].map((el) => ({
       p: Number(el.dataset.p),
@@ -57,7 +62,10 @@ export default function Hero() {
       }
     };
     window.addEventListener("pointermove", mover);
-    return () => window.removeEventListener("pointermove", mover);
+    return () => {
+      acende.revert();
+      window.removeEventListener("pointermove", mover);
+    };
   }, []);
 
   return (
@@ -136,7 +144,11 @@ export default function Hero() {
       </div>
 
       {/* Rodapé do hero: redes à esquerda, convite para rolar à direita. */}
-      <div className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[14px] text-white/75 md:flex">
+      <Reveal
+        delay={3.1}
+        y={16}
+        className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[14px] text-white/75 md:flex"
+      >
         <div className="flex items-center gap-3">
           <span>Siga</span>
           {SOCIAIS.map((s) => (
@@ -158,7 +170,7 @@ export default function Hero() {
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" aria-hidden />
         </a>
-      </div>
+      </Reveal>
     </section>
   );
 }

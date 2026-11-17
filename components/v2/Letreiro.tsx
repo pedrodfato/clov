@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ENTRADA } from "../Reveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,32 +33,18 @@ export default function Letreiro({ partes, linhas }: Props) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      // As linhas sobem do pé da tela acendendo, uma depois da outra, e
-      // assentam quando a seção chega ao centro. Sem travessia lateral, então
-      // vale também no celular.
+      // As linhas entram como o resto do site (subida, desfoque, uma depois
+      // da outra), disparadas quando o bloco já está à vista. Presas ao
+      // scroll elas faziam quase todo o caminho abaixo da dobra, por causa do
+      // respiro grande em cima da seção, e chegavam prontas.
       if (linhas?.length) {
         const itens = gsap.utils.toArray<HTMLElement>(".v2-letreiro-linha", secao);
-        // set separado: num fromTo com stagger, só a primeira linha nascia
-        // escondida e a segunda aparecia pronta antes da hora.
-        // Distância fixa, não yPercent: no celular cada frase quebra em duas
-        // ou três linhas e 90% da altura empurrava o texto para fora da seção.
-        gsap.set(itens, { y: 120, opacity: 0 });
-        gsap.to(
-          itens,
-          {
-            y: 0,
-            opacity: 1,
-            ease: "power2.out",
-            stagger: 0.35,
-            scrollTrigger: {
-              trigger: secao,
-              start: "top bottom",
-              end: "center center",
-              scrub: 1,
-              invalidateOnRefresh: true,
-            },
-          }
-        );
+        gsap.from(itens, {
+          ...ENTRADA,
+          y: 70,
+          stagger: 0.18,
+          scrollTrigger: { trigger: itens[0].parentElement, start: "top 80%" },
+        });
         return;
       }
 

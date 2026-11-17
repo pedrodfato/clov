@@ -51,14 +51,14 @@ export default function QuemSomos() {
         <div className="absolute inset-0 bg-[radial-gradient(75%_60%_at_50%_40%,transparent_45%,#0a0a0a_100%)]" />
       </div>
 
-      <div
-        aria-hidden
-        /* No celular a foto é o último bloco, logo acima das faixas, então a
-           palavra acompanha ela para baixo; no desktop as duas ficam no topo. */
+      {/* No celular a foto é o último bloco, logo acima das faixas, então a
+          palavra acompanha ela para baixo; no desktop as duas ficam no topo. */}
+      <Reveal
+        y={60}
         className="pointer-events-none absolute inset-x-0 bottom-[22%] select-none whitespace-nowrap text-center text-[19vw] font-normal leading-none tracking-[-0.05em] text-white/[0.04] md:bottom-auto md:top-12"
       >
-        Fundador
-      </div>
+        <span aria-hidden className="block">Fundador</span>
+      </Reveal>
 
       <div className="relative mx-auto grid w-full max-w-[1400px] items-end gap-12 px-6 sm:px-10 md:grid-cols-[1fr_auto_1fr] md:gap-10">
         <Reveal targets="[data-r]" stagger={0.12} className="flex flex-col items-start gap-5 md:pb-28">
@@ -75,7 +75,7 @@ export default function QuemSomos() {
         </Reveal>
 
         {/* Foto recortada e opaca, acima do brilho e da palavra ao fundo. */}
-        <div className="relative z-10 order-last mx-auto w-[min(505px,82vw)] md:order-none">
+        <Reveal y={48} delay={0.1} className="relative z-10 order-last mx-auto w-[min(505px,82vw)] md:order-none">
           <Image
             src="/fundador.webp"
             alt="Fundador da Clov"
@@ -89,7 +89,7 @@ export default function QuemSomos() {
             unoptimized
             className="h-auto w-full"
           />
-        </div>
+        </Reveal>
 
         <Reveal
           targets="p"
@@ -105,10 +105,13 @@ Há mais de 5 anos construo sites, sistemas e automações para empresas no Bras
         </Reveal>
       </div>
 
-      <div className="relative z-0 flex flex-col gap-3 bg-[#0A0A0A] pt-8 pb-8 shadow-[0_-24px_72px_rgba(0,232,122,0.14)] md:pt-8 md:pb-10">
+      <Reveal
+        stagger={0.12}
+        className="relative z-0 flex flex-col gap-3 bg-[#0A0A0A] pt-8 pb-8 shadow-[0_-24px_72px_rgba(0,232,122,0.14)] md:pt-8 md:pb-10"
+      >
         <Faixa itens={PLATAFORMAS} />
         <Faixa itens={CODIGO} reverso />
-      </div>
+      </Reveal>
     </section>
   );
 }

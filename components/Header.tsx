@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import gsap from "gsap"
 import Image from "next/image"
 import Link from "next/link"
 import StartChallengeButton from "./StartChallengeButton"
@@ -50,6 +51,23 @@ export default function Header() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
+    // Entrada depois da intro (3s): logo, links e botão descem em sequência.
+    // Sem o desfoque da ENTRADA: filtro por cima do backdrop-blur da pílula
+    // apagava o vidro durante a animação.
+    useEffect(() => {
+        const nav = navRef.current
+        if (!nav || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        const t = gsap.from(nav.querySelectorAll("[data-entra]"), {
+            opacity: 0,
+            y: -16,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.08,
+            delay: 1.9,
+        })
+        return () => void t.revert()
+    }, [])
+
     // Acende o link da seção que cruza a faixa do meio da tela.
     useEffect(() => {
         const secoes = NAV_LINKS.map((l) => l.href)
@@ -86,7 +104,7 @@ export default function Header() {
             <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/90 via-black/50 to-transparent lg:hidden" />
             <div className="relative mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-6 sm:px-10">
                 <div className="flex items-center gap-6">
-                    <Link href="/" className="flex flex-shrink-0 items-center">
+                    <Link href="/" data-entra className="flex flex-shrink-0 items-center">
                         <Image
                             src="/logoclov.svg"
                             alt="Clov"
@@ -97,7 +115,7 @@ export default function Header() {
                         />
                     </Link>
 
-                    <div className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl backdrop-saturate-150 lg:flex">
+                    <div data-entra className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl backdrop-saturate-150 lg:flex">
                         {NAV_LINKS.map((link) => {
                             const aceso = link.href === ativo
                             return (
@@ -120,7 +138,7 @@ export default function Header() {
                 </div>
 
                 {/* No celular o botão vai para dentro do menu. */}
-                <div className="hidden lg:block">
+                <div data-entra className="hidden lg:block">
                     <StartChallengeButton href={WHATSAPP} className="text-[12px]!">
                         Fale conosco
                     </StartChallengeButton>
@@ -132,6 +150,7 @@ export default function Header() {
                     onClick={() => setMenu(true)}
                     aria-label="Abrir menu"
                     aria-expanded={menu}
+                    data-entra
                     className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:hidden"
                 >
                     <span className="h-px w-4 bg-white" />

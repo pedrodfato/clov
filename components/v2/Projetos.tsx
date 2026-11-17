@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import useTelaGrande from "../useTelaGrande";
+import { ENTRADA } from "../Reveal";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -109,6 +110,22 @@ export default function Projetos() {
     };
   }, [animado]);
 
+  // Entrada da sala: os cards e os textos entram com a mesma subida e desfoque
+  // do resto do site. Vai na camada de fora de cada card: a de dentro
+  // ([data-card]) é a que gira e apaga com o pin.
+  useEffect(() => {
+    const secao = secaoRef.current;
+    if (!secao || reduzido) return;
+    const ctx = gsap.context(() => {
+      gsap.from("[data-entra]", {
+        ...ENTRADA,
+        stagger: 0.07,
+        scrollTrigger: { trigger: secao, start: "top 70%" },
+      });
+    }, secao);
+    return () => ctx.revert();
+  }, [animado, reduzido]);
+
   // Miniatura: leva o scroll até o ponto do pin em que aquele card fica no centro.
   const irPara = (i: number) => {
     const st = stRef.current;
@@ -133,19 +150,35 @@ export default function Projetos() {
         aria-hidden
         className={`pointer-events-none absolute inset-0 ${
           animado
-            ? "bg-[radial-gradient(ellipse_at_50%_115%,rgba(255,255,255,0.07),transparent_55%),radial-gradient(ellipse_at_50%_40%,transparent_40%,rgba(0,0,0,0.6))]"
+            ? "bg-[radial-gradient(ellipse_at_50%_40%,transparent_40%,rgba(0,0,0,0.6))]"
             : "bg-[radial-gradient(70%_45%_at_15%_45%,rgba(0,232,122,0.16),transparent_70%),radial-gradient(60%_40%_at_95%_70%,rgba(75,255,159,0.1),transparent_70%)]"
         }`}
       />
 
+      {/* Luz do chão: verde quando o projeto da vez está no ar, cinza quando
+          ainda está em desenvolvimento. As duas trocam de opacidade, devagar. */}
+      {animado && (
+        <>
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_115%,rgba(255,255,255,0.07),transparent_55%)] transition-opacity duration-700 ${p.href ? "opacity-0" : "opacity-100"}`}
+          />
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_112%,rgba(0,232,122,0.28),transparent_70%),linear-gradient(to_top,rgba(0,232,122,0.1),transparent_30%)] transition-opacity duration-700 ${p.href ? "opacity-100" : "opacity-0"}`}
+          />
+        </>
+      )}
+
       {/* Na tela grande o título fica só para leitores de tela (quem vê tem o
           PROJETOS na lateral); no celular ele aparece, com o aviso de arrastar. */}
       {animado ? (
-        <h2 className="sr-only">O que já colocamos no ar</h2>
+        <h2 className="sr-only">Projetos e parcerias</h2>
       ) : (
-        <div className="relative flex items-end justify-between gap-6 px-6 sm:px-10">
+        <div data-entra className="relative flex items-end justify-between gap-6 px-6 sm:px-10">
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
             <span className="titulo-brilho">Projetos</span>
+            <span className="mt-1.5 block text-[20px] tracking-[-0.02em] text-white/70 sm:text-[24px]">e parcerias</span>
           </h2>
           <span className="flex shrink-0 items-center gap-2 pb-1.5 font-mono text-[13px] uppercase tracking-[0.18em] text-white/65">
             Arraste
@@ -155,7 +188,7 @@ export default function Projetos() {
       )}
 
       {animado && (
-        <span className="absolute right-10 top-24 font-mono text-[14px] tracking-[0.2em] text-white/65">
+        <span data-entra className="absolute right-10 top-24 font-mono text-[14px] tracking-[0.2em] text-white/65">
           {dois(ativo + 1)} / {dois(PROJETOS.length)}
         </span>
       )}
@@ -171,9 +204,14 @@ export default function Projetos() {
         {animado && (
           <span
             aria-hidden
+            data-entra
             className="pointer-events-none absolute inset-y-0 left-0 flex w-[calc((100vw-var(--card))/2)] select-none items-center justify-center text-[clamp(64px,13svh,140px)] leading-none tracking-[-0.03em] text-white/[0.06] [writing-mode:vertical-rl] rotate-180"
           >
-            PROJETOS
+            {/* Subtítulo encostado no começo do título, como numa ficha. */}
+            <span className="flex flex-col items-start gap-[0.12em]">
+              PROJETOS
+              <span className="text-[0.3em] tracking-[0.04em] text-white/[0.1]">e parcerias</span>
+            </span>
           </span>
         )}
         <div
@@ -185,6 +223,7 @@ export default function Projetos() {
             return (
             <CardTag
               key={proj.nome}
+              data-entra
               {...(proj.href ? { href: proj.href, target: "_blank", rel: "noopener noreferrer" } : {})}
               className="group flex w-[82vw] shrink-0 snap-center flex-col gap-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand lg:w-[var(--card)]"
             >
@@ -228,7 +267,7 @@ export default function Projetos() {
 
       {/* Celular: pontos que andam com a fila, para dizer que tem mais ao lado. */}
       {!animado && (
-        <div aria-hidden className="relative flex items-center gap-1.5 px-6 sm:px-10">
+        <div aria-hidden data-entra className="relative flex items-center gap-1.5 px-6 sm:px-10">
           {PROJETOS.map((proj, i) => (
             <span
               key={proj.nome}
@@ -240,7 +279,7 @@ export default function Projetos() {
 
       {/* Ficha do projeto da vez, no rodapé da sala. */}
       {animado && (
-        <div className="relative grid grid-cols-[1fr_1.4fr_1fr_auto] items-start gap-10 border-t border-white/10 px-10 pb-10 pt-6 font-mono text-[13px] uppercase tracking-[0.18em]">
+        <div data-entra className="relative grid grid-cols-[1fr_1.4fr_1fr_auto] items-start gap-10 border-t border-white/10 px-10 pb-10 pt-6 font-mono text-[13px] uppercase tracking-[0.18em]">
           <div>
             <span className="text-white/55">Projeto</span>
             <p className="mt-2 font-sans text-[22px] normal-case tracking-[-0.02em] text-ink">{p.nome}</p>

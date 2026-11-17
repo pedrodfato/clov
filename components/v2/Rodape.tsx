@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import Reveal from "../Reveal";
 import ParticulasRodape from "./ParticulasRodape";
 import { EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
 
@@ -47,18 +48,29 @@ export default function Rodape() {
         <ParticulasRodape />
         {/* No celular a frase fica parada e centrada, "Vamos" sobre
             "conversar": correndo, só dava para ler um pedaço por vez. */}
-        <div className="absolute inset-x-0 bottom-[-0.12em] select-none text-center text-[19vw] font-normal leading-[0.92] tracking-[-0.06em] text-ink md:hidden">
+        <Reveal
+          y={80}
+          stagger={0.1}
+          className="absolute inset-x-0 bottom-[-0.12em] select-none text-center text-[19vw] font-normal leading-[0.92] tracking-[-0.06em] text-ink md:hidden"
+        >
           <div>Vamos</div>
           <div>conversar</div>
-        </div>
+        </Reveal>
 
         {/* Duas cópias lado a lado: a animação anda metade e emenda sem salto. */}
-        <div className="absolute bottom-[-0.12em] left-[20%] hidden select-none whitespace-nowrap text-[19vw] font-normal leading-none tracking-[-0.06em] text-ink md:flex">
-          <div className="v2-letreiro v2-letreiro-rodape flex shrink-0">
-            <span className="pr-[0.4em]">Vamos conversar</span>
-            <span className="pr-[0.4em]">Vamos conversar</span>
+        {/* A camada de fora entra; a de dentro corre. No mesmo elemento a
+            animação de CSS ganharia do transform da entrada. */}
+        <Reveal
+          y={120}
+          className="absolute bottom-[-0.12em] left-[20%] hidden select-none whitespace-nowrap text-[19vw] font-normal leading-none tracking-[-0.06em] text-ink md:flex"
+        >
+          <div>
+            <div className="v2-letreiro v2-letreiro-rodape flex shrink-0">
+              <span className="pr-[0.4em]">Vamos conversar</span>
+              <span className="pr-[0.4em]">Vamos conversar</span>
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
 
       <div className="relative z-0 border-t border-white/[0.06] bg-surface shadow-[0_-24px_72px_rgba(0,232,122,0.14)]">
@@ -67,7 +79,7 @@ export default function Rodape() {
           <p className="max-w-[46ch] text-[16px] text-white/78">Sem formulário longo e sem camada de atendimento: a mensagem chega em quem vai cuidar do projeto.</p>
         </div> */}
 
-        <div className="pt-16 mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
+        <Reveal stagger={0.1} className="pt-16 mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
           <div className="flex flex-col items-start gap-4">
             <Image src="/logoclov.svg" alt="Clov" width={260} height={104} unoptimized className="h-8 w-auto" />
             <p className="max-w-[26ch] text-[15px] leading-relaxed text-white/75">
@@ -126,12 +138,16 @@ export default function Rodape() {
               ))}
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="mx-auto flex w-full max-w-[1200px] justify-between border-t border-white/[0.06] px-6 py-6 text-[14px] text-white/45 sm:px-10">
+        <Reveal
+          y={16}
+          start="top bottom"
+          className="mx-auto flex w-full max-w-[1200px] justify-between border-t border-white/[0.06] px-6 py-6 text-[14px] text-white/45 sm:px-10"
+        >
           <span>© 2026 Clov</span>
           <span>clov.com.br</span>
-        </div>
+        </Reveal>
       </div>
     </footer>
   );

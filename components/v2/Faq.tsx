@@ -39,7 +39,7 @@ export default function Faq() {
           </h2>
         </Reveal>
 
-        <div className="mt-12 flex w-full flex-col gap-3">
+        <Reveal targets="details" stagger={0.06} className="mt-12 flex w-full flex-col gap-3">
           {PERGUNTAS.map((p) => (
             /* `name` compartilhado deixa o accordion exclusivo sem uma linha de JS. */
             <details
@@ -59,7 +59,7 @@ export default function Faq() {
               <p className="max-w-[62ch] px-6 pb-6 text-[16px] leading-relaxed text-white/78">{p.a}</p>
             </details>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -169,7 +169,8 @@ export default function ComoFunciona() {
 
         {/* Painel único: no celular ele sai de cena e cada etapa leva o seu
             próprio cartão, porque lá não há scroll preso para trocá-los. */}
-        <div className="relative mt-12 hidden h-[340px] w-full items-center justify-center overflow-hidden rounded-3xl border border-brand/20 bg-[#070b09] shadow-[inset_0_0_80px_rgba(0,232,122,0.06)] md:flex md:h-[400px]">
+        <Reveal targets="[data-r]" stagger={0.08} className="w-full">
+        <div data-r className="relative mt-12 hidden h-[340px] w-full items-center justify-center overflow-hidden rounded-3xl border border-brand/20 bg-[#070b09] shadow-[inset_0_0_80px_rgba(0,232,122,0.06)] md:flex md:h-[400px]">
           <Onda />
           {/* Os cartões ficam empilhados na mesma célula da grade: o painel
               mede o maior e não muda de tamanho na troca, só a opacidade anda. */}
@@ -192,7 +193,7 @@ export default function ComoFunciona() {
           {ETAPAS.map((e, i) => {
             const acesa = !telaGrande || i === ativa;
             return (
-              <li key={e.titulo} className="flex flex-col gap-3">
+              <li key={e.titulo} data-r className="flex flex-col gap-3">
                 <span className="relative block h-px w-full bg-white/10">
                   <span
                     ref={(el) => {
@@ -222,6 +223,7 @@ export default function ComoFunciona() {
             );
           })}
         </ol>
+        </Reveal>
       </div>
     </section>
   );

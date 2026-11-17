@@ -27,9 +27,11 @@ export default function Diagnostico() {
 
         {/* As três etapas em cubos que giram, uma palavra por face. A máscara
             dissolve as pontas da pilha em vez de cortá-las em linha reta. */}
-        <div className="h-[460px] overflow-hidden [mask-image:linear-gradient(transparent,#000_14%,#000_86%,transparent)] md:h-[560px]">
-          <PalavrasGirando />
-        </div>
+        <Reveal y={48} delay={0.15}>
+          <div className="h-[460px] overflow-hidden [mask-image:linear-gradient(transparent,#000_14%,#000_86%,transparent)] md:h-[560px]">
+            <PalavrasGirando />
+          </div>
+        </Reveal>
       </div>
     </section>
   );

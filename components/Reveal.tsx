@@ -7,6 +7,22 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+/**
+ * A entrada do site inteiro: sobe um pouco, sai do desfoque e assenta com uma
+ * desaceleração longa. Quem anima sem o <Reveal> (seções com pin, o menu)
+ * espalha isto no gsap.from para todas as entradas terem o mesmo jeito.
+ * O filtro é limpo no fim: deixado como blur(0px) ele apagaria o brilho de
+ * quem já usa `filter` no CSS.
+ */
+export const ENTRADA = {
+  opacity: 0,
+  y: 32,
+  filter: "blur(10px)",
+  duration: 1,
+  ease: "power3.out",
+  clearProps: "filter",
+} satisfies gsap.TweenVars;
+
 type Props = {
   children: React.ReactNode;
   className?: string;
@@ -18,6 +34,10 @@ type Props = {
   /** Segundos de espera depois que o gatilho dispara (a intro do site dura 3s). */
   delay?: number;
   y?: number;
+  /** Gatilho do ScrollTrigger. O que fica no pé da página nunca sobe até 88%
+   *  da tela e precisa de um mais baixo ("top bottom"). Sem clamp(): ele
+   *  prende em 0 o gatilho do que já nasce à vista, e o hero não aparecia. */
+  start?: string;
 };
 
 export default function Reveal({
@@ -27,7 +47,8 @@ export default function Reveal({
   targets,
   stagger = 0.08,
   delay = 0,
-  y = 18,
+  y = ENTRADA.y,
+  start = "top 88%",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -57,13 +78,11 @@ export default function Reveal({
         }
 
         gsap.from(items, {
-          opacity: 0,
+          ...ENTRADA,
           y,
-          duration: 0.6,
           stagger,
           delay,
-          ease: "power2.out",
-          scrollTrigger: { trigger: el, start: "top 85%" },
+          scrollTrigger: { trigger: el, start },
         });
       }, el);
     });
@@ -73,7 +92,7 @@ export default function Reveal({
       ctx?.revert();
       st?.revert();
     };
-  }, [split, targets, stagger, delay, y]);
+  }, [split, targets, stagger, delay, y, start]);
 
   return (
     <div ref={ref} className={className}>
