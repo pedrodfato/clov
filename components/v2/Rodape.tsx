@@ -16,7 +16,6 @@ const LINKS = [
   { label: "Como funciona", href: "#metodologia" },
   { label: "Soluções", href: "#solucoes" },
   { label: "Projetos", href: "#projetos" },
-  { label: "Depoimentos", href: "#depoimentos" },
   { label: "FAQ", href: "#faq" },
 ];
 
