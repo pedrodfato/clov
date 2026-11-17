@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import IntroReveal from "@/components/IntroReveal";
 import { INTRO_VISTA } from "@/components/intro";
+import { SITE } from "@/components/contato";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const ppmori = localfont({
@@ -24,6 +25,9 @@ const ppmori = localfont({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE),
+  // Uma só URL para o Google, mesmo chegando por clov.com.br sem www.
+  alternates: { canonical: "/" },
   title: "Clov | Site, sistema próprio e IA para o seu negócio",
   description:
     "A Clov cria o site, o sistema próprio e a automação com IA do seu negócio. Time pequeno, preço fechado, acompanhamento de perto.",

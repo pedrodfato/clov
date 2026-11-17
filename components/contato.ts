@@ -1,4 +1,6 @@
 // Dados de contato em um lugar só: o footer e a seção de contato usam os mesmos.
+// Endereço oficial: clov.com.br redireciona para o www.
+export const SITE = "https://www.clov.com.br";
 export const EMAIL = "contato@clov.com.br";
 export const TELEFONE = "+55 14 99184-7482";
 
