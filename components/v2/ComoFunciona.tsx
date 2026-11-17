@@ -65,14 +65,14 @@ function Cartao({ etapa }: { etapa: number }) {
       </div>
     </>,
     <>
-      <p className="text-[14px] text-white/75">Entrega da semana</p>
+      <p className="text-[14px] text-white/75">Acompanhamento</p>
       <p className="mt-3 text-[22px] tracking-[-0.02em] text-ink">Versão navegável no ar</p>
       <div className="mt-5 flex gap-1.5">
         {Array.from({ length: 8 }, (_, i) => (
           <span key={i} className={`h-1.5 flex-1 rounded-full ${i < 5 ? "bg-brand shadow-[0_0_8px_rgba(0,232,122,0.6)]" : "bg-white/10"}`} />
         ))}
       </div>
-      <p className="mt-3 text-[14px] text-white/75">Ajuste de rota com você, toda semana</p>
+      <p className="mt-3 text-[14px] text-white/75">Você participa das decisões a cada etapa</p>
     </>,
     <>
       <p className="text-[14px] text-white/75">Encerramento</p>

@@ -26,7 +26,7 @@ const ppmori = localfont({
 export const metadata: Metadata = {
   title: "Clov | Site, sistema próprio e IA para o seu negócio",
   description:
-    "A Clov cria o site, o sistema próprio e a automação com IA do seu negócio. Time pequeno, preço fechado, entrega toda semana.",
+    "A Clov cria o site, o sistema próprio e a automação com IA do seu negócio. Time pequeno, preço fechado, acompanhamento de perto.",
   icons: {
     icon: "/faviconclov.svg",
   },
