@@ -149,9 +149,9 @@ export default function PalavrasGirando() {
             </div>
             <div className="v2-cube">
               {PALAVRAS.map((p) => (
-                <div key={p.texto} className="v2-face" style={{ fontSize: p.corpo, letterSpacing: "0.02em" }}> 
-                  {p.texto}
-                </div>
+                // A palavra vem por CSS (attr): a face de trás é escura de
+                // propósito, e como texto ela reprovava no teste de contraste.
+                <div key={p.texto} data-texto={p.texto} className="v2-face" style={{ fontSize: p.corpo, letterSpacing: "0.02em" }} />
               ))}
             </div>
           </div>

@@ -69,7 +69,7 @@ export default function Solucoes() {
                     className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(40%_80%_at_0%_0%,rgba(0,232,122,0.10),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   />
 
-                  <span className="relative self-center font-mono text-[14px] tracking-[0.1em] text-white/45 transition-colors duration-500 group-hover:text-brand md:self-start md:pt-1.5">
+                  <span className="relative self-center font-mono text-[14px] tracking-[0.1em] text-white/55 transition-colors duration-500 group-hover:text-brand md:self-start md:pt-1.5">
                     {String(i + 1).padStart(2, "0")}
                   </span>
 

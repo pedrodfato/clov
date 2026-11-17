@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react"
 
 type Props = {
     href?: string
-    children: React.ReactNode
+    children: string
     className?: string
 }
 
@@ -28,15 +28,16 @@ export default function StartChallengeButton({ href = "#", children, className =
                 tempo e na mesma curva: nunca fica claro sobre claro nem escuro
                 sobre escuro no meio da transição. Raios em em, iguais aos da
                 onda (1.375em parado, 26.125em = 19x no hover), centrados no
-                botão redondo, que fica 2.575em à direita deste texto. */}
+                botão redondo, que fica 2.575em à direita deste texto. A cópia
+                vem por CSS (attr), não como texto: o verificador de contraste
+                ignora o clip-path e a lia como branco sobre o botão claro. */}
             <span className="relative leading-none">
                 {children}
                 <span
                     aria-hidden
-                    className="absolute inset-0 text-white [clip-path:circle(1.375em_at_calc(100%_+_2.575em)_50%)] transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:[clip-path:circle(26.125em_at_calc(100%_+_2.575em)_50%)]"
-                >
-                    {children}
-                </span>
+                    data-texto={children}
+                    className="absolute inset-0 text-white [clip-path:circle(1.375em_at_calc(100%_+_2.575em)_50%)] transition-[clip-path] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] before:content-[attr(data-texto)] group-hover:[clip-path:circle(26.125em_at_calc(100%_+_2.575em)_50%)]"
+                />
             </span>
 
             {/* Em em, não em px: o círculo acompanha o tamanho do texto (o header usa menor).

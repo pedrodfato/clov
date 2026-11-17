@@ -211,7 +211,7 @@ export default function ComoFunciona() {
                   </div>
                 </div>
 
-                <span className={`text-[13px] uppercase tracking-[0.2em] ${acesa ? "text-brand" : "text-white/45"}`}>
+                <span className={`text-[13px] uppercase tracking-[0.2em] ${acesa ? "text-brand" : "text-white/55"}`}>
                   Etapa {i + 1}
                 </span>
                 <div className={`transition-opacity duration-500 ${acesa ? "opacity-100" : "opacity-35"}`}>

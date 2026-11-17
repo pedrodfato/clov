@@ -142,7 +142,7 @@ export default function Rodape() {
         <Reveal
           y={16}
           start="top bottom"
-          className="mx-auto flex w-full max-w-[1200px] justify-between border-t border-white/[0.06] px-6 py-6 text-[14px] text-white/45 sm:px-10"
+          className="mx-auto flex w-full max-w-[1200px] justify-between border-t border-white/[0.06] px-6 py-6 text-[14px] text-white/55 sm:px-10"
         >
           <span>© 2026 Clov</span>
           <span>clov.com.br</span>

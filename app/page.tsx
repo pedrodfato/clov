@@ -15,17 +15,19 @@ import Rodape from "@/components/v2/Rodape"
 export default function Home() {
   return (
     <>
-      <Hero />
-      <Numeros />
-      <Letreiro partes={["Sites", "Integrações", "Inteligência Artificial"]} />
-      <QuemSomos />
-      <Diagnostico />
-      <ComoFunciona />
-      <Solucoes />
-      <Projetos />
-      <Letreiro linhas={["Site ou sistema, o método é o mesmo.", "Entender primeiro. Construir depois."]} />
-      <Contato />
-      <Faq />
+      <main>
+        <Hero />
+        <Numeros />
+        <Letreiro partes={["Sites", "Integrações", "Inteligência Artificial"]} />
+        <QuemSomos />
+        <Diagnostico />
+        <ComoFunciona />
+        <Solucoes />
+        <Projetos />
+        <Letreiro linhas={["Site ou sistema, o método é o mesmo.", "Entender primeiro. Construir depois."]} />
+        <Contato />
+        <Faq />
+      </main>
       <Rodape />
     </>
   )

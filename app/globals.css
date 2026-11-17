@@ -440,6 +440,10 @@ body {
   backface-visibility: hidden;
 }
 
+.v2-face::before {
+  content: attr(data-texto);
+}
+
 /* Aurora: manchas verdes que derivam devagar no fundo de uma seção. Três
    tempos diferentes para o conjunto nunca repetir o mesmo desenho. O
    posicionamento fica no elemento de fora; aqui só o movimento, senão um

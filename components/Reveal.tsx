@@ -76,7 +76,9 @@ export default function Reveal({
       ctx = gsap.context(() => {
         let items: Element[];
         if (split) {
-          st = new SplitText(el.querySelectorAll("h1, h2, h3, p"), { type: "words" });
+          // aria "none": o padrão punha aria-label no elemento dividido, o que não
+          // vale em <p>. As palavras continuam texto normal e são lidas em ordem.
+          st = new SplitText(el.querySelectorAll("h1, h2, h3, p"), { type: "words", aria: "none" });
           items = st.words;
         } else {
           items = Array.from(targets ? el.querySelectorAll(targets) : el.children);
