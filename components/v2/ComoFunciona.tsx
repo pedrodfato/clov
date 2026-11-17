@@ -19,7 +19,7 @@ const ETAPAS = [
     texto: "Prazo, preço e entregas na mesa antes da primeira linha de código.",
   },
   {
-    titulo: "Entrega toda semana",
+    titulo: "Você acompanha de perto",
     texto: "Veja o projeto ganhar forma e participe das decisões a cada etapa.",
   },
   {
