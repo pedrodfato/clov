@@ -42,11 +42,7 @@ export default function Solucoes() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid border-t border-white/10 md:mt-16 lg:grid-cols-[180px_1fr]">
-          <p className="hidden pt-9 font-mono text-[13px] uppercase tracking-[0.2em] text-white/55 lg:block">
-            O que fazemos
-          </p>
-
+        <div className="mt-14 border-t border-white/10 md:mt-16">
           <Reveal targets="[data-linha]" stagger={0.12}>
             <ul className="flex flex-col">
             {CAMADAS.map((c, i) => (
