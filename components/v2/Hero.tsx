@@ -30,7 +30,7 @@ const SIMBOLOS = [
   { t: "if ( )", x: 88, y: 84, s: 18, p: 0.6 },
 ];
 
-const PROMESSAS = ["Diagnóstico sem custo", "Escopo fechado", "Entrega toda semana", "30 dias de suporte"];
+const PROMESSAS = ["Diagnóstico sem custo", "Escopo fechado", "Acompanhamento de perto", "30 dias de suporte"];
 
 export default function Hero() {
   const camposRef = useRef<HTMLDivElement>(null);
