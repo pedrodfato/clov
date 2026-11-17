@@ -101,7 +101,7 @@ export default function QuemSomos() {
 
 Há mais de 5 anos construo sites, sistemas e automações para empresas no Brasil e no exterior. Passei por agência, liderei equipe e vi de perto como um projeto se perde quando passa por muitas mãos.
           </p>
-          <p>Criei a Clov para ser o contrário: tecnologia sem distância nem complicação, feita por quem você conhece. Trabalho direto em cada projeto: entendo o problema, desenho a solução e construo cada parte dela.</p>
+          <p>Criei a Clov para ser o contrário: tecnologia sem distância nem complicação.</p>
         </Reveal>
       </div>
 

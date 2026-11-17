@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import Reveal from "../Reveal";
 import ParticulasRodape from "./ParticulasRodape";
-import { EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
+import { BEHANCE, EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -122,7 +122,7 @@ export default function Rodape() {
           <div className="flex flex-col gap-3">
             <h3 className="mb-1 text-[16px] text-ink">Siga</h3>
             <div className="flex gap-3">
-              {SOCIAIS.map((s) => (
+              {[...SOCIAIS, BEHANCE].map((s) => (
                 <a
                   key={s.nome}
                   href={s.href}

@@ -1,8 +1,71 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Reveal from "../Reveal";
-import { ANOS, PROJETOS, LINHAS_BASE, useContador } from "../home/numeros";
+
+// TROQUE PELOS VALORES REAIS antes de publicar. O contador de linhas sobe
+// sozinho a partir daqui, então a base precisa ser um número que você assine.
+const ANOS = 5;
+const PROJETOS = 200;
+const LINHAS_BASE = 1_284_390;
+
+// De quanto em quanto tempo a contagem anda, e quantas linhas por vez.
+const TICK_MS = 1600;
+const LINHAS_POR_TICK = [1, 4] as const;
+
+function useContador(alvo: number, ref: React.RefObject<HTMLSpanElement | null>, continua = false) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const formatar = (n: number) => n.toLocaleString("pt-BR");
+    const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduzido) {
+      el.textContent = formatar(alvo);
+      return;
+    }
+
+    let atual = 0;
+    let raf = 0;
+    let intervalo: ReturnType<typeof setInterval> | undefined;
+    let inicio = 0;
+    const duracao = 1600;
+
+    const subir = (t: number) => {
+      if (!inicio) inicio = t;
+      const p = Math.min(1, (t - inicio) / duracao);
+      // easeOutCubic: acelera e assenta, em vez de terminar seco.
+      atual = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+      el.textContent = formatar(atual);
+      if (p < 1) {
+        raf = requestAnimationFrame(subir);
+      } else if (continua) {
+        const [min, max] = LINHAS_POR_TICK;
+        intervalo = setInterval(() => {
+          atual += min + Math.floor(Math.random() * (max - min + 1));
+          el.textContent = formatar(atual);
+        }, TICK_MS);
+      }
+    };
+
+    // Só começa quando a seção chega na tela, senão a contagem passa despercebida.
+    const io = new IntersectionObserver(
+      ([entrada]) => {
+        if (!entrada.isIntersecting) return;
+        io.disconnect();
+        raf = requestAnimationFrame(subir);
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+      if (intervalo) clearInterval(intervalo);
+    };
+  }, [alvo, ref, continua]);
+}
 
 // Números espalhados em volta de uma cruz de linhas, como na referência: cada
 // quadrante guarda um dado, e o cruzamento acende.
