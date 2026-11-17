@@ -9,6 +9,7 @@ import Etiqueta from "./Etiqueta";
 import { SOCIAIS, WHATSAPP } from "../contato";
 import dynamic from "next/dynamic";
 import useTelaGrande from "../useTelaGrande";
+import { semIntro, useIntro } from "../IntroReveal";
 
 const SideRays = dynamic(() => import("../SideRays"), { ssr: false });
 
@@ -34,6 +35,8 @@ const PROMESSAS = ["Diagnóstico sem custo", "Escopo fechado", "Entrega toda sem
 export default function Hero() {
   const camposRef = useRef<HTMLDivElement>(null);
   const telaGrande = useTelaGrande();
+  // Sem a intro (já vista na sessão), a abertura começa logo.
+  const espera = useIntro() ? 0 : 1.9;
 
   // Paralaxe: cada símbolo anda na direção do mouse na proporção da profundidade.
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function Hero() {
     // Os símbolos acendem devagar depois que a intro abre o trevo. revert, não
     // kill, na limpeza: o StrictMode monta duas vezes, e um kill deixava a
     // opacidade em 0 para o segundo from ler como valor final.
-    const acende = gsap.from(campo, { opacity: 0, duration: 1.8, delay: 2.6, ease: "power2.out" });
+    const acende = gsap.from(campo, { opacity: 0, duration: 1.8, delay: semIntro() ? 0.7 : 2.6, ease: "power2.out" });
     if (!window.matchMedia("(hover: hover)").matches) return () => void acende.revert();
 
     const itens = [...campo.querySelectorAll<HTMLElement>("[data-p]")].map((el) => ({
@@ -110,22 +113,22 @@ export default function Hero() {
 
       <div className="relative z-10 flex flex-col items-center">
         {/* Os delays esperam a intro (3s em IntroReveal) abrir o trevo. */}
-        <Reveal delay={2.1}>
-          <Etiqueta>Digital systems studio</Etiqueta>
+        <Reveal delay={2.1 - espera}>
+          <Etiqueta>Estúdio de sistemas digitais</Etiqueta>
         </Reveal>
 
         {/* Sem `split`: com titulo-brilho o degradê precisa de uma camada só.
               Dividido em palavras, cada pedaço deslocado redesenha o degradê
               dentro de si e elas empilham enquanto a animação roda. */}
-          <Reveal delay={2.3}>
-          <h1 className="titulo-brilho filter-none! animate-none! mt-7 max-w-[13ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[68px] lg:text-[88px]">
-            Tecnologia que trabalha por você
+          <Reveal delay={2.3 - espera}>
+          <h1 className="titulo-brilho filter-none! animate-none! mt-7 max-w-[15ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[68px] lg:text-[88px]">
+            Pare de ser a ponte entre dois sistemas
           </h1>
         </Reveal>
 
-        <Reveal delay={2.8} stagger={0.12} className="flex flex-col items-center">
+        <Reveal delay={2.8 - espera} stagger={0.12} className="flex flex-col items-center">
           <p className="mt-7 max-w-[46ch] text-lg leading-relaxed text-white/82 sm:text-xl">
-            Criamos seu site, o sistema que sua empresa precisa e a automação que tira o trabalho repetitivo da sua mão.
+            A gente conecta o que sua empresa já usa e automatiza o trabalho que hoje passa pela mão de alguém.
           </p>
 
           <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[15px] text-white/78">
@@ -145,7 +148,7 @@ export default function Hero() {
 
       {/* Rodapé do hero: redes à esquerda, convite para rolar à direita. */}
       <Reveal
-        delay={3.1}
+        delay={3.1 - espera}
         y={16}
         className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[14px] text-white/75 md:flex"
       >

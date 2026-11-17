@@ -4,6 +4,7 @@ import localfont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import IntroReveal from "@/components/IntroReveal";
+import { INTRO_VISTA } from "@/components/intro";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const ppmori = localfont({
@@ -36,6 +37,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="pt-BR"
       className={`${ppmori.variable} h-full antialiased`}
+      // O script INTRO_VISTA põe .sem-intro no <html> antes da hidratação.
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         {/* Google Tag Manager (noscript) — o GTM pede como 1º elemento do body. */}
@@ -48,6 +51,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           />
         </noscript>
 
+        {/* Antes do overlay: marca a intro já vista sem esperar o React. */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_VISTA }} />
         <IntroReveal />
         <Header />
         <SmoothScroll>{children}</SmoothScroll>

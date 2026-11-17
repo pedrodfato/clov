@@ -12,7 +12,7 @@ export default function Diagnostico() {
       <div className="relative mx-auto grid w-full max-w-[1200px] grid-cols-[minmax(0,1fr)] items-center gap-16 md:grid-cols-[0.9fr_1.1fr]">
         <Reveal targets="[data-r]" stagger={0.12} className="flex flex-col items-start gap-6">
           <h2 data-r className="max-w-[16ch] text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[44px]">
-            Pare de ser a ponte entre dois sistemas
+            Antes de qualquer proposta, um diagnóstico
           </h2>
           <p data-r className="max-w-[44ch] text-[17px] leading-relaxed text-white/78">
             A primeira conversa é um diagnóstico de 30 minutos em média, sem custo. Analisamos o seu cenário e, junto com você,

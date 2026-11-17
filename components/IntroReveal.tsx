@@ -1,9 +1,16 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useSyncExternalStore } from "react"
+import { INTRO_CHAVE } from "./intro"
 
 // Duração total da intro — precisa bater com a animação em globals.css.
 const DURATION = 3000
+
+// Intro já vista na sessão: o script de ./intro marcou o <html> com .sem-intro.
+export const semIntro = () => document.documentElement.classList.contains("sem-intro")
+const nada = () => () => {}
+/** true enquanto a intro vai rodar; quem espera por ela encurta o delay se não. */
+export const useIntro = () => useSyncExternalStore(nada, () => !semIntro(), () => true)
 
 // Paths do "o" da logo (mesmo desenho do faviconclov.svg, viewBox 192.76 x 190.03).
 const CLOVER_PATHS = [
@@ -17,10 +24,13 @@ export default function IntroReveal() {
     const [hidden, setHidden] = useState(false)
 
     useEffect(() => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        if (semIntro() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             setHidden(true)
             return
         }
+        try {
+            sessionStorage.setItem(INTRO_CHAVE, "1")
+        } catch {}
 
         document.body.style.overflow = "hidden"
         const timeout = setTimeout(() => {

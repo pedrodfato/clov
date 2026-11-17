@@ -88,7 +88,9 @@ export default function Projetos() {
       scrollTrigger: {
         trigger: secao,
         start: "top top",
-        end: () => `+=${trilho.scrollWidth - secao.clientWidth}`,
+        // Quase meia tela de scroll por card: medido pela largura da fila,
+        // eram ~7 telas presas para 7 projetos.
+        end: () => `+=${(n - 1) * window.innerHeight * 0.45}`,
         pin: true,
         scrub: true,
         invalidateOnRefresh: true,

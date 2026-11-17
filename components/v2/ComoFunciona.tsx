@@ -134,7 +134,7 @@ export default function ComoFunciona() {
     const st = ScrollTrigger.create({
       trigger: secao,
       start: "top top",
-      end: `+=${ETAPAS.length * 70}%`,
+      end: `+=${ETAPAS.length * 45}%`,
       pin: true,
       scrub: true,
       // As barras enchem direto no estilo: guardar o progresso em estado

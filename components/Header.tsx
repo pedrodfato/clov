@@ -7,6 +7,7 @@ import Link from "next/link"
 import StartChallengeButton from "./StartChallengeButton"
 import { WHATSAPP } from "./contato"
 import MenuQuebrado from "./MenuQuebrado"
+import { semIntro } from "./IntroReveal"
 
 const NAV_LINKS = [
     { label: "Início", href: "#" },
@@ -63,7 +64,7 @@ export default function Header() {
             duration: 0.9,
             ease: "power3.out",
             stagger: 0.08,
-            delay: 1.9,
+            delay: semIntro() ? 0 : 1.9,
         })
         return () => void t.revert()
     }, [])

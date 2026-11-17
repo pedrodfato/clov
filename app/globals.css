@@ -119,6 +119,11 @@ body {
   animation: intro-overlay-out 3000ms ease-in forwards;
 }
 
+/* Intro já vista nesta sessão (IntroReveal.tsx). */
+.sem-intro .intro-overlay {
+  display: none;
+}
+
 /* Accordion de Soluções: a linha abre com altura animada (CSS puro, sem JS).
    Navegador sem ::details-content apenas abre na hora — o conteúdo nunca some. */
 @media (prefers-reduced-motion: no-preference) {
@@ -324,14 +329,6 @@ body {
   text-shadow:
     0 0 28px rgba(0, 232, 122, 0.35),
     0 0 2px rgba(255, 255, 255, 0.45);
-}
-
-/* Letreiro em degradê da marca, do verde cheio ao quase branco. */
-.v2-degrade {
-  background: linear-gradient(90deg, #00e87a 0%, #7dffbf 45%, #e9fff4 70%, rgba(233, 255, 244, 0.35) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Grade fina de fundo, apagada nas bordas. */

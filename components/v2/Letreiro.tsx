@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ENTRADA } from "../Reveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,12 +16,8 @@ const LARGURA = 1440;
  * No celular ela não corre: a frase é mais larga que a tela, e deslizando
  * nunca dava para ler inteira. Lá ela fica parada, quebrada em linhas e
  * alinhada à esquerda.
- *
- * Com `linhas`, a frase fica centralizada e cada linha sobe do pé da tela.
  */
-type Props = { partes?: string[]; linhas?: string[] };
-
-export default function Letreiro({ partes, linhas }: Props) {
+export default function Letreiro({ partes }: { partes: string[] }) {
   const secaoRef = useRef<HTMLElement>(null);
   const curvaRef = useRef<SVGPathElement>(null);
   const textoRef = useRef<SVGTextElement>(null);
@@ -33,21 +28,6 @@ export default function Letreiro({ partes, linhas }: Props) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      // As linhas entram como o resto do site (subida, desfoque, uma depois
-      // da outra), disparadas quando o bloco já está à vista. Presas ao
-      // scroll elas faziam quase todo o caminho abaixo da dobra, por causa do
-      // respiro grande em cima da seção, e chegavam prontas.
-      if (linhas?.length) {
-        const itens = gsap.utils.toArray<HTMLElement>(".v2-letreiro-linha", secao);
-        gsap.from(itens, {
-          ...ENTRADA,
-          y: 70,
-          stagger: 0.18,
-          scrollTrigger: { trigger: itens[0].parentElement, start: "top 80%" },
-        });
-        return;
-      }
-
       // No celular a frase não corre: as partes, empilhadas, acendem uma por
       // vez conforme a seção sobe.
       if (!window.matchMedia("(min-width: 768px)").matches) {
@@ -111,70 +91,50 @@ export default function Letreiro({ partes, linhas }: Props) {
       desenha();
     }, secao);
     return () => ctx.revert();
-  }, [linhas]);
+  }, []);
 
   return (
     <section
       ref={secaoRef}
       aria-hidden
-      className={
-        linhas?.length
-          ? "relative flex w-full items-center bg-surface px-6 py-16 sm:px-10 md:min-h-[42vh] md:px-0 md:pb-14 md:pt-40"
-          : "relative flex w-full items-center overflow-hidden bg-surface px-6 py-24 sm:px-10 md:px-0 md:py-10"
-      }
+      className="relative flex w-full items-center overflow-hidden bg-surface px-6 py-24 sm:px-10 md:px-0 md:py-10"
     >
-      {linhas?.length ? (
-        <div className="grid w-full justify-items-center gap-1">
-          {/* Primeira frase branca; o degradê só na segunda. */}
-          {linhas.map((linha, i) => (
-            <div
-              key={linha}
-              className={`${i === 0 ? "text-ink" : "v2-degrade"} v2-letreiro-linha text-center text-[11vw] font-normal leading-[1.05] tracking-[-0.04em] md:w-max md:whitespace-nowrap md:text-[5.6vw] md:leading-[0.92] md:tracking-[-0.05em]`}
-            >
-              {linha}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <>
-          {/* Tela grande: a frase corre sobre a onda, em SVG. */}
-          <svg viewBox={`0 0 ${LARGURA} 760`} className="hidden w-full overflow-visible md:block">
-            <defs>
-              <linearGradient id="v2-letreiro-degrade" gradientUnits="userSpaceOnUse" x1="0" x2={LARGURA} y1="0" y2="0">
-                <stop offset="0" stopColor="#00e87a" />
-                <stop offset="0.45" stopColor="#7dffbf" />
-                <stop offset="0.7" stopColor="#e9fff4" />
-                <stop offset="1" stopColor="#e9fff4" stopOpacity="0.35" />
-              </linearGradient>
-            </defs>
-            <path ref={curvaRef} id="v2-letreiro-onda" fill="none" />
-            <text ref={textoRef} fill="url(#v2-letreiro-degrade)" fontSize="190" letterSpacing="-7">
-              <textPath href="#v2-letreiro-onda" startOffset={LARGURA}>
-                {(partes ?? []).map((parte, i) => (
-                  <tspan key={parte}>
-                    {i > 0 && <tspan fill="#4bff9f" fontSize="60" dx="36" dy="-50">{"●"}</tspan>}
-                    <tspan dx={i > 0 ? 30 : 0} dy={i > 0 ? 50 : 0}>{parte}</tspan>
-                  </tspan>
-                ))}
-              </textPath>
-            </text>
-          </svg>
-
-          {/* Celular: empilhada, centralizada, com a bolinha entre as partes. */}
-          <div className="flex w-full flex-col items-center gap-3 text-center md:hidden">
-            {(partes ?? []).map((parte, i) => (
-              <div key={parte} className="v2-letreiro-parte flex flex-col items-center gap-3">
-                {i > 0 && (
-                  <span className="h-2 w-2 rounded-full bg-[#4bff9f] shadow-[0_0_14px_3px_rgba(75,255,159,0.7)]" />
-                )}
-                <span className="bg-[linear-gradient(90deg,#00e87a,#7dffbf_55%,#e9fff4)] bg-clip-text text-balance text-[13vw] text-transparent font-normal leading-[1.18] tracking-[-0.045em]">
-                  {parte}
-                </span>
-              </div>
+      {/* Tela grande: a frase corre sobre a onda, em SVG. */}
+      <svg viewBox={`0 0 ${LARGURA} 760`} className="hidden w-full overflow-visible md:block">
+        <defs>
+          <linearGradient id="v2-letreiro-degrade" gradientUnits="userSpaceOnUse" x1="0" x2={LARGURA} y1="0" y2="0">
+            <stop offset="0" stopColor="#00e87a" />
+            <stop offset="0.45" stopColor="#7dffbf" />
+            <stop offset="0.7" stopColor="#e9fff4" />
+            <stop offset="1" stopColor="#e9fff4" stopOpacity="0.35" />
+          </linearGradient>
+        </defs>
+        <path ref={curvaRef} id="v2-letreiro-onda" fill="none" />
+        <text ref={textoRef} fill="url(#v2-letreiro-degrade)" fontSize="190" letterSpacing="-7">
+          <textPath href="#v2-letreiro-onda" startOffset={LARGURA}>
+            {partes.map((parte, i) => (
+              <tspan key={parte}>
+                {i > 0 && <tspan fill="#4bff9f" fontSize="60" dx="36" dy="-50">{"●"}</tspan>}
+                <tspan dx={i > 0 ? 30 : 0} dy={i > 0 ? 50 : 0}>{parte}</tspan>
+              </tspan>
             ))}
+          </textPath>
+        </text>
+      </svg>
+
+      {/* Celular: empilhada, centralizada, com a bolinha entre as partes. */}
+      <div className="flex w-full flex-col items-center gap-3 text-center md:hidden">
+        {partes.map((parte, i) => (
+          <div key={parte} className="v2-letreiro-parte flex flex-col items-center gap-3">
+            {i > 0 && (
+              <span className="h-2 w-2 rounded-full bg-[#4bff9f] shadow-[0_0_14px_3px_rgba(75,255,159,0.7)]" />
+            )}
+            <span className="bg-[linear-gradient(90deg,#00e87a,#7dffbf_55%,#e9fff4)] bg-clip-text text-balance text-[13vw] text-transparent font-normal leading-[1.18] tracking-[-0.045em]">
+              {parte}
+            </span>
           </div>
-        </>
-      )}
+        ))}
+      </div>
     </section>
   );
 }

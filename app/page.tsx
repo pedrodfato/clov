@@ -24,7 +24,6 @@ export default function Home() {
         <ComoFunciona />
         <Solucoes />
         <Projetos />
-        <Letreiro linhas={["Site ou sistema, o método é o mesmo.", "Entender primeiro. Construir depois."]} />
         <Contato />
         <Faq />
       </main>
