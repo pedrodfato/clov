@@ -41,8 +41,10 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     window.addEventListener("load", refresh);
 
     // Sem create() os dois divs ficam no fluxo normal — o site segue funcionando.
-    const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const smoother = reduzido ? null : ScrollSmoother.create({ smooth: 0.8, smoothTouch: 0 });
+    // No toque ele não suavizava nada (smoothTouch 0) e ainda custava um
+    // ScrollSmoother rodando a cada quadro no celular: lá fica o scroll nativo.
+    const semSuavizar = window.matchMedia("(prefers-reduced-motion: reduce), (hover: none), (pointer: coarse)").matches;
+    const smoother = semSuavizar ? null : ScrollSmoother.create({ smooth: 0.8, smoothTouch: 0 });
 
     // Âncoras (#secao): o salto nativo do navegador rola o #smooth-wrapper,
     // que é fixo e sem barra, em vez da janela. O conteúdo ia parar milhares

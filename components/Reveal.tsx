@@ -66,7 +66,12 @@ export default function Reveal({
     // ficava invisível. A flag descarta o efeito antigo antes dele criar nada.
     // As fontes mudam a quebra de linha: dividir antes delas carregarem
     // deixa as palavras nas posições erradas.
-    document.fonts.ready.then(() => {
+    // O que nasce fora da tela espera o navegador ficar livre, um bloco por
+    // vez: montar todas as entradas juntas no carregamento travava a thread
+    // do celular por centenas de ms. O que já está à vista (o hero) monta na
+    // hora, senão o delay da intro passaria a contar do momento errado.
+    let ocioso = 0;
+    const monta = () => {
       if (cancelled) return;
       ctx = gsap.context(() => {
         let items: Element[];
@@ -85,10 +90,16 @@ export default function Reveal({
           scrollTrigger: { trigger: el, start },
         });
       }, el);
+    };
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
+      if (el.getBoundingClientRect().top < window.innerHeight || !("requestIdleCallback" in window)) monta();
+      else ocioso = requestIdleCallback(monta, { timeout: 1500 });
     });
 
     return () => {
       cancelled = true;
+      if (ocioso) cancelIdleCallback(ocioso);
       ctx?.revert();
       st?.revert();
     };

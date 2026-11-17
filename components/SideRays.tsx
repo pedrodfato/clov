@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
+import { useEffect, useRef } from "react";
 
 type OriginName =
   | "top-left" | "top-center" | "top-right"
@@ -35,11 +33,13 @@ type Props = {
   className?: string;
 };
 
+// Um triângulo que cobre a tela inteira: o uv sai da própria posição.
 const vertexShader = /* glsl */ `
+  attribute vec2 position;
   varying vec2 vUv;
   void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vUv = position * 0.5 + 0.5;
+    gl_Position = vec4(position, 0.0, 1.0);
   }
 `;
 
@@ -91,79 +91,18 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
-function Rays(props: Required<Omit<Props, "className">>) {
-  const { viewport, size } = useThree();
-  const reduced = useRef(false);
-
-  useEffect(() => {
-    reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-
-  // O ShaderMaterial clona os uniforms no construtor. Criando o material aqui
-  // e mexendo em material.uniforms, mexemos no objeto que de fato é renderizado
-  // — passar `uniforms` como prop do JSX deixava a mutação numa cópia órfã.
-  const material = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        transparent: true,
-        depthWrite: false,
-        // Aditivo: os feixes somam luz no fundo escuro em vez de cobrir.
-        blending: THREE.AdditiveBlending,
-        uniforms: {
-          uResolution: { value: new THREE.Vector2(1, 1) },
-          uOrigin: { value: new THREE.Vector2(1, 1) },
-          uColor1: { value: new THREE.Color("#00e87a") },
-          uColor2: { value: new THREE.Color("#00ed9e") },
-          uTime: { value: 0 },
-          uIntensity: { value: 1 },
-          uSpread: { value: 1 },
-          uTilt: { value: 0 },
-          uSaturation: { value: 1 },
-          uBlend: { value: 0.5 },
-          uFalloff: { value: 1 },
-          uOpacity: { value: 1 },
-        },
-      }),
-    []
-  );
-
-  useEffect(() => () => material.dispose(), [material]);
-
-  useEffect(() => {
-    const u = material.uniforms;
-    const [x, y] = Array.isArray(props.origin)
-      ? props.origin
-      : ORIGINS[props.origin] ?? ORIGINS["top-right"];
-    u.uOrigin.value.set(x, y);
-    u.uColor1.value.set(props.rayColor1);
-    u.uColor2.value.set(props.rayColor2);
-    u.uIntensity.value = props.intensity;
-    u.uSpread.value = props.spread;
-    u.uTilt.value = props.tilt;
-    u.uSaturation.value = props.saturation;
-    u.uBlend.value = props.blend;
-    u.uFalloff.value = props.falloff;
-    u.uOpacity.value = props.opacity;
-  }, [material, props]);
-
-  useEffect(() => {
-    material.uniforms.uResolution.value.set(size.width, size.height);
-  }, [material, size]);
-
-  useFrame((_, delta) => {
-    if (!reduced.current) material.uniforms.uTime.value += delta * props.speed;
-  });
-
-  return (
-    <mesh scale={[viewport.width, viewport.height, 1]}>
-      <planeGeometry args={[1, 1]} />
-      <primitive object={material} attach="material" />
-    </mesh>
-  );
+// Hex em sRGB para linear: a versão em three.js convertia as cores assim, e
+// sem isso os feixes sairiam mais claros do que eram.
+function linear(hex: string): [number, number, number] {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return [16, 8, 0].map((s) => {
+    const c = ((n >> s) & 255) / 255;
+    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  }) as [number, number, number];
 }
 
+// WebGL direto, sem three.js: é um shader num triângulo só, e a biblioteca
+// pesava ~880 KB no primeiro carregamento do celular.
 export default function SideRays({
   speed = 1,
   rayColor1 = "#00e87a",
@@ -178,28 +117,101 @@ export default function SideRays({
   opacity = 1,
   className = "",
 }: Props) {
-  return (
-    <Canvas
-      className={className}
-      gl={{ alpha: true, antialias: true }}
-      // Gradiente suave: 2x o devicePixelRatio não muda o resultado e
-      // quadruplica o custo por pixel.
-      dpr={1}
-      onCreated={({ gl }) => gl.setClearAlpha(0)}
-    >
-      <Rays
-        speed={speed}
-        rayColor1={rayColor1}
-        rayColor2={rayColor2}
-        intensity={intensity}
-        spread={spread}
-        origin={origin}
-        tilt={tilt}
-        saturation={saturation}
-        blend={blend}
-        falloff={falloff}
-        opacity={opacity}
-      />
-    </Canvas>
-  );
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [ox, oy] = Array.isArray(origin) ? origin : ORIGINS[origin] ?? ORIGINS["top-right"];
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const gl = canvas?.getContext("webgl", { alpha: true, antialias: false });
+    if (!canvas || !gl) return;
+
+    const compila = (tipo: number, fonte: string) => {
+      const s = gl.createShader(tipo)!;
+      gl.shaderSource(s, fonte);
+      gl.compileShader(s);
+      return s;
+    };
+    const prog = gl.createProgram()!;
+    const vs = compila(gl.VERTEX_SHADER, vertexShader);
+    const fs = compila(gl.FRAGMENT_SHADER, fragmentShader);
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, "position");
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    // Aditivo: os feixes somam luz no fundo escuro em vez de cobrir.
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+    gl.clearColor(0, 0, 0, 0);
+
+    const u = (nome: string) => gl.getUniformLocation(prog, nome);
+    gl.uniform2f(u("uOrigin"), ox, oy);
+    gl.uniform3fv(u("uColor1"), linear(rayColor1));
+    gl.uniform3fv(u("uColor2"), linear(rayColor2));
+    gl.uniform1f(u("uIntensity"), intensity);
+    gl.uniform1f(u("uSpread"), spread);
+    gl.uniform1f(u("uTilt"), tilt);
+    gl.uniform1f(u("uSaturation"), saturation);
+    gl.uniform1f(u("uBlend"), blend);
+    gl.uniform1f(u("uFalloff"), falloff);
+    gl.uniform1f(u("uOpacity"), opacity);
+    const uTempo = u("uTime");
+    const uTela = u("uResolution");
+
+    let tempo = 0;
+    const desenha = () => {
+      gl.uniform1f(uTempo, tempo);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    };
+
+    // Gradiente suave: 2x o devicePixelRatio não muda o resultado e
+    // quadruplica o custo por pixel.
+    const ro = new ResizeObserver(([e]) => {
+      const { width, height } = e.contentRect;
+      canvas.width = Math.max(1, Math.round(width));
+      canvas.height = Math.max(1, Math.round(height));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(uTela, canvas.width, canvas.height);
+      desenha();
+    });
+    ro.observe(canvas);
+
+    // Só anima com o hero na tela e sem movimento reduzido.
+    const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let raf = 0;
+    let antes = 0;
+    const quadro = (t: number) => {
+      tempo += (antes ? (t - antes) / 1000 : 0) * speed;
+      antes = t;
+      desenha();
+      raf = requestAnimationFrame(quadro);
+    };
+    const io = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf);
+      antes = 0;
+      if (e.isIntersecting && !reduzido) raf = requestAnimationFrame(quadro);
+    });
+    io.observe(canvas);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      gl.deleteBuffer(buf);
+      gl.deleteProgram(prog);
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
+    };
+  }, [speed, rayColor1, rayColor2, intensity, spread, ox, oy, tilt, saturation, blend, falloff, opacity]);
+
+  return <canvas ref={canvasRef} className={`block h-full w-full ${className}`} />;
 }

@@ -45,7 +45,10 @@ export default function PalavrasGirando() {
 
     const parado = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const ctx = gsap.context(() => {
+    // Os cubos só montam quando chegam perto da tela: são dezenas de tweens
+    // de 3D e cor, e criá-los no carregamento disputava a thread do celular.
+    let ctx: gsap.Context | undefined;
+    const monta = () => (ctx = gsap.context(() => {
       const dados = gsap.utils.toArray<HTMLElement>(".v2-die");
 
       dados.forEach((die, i) => {
@@ -90,7 +93,7 @@ export default function PalavrasGirando() {
         .from(tray, { yPercent: -3, duration: 2, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
         .fromTo(tray, { rotate: -GIRO }, { rotate: GIRO, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
         .to(tray, { scale: 1.06, duration: 2, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
-    }, pov);
+    }, pov));
 
     // A pilha tem altura fixa em px; a escala é que a encaixa no espaço da
     // seção. Divide também pela largura: numa coluna estreita é ela, e não a
@@ -113,9 +116,21 @@ export default function PalavrasGirando() {
     medir();
     window.addEventListener("resize", medir);
 
+    // Fora da tela os cubos param: girar em 3D e trocar a cor das faces a cada
+    // quadro custava CPU no celular a página inteira, mesmo sem ninguém ver.
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !ctx) monta();
+        ctx?.getTweens().forEach((t: gsap.core.Animation) => (e.isIntersecting ? t.resume() : t.pause()));
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(pov);
+
     return () => {
+      io.disconnect();
       window.removeEventListener("resize", medir);
-      ctx.revert();
+      ctx?.revert();
       gsap.set(pov, { clearProps: "transform" });
     };
   }, [n]);

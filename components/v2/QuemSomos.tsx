@@ -82,7 +82,6 @@ export default function QuemSomos() {
             width={920}
             height={1141}
             sizes="(max-width: 768px) 82vw, 460px"
-            priority
             // Sem o otimizador: ele reconverte para JPEG, que não tem canal de
             // transparência, e o recorte voltava como um retângulo preto. O
             // arquivo já é um WebP de 126 KB, menor do que ele entregaria.
