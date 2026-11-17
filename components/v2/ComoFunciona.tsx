@@ -20,7 +20,7 @@ const ETAPAS = [
   },
   {
     titulo: "Entrega toda semana",
-    texto: "Você abre algo que já funciona e diz o que muda.",
+    texto: "Veja o projeto ganhar forma e participe das decisões a cada etapa.",
   },
   {
     titulo: "Você sai com tudo",
