@@ -48,6 +48,7 @@ export default function PalavrasGirando() {
     // Os cubos só montam quando chegam perto da tela: são dezenas de tweens
     // de 3D e cor, e criá-los no carregamento disputava a thread do celular.
     let ctx: gsap.Context | undefined;
+    const linhas: gsap.core.Timeline[] = [];
     const monta = () => (ctx = gsap.context(() => {
       const dados = gsap.utils.toArray<HTMLElement>(".v2-die");
 
@@ -72,7 +73,7 @@ export default function PalavrasGirando() {
 
         // Meia volta de ida e volta, com as cores acompanhando a face que vem
         // para a frente. O progress inicial defasa cada cubo e cria a onda.
-        gsap
+        const tl = gsap
           .timeline({ repeat: -1, yoyo: true, defaults: { ease: "power3.inOut", duration: 1 } })
           .fromTo(cubo, { rotateY: -90 }, { rotateY: 90, ease: "power1.inOut", duration: 3 })
           .fromTo(
@@ -83,16 +84,18 @@ export default function PalavrasGirando() {
           )
           .to(faces, { color: (j: number) => cor(i, n, [ROTS[1].luz, ROTS[2].luz, ROTS[3].luz][j]) }, 1)
           .progress(i / n);
+        linhas.push(tl);
       });
 
       if (parado) return;
 
       // A pilha inteira balança, gira devagar e respira.
-      gsap
+      const pilha = gsap
         .timeline()
         .from(tray, { yPercent: -3, duration: 2, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
         .fromTo(tray, { rotate: -GIRO }, { rotate: GIRO, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
         .to(tray, { scale: 1.06, duration: 2, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
+      linhas.push(pilha);
     }, pov));
 
     // A pilha tem altura fixa em px; a escala é que a encaixa no espaço da
@@ -118,10 +121,13 @@ export default function PalavrasGirando() {
 
     // Fora da tela os cubos param: girar em 3D e trocar a cor das faces a cada
     // quadro custava CPU no celular a página inteira, mesmo sem ninguém ver.
+    // Pausa as timelines inteiras: pausar os tweens de dentro (getTweens) com
+    // a timeline correndo reancorava cada um ao voltar, o giro do cubo saía de
+    // sincronia com as cores e a pilha embolava depois de entrar e sair.
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting && !ctx) monta();
-        ctx?.getTweens().forEach((t: gsap.core.Animation) => (e.isIntersecting ? t.resume() : t.pause()));
+        linhas.forEach((tl) => tl.paused(!e.isIntersecting));
       },
       { rootMargin: "200px" }
     );
