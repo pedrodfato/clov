@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Reveal from "../Reveal";
+import type { Dicionario } from "@/dicionarios/pt";
 
 // TROQUE PELOS VALORES REAIS antes de publicar. O contador de linhas sobe
 // sozinho a partir daqui, então a base precisa ser um número que você assine.
@@ -13,12 +14,12 @@ const LINHAS_BASE = 1_284_390;
 const TICK_MS = 1600;
 const LINHAS_POR_TICK = [1, 4] as const;
 
-function useContador(alvo: number, ref: React.RefObject<HTMLSpanElement | null>, continua = false) {
+function useContador(alvo: number, ref: React.RefObject<HTMLSpanElement | null>, locale: string, continua = false) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const formatar = (n: number) => n.toLocaleString("pt-BR");
+    const formatar = (n: number) => n.toLocaleString(locale);
     const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduzido) {
       el.textContent = formatar(alvo);
@@ -64,19 +65,19 @@ function useContador(alvo: number, ref: React.RefObject<HTMLSpanElement | null>,
       cancelAnimationFrame(raf);
       if (intervalo) clearInterval(intervalo);
     };
-  }, [alvo, ref, continua]);
+  }, [alvo, ref, locale, continua]);
 }
 
 // Números espalhados em volta de uma cruz de linhas, como na referência: cada
 // quadrante guarda um dado, e o cruzamento acende.
-export default function Numeros() {
+export default function Numeros({ t, locale }: { t: Dicionario["numeros"]; locale: string }) {
   const anosRef = useRef<HTMLSpanElement>(null);
   const projetosRef = useRef<HTMLSpanElement>(null);
   const linhasRef = useRef<HTMLSpanElement>(null);
 
-  useContador(ANOS, anosRef);
-  useContador(PROJETOS, projetosRef);
-  useContador(LINHAS_BASE, linhasRef, true);
+  useContador(ANOS, anosRef, locale);
+  useContador(PROJETOS, projetosRef, locale);
+  useContador(LINHAS_BASE, linhasRef, locale, true);
 
   const numero = "text-[44px] font-normal leading-none tracking-[-0.03em] text-ink tabular-nums sm:text-[56px]";
   const legenda = "mt-3 max-w-[24ch] text-[15px] leading-relaxed text-white/78";
@@ -86,11 +87,10 @@ export default function Numeros() {
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center">
         <Reveal className="flex w-full flex-col items-start text-left">
           <h2 className="max-w-[22ch] text-balance text-[32px] font-normal leading-[1.08] tracking-[-0.03em] text-ink sm:text-[46px]">
-            <span className="titulo-brilho">A Clov é nova</span> <br /> A experiência por trás não
+            <span className="titulo-brilho">{t.titulo[0]}</span> <br /> {t.titulo[1]}
           </h2>
           <p className="mt-5 max-w-[56ch] text-[17px] leading-relaxed text-white/78">
-            Os números abaixo são do fundador e vêm de antes da empresa existir. A Clov é o formato novo de um trabalho
-            que já vinha sendo feito. 
+            {t.texto}
           </p>
         </Reveal>
 
@@ -100,21 +100,21 @@ export default function Numeros() {
               <p className={numero}>
                 +<span ref={anosRef}>0</span>
               </p>
-              <p className={legenda}>anos construindo sites, sistemas e automações</p>
+              <p className={legenda}>{t.legendas[0]}</p>
             </div>
 
             <div data-stat>
               <p className={numero}>
                 +<span ref={projetosRef}>0</span>
               </p>
-              <p className={legenda}>projetos desenvolvidos, no Brasil e fora dele</p>
+              <p className={legenda}>{t.legendas[1]}</p>
             </div>
 
             <div data-stat>
               <p className={numero}>
                 <span ref={linhasRef}>0</span>
               </p>
-              <p className={legenda}>linhas de código escritas, e contando enquanto você lê isto</p>
+              <p className={legenda}>{t.legendas[2]}</p>
             </div>
           </Reveal>
         </div>

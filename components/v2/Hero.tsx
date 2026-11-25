@@ -6,7 +6,8 @@ import { Check, ArrowDown } from "lucide-react";
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
 import Etiqueta from "./Etiqueta";
-import { SOCIAIS, WHATSAPP } from "../contato";
+import { SOCIAIS } from "../contato";
+import type { Dicionario } from "@/dicionarios/pt";
 import dynamic from "next/dynamic";
 import useTelaGrande from "../useTelaGrande";
 import { semIntro, useIntro } from "../IntroReveal";
@@ -30,9 +31,7 @@ const SIMBOLOS = [
   { t: "if ( )", x: 88, y: 84, s: 18, p: 0.6 },
 ];
 
-const PROMESSAS = ["Diagnóstico sem custo", "Escopo fechado", "Acompanhamento de perto", "30 dias de suporte"];
-
-export default function Hero() {
+export default function Hero({ t, whatsapp }: { t: Dicionario["hero"]; whatsapp: string }) {
   const camposRef = useRef<HTMLDivElement>(null);
   const telaGrande = useTelaGrande();
   // Sem a intro (já vista na sessão), a abertura começa logo.
@@ -114,7 +113,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center">
         {/* Os delays esperam a intro (3s em IntroReveal) abrir o trevo. */}
         <Reveal delay={2.1 - espera}>
-          <Etiqueta>Estúdio de sistemas digitais</Etiqueta>
+          <Etiqueta>{t.etiqueta}</Etiqueta>
         </Reveal>
 
         {/* Sem `split`: com titulo-brilho o degradê precisa de uma camada só.
@@ -122,26 +121,26 @@ export default function Hero() {
               dentro de si e elas empilham enquanto a animação roda. */}
           <Reveal delay={2.3 - espera}>
           <h1 className="titulo-brilho filter-none! animate-none! mt-7 max-w-[15ch] text-balance text-[44px] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[68px] lg:text-[88px]">
-            Pare de ser a ponte entre dois sistemas
+            {t.titulo}
           </h1>
         </Reveal>
 
         <Reveal delay={2.8 - espera} stagger={0.12} className="flex flex-col items-center">
           <p className="mt-7 max-w-[46ch] text-lg leading-relaxed text-white/82 sm:text-xl">
-            A gente conecta o que sua empresa já usa e automatiza o trabalho que hoje passa pela mão de alguém.
+            {t.texto}
           </p>
 
           <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[15px] text-white/78">
-            {PROMESSAS.map((t) => (
-              <li key={t} className="flex items-center gap-1.5">
+            {t.promessas.map((p) => (
+              <li key={p} className="flex items-center gap-1.5">
                 <Check className="h-3.5 w-3.5 text-brand" strokeWidth={2.5} aria-hidden />
-                {t}
+                {p}
               </li>
             ))}
           </ul>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <StartChallengeButton href={WHATSAPP}>Quero iniciar um projeto</StartChallengeButton>
+            <StartChallengeButton href={whatsapp}>{t.cta}</StartChallengeButton>
           </div>
         </Reveal>
       </div>
@@ -153,7 +152,7 @@ export default function Hero() {
         className="absolute inset-x-0 bottom-8 z-10 mx-auto hidden w-full max-w-[1400px] items-center justify-between px-10 text-[14px] text-white/75 md:flex"
       >
         <div className="flex items-center gap-3">
-          <span>Siga</span>
+          <span>{t.siga}</span>
           {SOCIAIS.map((s) => (
             <a
               key={s.nome}
@@ -170,7 +169,7 @@ export default function Hero() {
           ))}
         </div>
         <a href="#numeros" className="flex items-center gap-2 transition-colors hover:text-white/88">
-          Role para explorar
+          {t.role}
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" aria-hidden />
         </a>
       </Reveal>

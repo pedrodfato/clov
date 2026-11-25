@@ -4,11 +4,13 @@ import { useEffect, useLayoutEffect, useRef } from "react"
 import gsap from "gsap"
 import { X } from "lucide-react"
 import StartChallengeButton from "./StartChallengeButton"
-import { WHATSAPP } from "./contato"
+import type { Dicionario } from "@/dicionarios/pt"
 
 type Ponto = [number, number]
 type Props = {
     links: { label: string; href: string }[]
+    rotulos: Pick<Dicionario["header"], "menu" | "fecharMenu" | "cta">
+    whatsapp: string
     // Elementos que aparecem no "print": o header fixo e o botão que foi tocado.
     navRef: React.RefObject<HTMLElement | null>
     origemRef: React.RefObject<HTMLButtonElement | null>
@@ -23,7 +25,7 @@ type Props = {
  * caco. Rasterizar o DOM de verdade (html-to-image e afins) levaria meio
  * segundo num celular, e o menu precisa responder no toque.
  */
-export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Props) {
+export default function MenuQuebrado({ links, rotulos, whatsapp, navRef, origemRef, onFechado }: Props) {
     const overlayRef = useRef<HTMLDivElement>(null)
     const camadaRef = useRef<HTMLDivElement>(null)
     const svgRef = useRef<SVGSVGElement>(null)
@@ -227,7 +229,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
             ref={overlayRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Menu"
+            aria-label={rotulos.menu}
             // touch-none: com a tela "congelada", arrastar não pode rolar a página por trás.
             className="invisible fixed inset-0 z-[60] touch-none overscroll-contain bg-[#050505] lg:hidden"
         >
@@ -240,7 +242,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                 data-item
                 data-fechar
                 onClick={() => fecharRef.current("remontar")}
-                aria-label="Fechar menu"
+                aria-label={rotulos.fecharMenu}
                 className="absolute right-6 top-5 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur-xl"
             >
                 <X className="h-4 w-4" aria-hidden />
@@ -262,7 +264,7 @@ export default function MenuQuebrado({ links, navRef, origemRef, onFechado }: Pr
                     ))}
                 </ul>
                 <div data-item data-sai className="mt-10">
-                    <StartChallengeButton href={WHATSAPP}>Fale conosco</StartChallengeButton>
+                    <StartChallengeButton href={whatsapp}>{rotulos.cta}</StartChallengeButton>
                 </div>
             </nav>
         </div>

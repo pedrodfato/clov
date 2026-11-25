@@ -4,9 +4,8 @@ export const SITE = "https://www.clov.com.br";
 export const EMAIL = "contato@clov.com.br";
 export const TELEFONE = "+55 14 99184-7482";
 
-const MENSAGEM = "Olá! Vim pelo site da Clov e gostaria de conversar sobre um projeto.";
+// A mensagem pronta de cada idioma fica nos dicionários.
 export const whatsapp = (mensagem: string) => `https://wa.me/5514991847482?text=${encodeURIComponent(mensagem)}`;
-export const WHATSAPP = whatsapp(MENSAGEM);
 
 // Geometria oficial do Simple Icons (simpleicons.org), copiada em vez de
 // instalada: o lucide-react do projeto não traz mais ícones de marca, e o

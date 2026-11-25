@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Reveal from "../Reveal";
 import Etiqueta from "./Etiqueta";
+import type { Dicionario } from "@/dicionarios/pt";
 
 // Plataformas em cima, código embaixo, correndo em sentidos opostos.
 const PLATAFORMAS = ["WordPress", "Elementor", "Shopify", "n8n", "Zapier", "Make", "Wix"];
@@ -35,7 +36,7 @@ function Faixa({ itens, reverso = false }: { itens: string[]; reverso?: boolean 
 
 // Composição do "portfolio" da referência: palavra gigante ao fundo, a foto do
 // fundador no meio, na frente dela, título à esquerda e texto à direita.
-export default function QuemSomos() {
+export default function QuemSomos({ t }: { t: Dicionario["quemSomos"] }) {
   return (
     <section id="quem-somos" className="relative w-full overflow-hidden bg-surface pt-16 md:pt-28">
      
@@ -59,20 +60,19 @@ export default function QuemSomos() {
         y={60}
         className="pointer-events-none absolute inset-x-0 bottom-[22%] select-none whitespace-nowrap text-center text-[19vw] font-normal leading-none tracking-[-0.05em] text-white/[0.04] lg:bottom-auto lg:top-12"
       >
-        <span aria-hidden className="block">Fundador</span>
+        <span aria-hidden className="block">{t.fundo}</span>
       </Reveal>
 
       <div className="relative mx-auto grid w-full max-w-[1400px] items-end gap-12 px-6 sm:px-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-10">
         <Reveal targets="[data-r]" stagger={0.12} className="flex flex-col items-start gap-5 lg:pb-28">
           <div data-r>
-            <Etiqueta>Quem somos?</Etiqueta>
+            <Etiqueta>{t.etiqueta}</Etiqueta>
           </div>
           <h2
             data-r
             className="max-w-[11ch] text-balance text-[38px] font-normal leading-[1.02] tracking-[-0.035em] text-ink sm:text-[52px] lg:text-[60px]"
           >
-            Quem está por trás da <span className="titulo-brilho">Clov?
-</span>
+            {t.titulo[0]} <span className="titulo-brilho">{t.titulo[1]}</span>
           </h2>
         </Reveal>
 
@@ -80,7 +80,7 @@ export default function QuemSomos() {
         <Reveal y={48} delay={0.1} className="relative z-10 order-last mx-auto w-[min(505px,82vw)] lg:order-none">
           <Image
             src="/fundador.webp"
-            alt="Fundador da Clov"
+            alt={t.alt}
             width={920}
             height={1141}
             sizes="(max-width: 768px) 82vw, 460px"
@@ -97,12 +97,9 @@ export default function QuemSomos() {
           stagger={0.14}
           className="flex max-w-[60ch] flex-col gap-5 text-[17px] leading-relaxed text-white/78 lg:justify-self-end lg:pb-28"
         >
-          <p>
-            Sou Pedro, desenvolvedor e fundador da Clov.</p><p>
-
-Há mais de 5 anos construo sites, sistemas e automações para empresas no Brasil e no exterior. Passei por agência, liderei equipe e vi de perto como um projeto se perde quando passa por muitas mãos.
-          </p>
-          <p>Criei a Clov para ser o contrário: tecnologia sem distância nem complicação.</p>
+          {t.paragrafos.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
         </Reveal>
       </div>
 

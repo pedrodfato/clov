@@ -5,20 +5,16 @@ import gsap from "gsap"
 import Image from "next/image"
 import Link from "next/link"
 import StartChallengeButton from "./StartChallengeButton"
-import { WHATSAPP } from "./contato"
 import MenuQuebrado from "./MenuQuebrado"
+import TrocaIdioma from "./TrocaIdioma"
 import { semIntro } from "./IntroReveal"
+import type { Dicionario } from "@/dicionarios/pt"
+import { caminho, type Idioma } from "@/dicionarios/idiomas"
 
-const NAV_LINKS = [
-    { label: "Início", href: "#" },
-    { label: "Quem somos", href: "#quem-somos" },
-    { label: "Como funciona", href: "#metodologia" },
-    { label: "Soluções", href: "#solucoes" },
-    { label: "Projetos", href: "#projetos" },
-    { label: "FAQ", href: "#faq" },
-]
+type Props = { t: Dicionario["header"]; idioma: Idioma; whatsapp: string }
 
-export default function Header() {
+export default function Header({ t, idioma, whatsapp }: Props) {
+    const links = t.links
     const [hidden, setHidden] = useState(false)
     // Link da seção que está no meio da tela; "#" (Início) no topo da página.
     const [ativo, setAtivo] = useState("#")
@@ -71,7 +67,7 @@ export default function Header() {
 
     // Acende o link da seção que cruza a faixa do meio da tela.
     useEffect(() => {
-        const secoes = NAV_LINKS.map((l) => l.href)
+        const secoes = links.map((l) => l.href)
             .filter((h) => h !== "#")
             .map((h) => document.querySelector(h))
             .filter((el): el is Element => el !== null)
@@ -83,14 +79,14 @@ export default function Header() {
                     if (e.isIntersecting) visiveis.add(`#${e.target.id}`)
                     else visiveis.delete(`#${e.target.id}`)
                 }
-                const atual = NAV_LINKS.map((l) => l.href).filter((h) => visiveis.has(h)).pop()
+                const atual = links.map((l) => l.href).filter((h) => visiveis.has(h)).pop()
                 setAtivo(atual ?? "#")
             },
             { rootMargin: "-45% 0px -50% 0px" }
         )
         secoes.forEach((s) => io.observe(s))
         return () => io.disconnect()
-    }, [])
+    }, [links])
 
     return (
         <>
@@ -105,7 +101,7 @@ export default function Header() {
             <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/90 via-black/50 to-transparent lg:hidden" />
             <div className="relative mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-6 sm:px-10">
                 <div className="flex items-center gap-6">
-                    <Link href="/" data-entra className="flex flex-shrink-0 items-center">
+                    <Link href={caminho(idioma)} data-entra className="flex flex-shrink-0 items-center">
                         <Image
                             src="/logoclov.svg"
                             alt="Clov"
@@ -117,7 +113,7 @@ export default function Header() {
                     </Link>
 
                     <div data-entra className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl backdrop-saturate-150 lg:flex">
-                        {NAV_LINKS.map((link) => {
+                        {links.map((link) => {
                             const aceso = link.href === ativo
                             return (
                                 <a
@@ -138,31 +134,46 @@ export default function Header() {
                     </div>
                 </div>
 
-                {/* No celular o botão vai para dentro do menu. */}
-                <div data-entra className="hidden lg:block">
-                    <StartChallengeButton href={WHATSAPP} className="text-[12px]!">
-                        Fale conosco
-                    </StartChallengeButton>
-                </div>
+                <div className="flex items-center gap-3">
+                    <div data-entra>
+                        <TrocaIdioma idioma={idioma} rotulo={t.trocarIdioma} />
+                    </div>
 
-                <button
-                    ref={botaoRef}
-                    type="button"
-                    onClick={() => setMenu(true)}
-                    aria-label="Abrir menu"
-                    aria-expanded={menu}
-                    data-entra
-                    className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:hidden"
-                >
-                    <span className="h-px w-4 bg-white" />
-                    <span className="h-px w-4 bg-white" />
-                </button>
+                    {/* No celular o botão vai para dentro do menu. */}
+                    <div data-entra className="hidden lg:block">
+                        <StartChallengeButton href={whatsapp} className="text-[12px]!">
+                            {t.cta}
+                        </StartChallengeButton>
+                    </div>
+
+                    <button
+                        ref={botaoRef}
+                        type="button"
+                        onClick={() => setMenu(true)}
+                        aria-label={t.abrirMenu}
+                        aria-expanded={menu}
+                        data-entra
+                        className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl lg:hidden"
+                    >
+                        <span className="h-px w-4 bg-white" />
+                        <span className="h-px w-4 bg-white" />
+                    </button>
+                </div>
             </div>
         </nav>
 
         {/* Fora do <nav>: o translate dele viraria o bloco de contenção do
             overlay fixo, que passaria a medir o header em vez da tela. */}
-        {menu && <MenuQuebrado links={NAV_LINKS} navRef={navRef} origemRef={botaoRef} onFechado={fecharMenu} />}
+        {menu && (
+            <MenuQuebrado
+                links={links}
+                rotulos={t}
+                whatsapp={whatsapp}
+                navRef={navRef}
+                origemRef={botaoRef}
+                onFechado={fecharMenu}
+            />
+        )}
         </>
     )
 }

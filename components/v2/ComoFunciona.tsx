@@ -6,43 +6,21 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Check } from "lucide-react";
 import Reveal from "../Reveal";
 import useTelaGrande from "../useTelaGrande";
+import type { Dicionario } from "@/dicionarios/pt";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ETAPAS = [
-  {
-    titulo: "Diagnóstico primeiro",
-    texto: "A gente acha o que trava o negócio antes de propor qualquer coisa.",
-  },
-  {
-    titulo: "Escopo fechado",
-    texto: "Prazo, preço e entregas na mesa antes da primeira linha de código.",
-  },
-  {
-    titulo: "Você acompanha de perto",
-    texto: "Veja o projeto ganhar forma e participe das decisões a cada etapa.",
-  },
-  {
-    titulo: "Você sai com tudo",
-    texto: "Documentação, acessos e 30 dias de suporte depois da entrega.",
-  },
-];
-
 // Cartões de interface que ilustram cada etapa, no lugar das telas do app da
 // referência. Os itens do diagnóstico são exemplo, e estão marcados assim.
-function Cartao({ etapa }: { etapa: number }) {
+function Cartao({ etapa, c }: { etapa: number; c: Dicionario["comoFunciona"]["cartoes"] }) {
   const linha = "flex items-center justify-between gap-6 border-t border-white/[0.06] py-3 text-[15px]";
   const ok = <Check className="h-3.5 w-3.5 text-brand" strokeWidth={2.5} aria-hidden />;
 
   const conteudo = [
     <>
-      <p className="text-[14px] text-white/75">Leitura do cenário · exemplo</p>
+      <p className="text-[14px] text-white/75">{c.leitura}</p>
       <div className="mt-3">
-        {[
-          ["CRM e financeiro", "sem integração"],
-          ["Pedidos", "copiados à mão"],
-          ["Site", "lento no celular"],
-        ].map(([a, b]) => (
+        {c.cenario.map(([a, b]) => (
           <div key={a} className={linha}>
             <span className="text-white/88">{a}</span>
             <span className="flex items-center gap-2 text-white/78">
@@ -54,30 +32,30 @@ function Cartao({ etapa }: { etapa: number }) {
       </div>
     </>,
     <>
-      <p className="text-[14px] text-white/75">Proposta</p>
+      <p className="text-[14px] text-white/75">{c.proposta}</p>
       <div className="mt-3">
-        {["Prazo", "Preço", "Entregas"].map((a) => (
+        {c.itensProposta.map((a) => (
           <div key={a} className={linha}>
             <span className="text-white/88">{a}</span>
-            <span className="flex items-center gap-2 text-white/78">definido {ok}</span>
+            <span className="flex items-center gap-2 text-white/78">{c.definido} {ok}</span>
           </div>
         ))}
       </div>
     </>,
     <>
-      <p className="text-[14px] text-white/75">Acompanhamento</p>
-      <p className="mt-3 text-[22px] tracking-[-0.02em] text-ink">Versão navegável no ar</p>
+      <p className="text-[14px] text-white/75">{c.acompanhamento}</p>
+      <p className="mt-3 text-[22px] tracking-[-0.02em] text-ink">{c.versao}</p>
       <div className="mt-5 flex gap-1.5">
         {Array.from({ length: 8 }, (_, i) => (
           <span key={i} className={`h-1.5 flex-1 rounded-full ${i < 5 ? "bg-brand shadow-[0_0_8px_rgba(0,232,122,0.6)]" : "bg-white/10"}`} />
         ))}
       </div>
-      <p className="mt-3 text-[14px] text-white/75">Você participa das decisões a cada etapa</p>
+      <p className="mt-3 text-[14px] text-white/75">{c.participa}</p>
     </>,
     <>
-      <p className="text-[14px] text-white/75">Encerramento</p>
+      <p className="text-[14px] text-white/75">{c.encerramento}</p>
       <div className="mt-3">
-        {["Documentação", "Acessos no seu nome", "30 dias de suporte"].map((a) => (
+        {c.itensEncerramento.map((a) => (
           <div key={a} className={linha}>
             <span className="text-white/88">{a}</span>
             {ok}
@@ -117,7 +95,9 @@ function Onda() {
   );
 }
 
-export default function ComoFunciona() {
+export default function ComoFunciona({ t }: { t: Dicionario["comoFunciona"] }) {
+  const ETAPAS = t.etapas;
+  const total = ETAPAS.length;
   const secaoRef = useRef<HTMLElement>(null);
   const [ativa, setAtiva] = useState(0);
   const barrasRef = useRef<(HTMLSpanElement | null)[]>([]);
@@ -134,7 +114,7 @@ export default function ComoFunciona() {
     const st = ScrollTrigger.create({
       trigger: secao,
       start: "top top",
-      end: `+=${ETAPAS.length * 45}%`,
+      end: `+=${total * 45}%`,
       pin: true,
       scrub: true,
       // As barras enchem direto no estilo: guardar o progresso em estado
@@ -142,16 +122,16 @@ export default function ComoFunciona() {
       // O estado só muda quando troca de etapa.
       onUpdate: (self) => {
         barras.forEach((b, i) => {
-          if (b) b.style.width = `${Math.min(1, Math.max(0, self.progress * ETAPAS.length - i)) * 100}%`;
+          if (b) b.style.width = `${Math.min(1, Math.max(0, self.progress * total - i)) * 100}%`;
         });
-        setAtiva(Math.min(ETAPAS.length - 1, Math.floor(self.progress * ETAPAS.length)));
+        setAtiva(Math.min(total - 1, Math.floor(self.progress * total)));
       },
     });
     return () => {
       st.kill();
       barras.forEach((b) => b?.style.removeProperty("width"));
     };
-  }, [telaGrande]);
+  }, [telaGrande, total]);
 
   return (
     <section
@@ -162,9 +142,9 @@ export default function ComoFunciona() {
       <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center">
         <Reveal split className="text-center">
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
-            Como funciona?
+            {t.titulo}
           </h2>
-          <p className="mt-3 text-[17px] text-white/78">As mesmas quatro etapas em todo projeto.</p>
+          <p className="mt-3 text-[17px] text-white/78">{t.subtitulo}</p>
         </Reveal>
 
         {/* Painel único: no celular ele sai de cena e cada etapa leva o seu
@@ -182,7 +162,7 @@ export default function ComoFunciona() {
                   i === ativa ? "opacity-100" : "pointer-events-none translate-y-4 opacity-0"
                 }`}
               >
-                <Cartao etapa={i} />
+                <Cartao etapa={i} c={t.cartoes} />
               </div>
             ))}
           </div>
@@ -207,12 +187,12 @@ export default function ComoFunciona() {
                 <div className="relative flex items-center justify-center overflow-hidden rounded-2xl border border-brand/20 bg-[#070b09] px-4 py-7 shadow-[inset_0_0_60px_rgba(0,232,122,0.06)] md:hidden">
                   <Onda />
                   <div className="relative">
-                    <Cartao etapa={i} />
+                    <Cartao etapa={i} c={t.cartoes} />
                   </div>
                 </div>
 
                 <span className={`text-[13px] uppercase tracking-[0.2em] ${acesa ? "text-brand" : "text-white/55"}`}>
-                  Etapa {i + 1}
+                  {t.etapa} {i + 1}
                 </span>
                 <div className={`transition-opacity duration-500 ${acesa ? "opacity-100" : "opacity-35"}`}>
                   <h3 className="text-[17px] text-ink">{e.titulo}</h3>

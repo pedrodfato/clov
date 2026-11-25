@@ -7,11 +7,7 @@ import useTelaGrande from "../useTelaGrande";
 // As três etapas, cada uma numa face do cubo. O corpo é por palavra: as três
 // têm comprimentos bem diferentes. A caixa do cubo se mede pelo maior, então
 // dá para mexer nestes números sem acertar mais nada.
-const PALAVRAS = [
-  { texto: "Análise", corpo: 68 },
-  { texto: "Desenvolvimento", corpo: 53 },
-  { texto: "Deploy", corpo: 70 }, 
-];
+const CORPOS = [68, 53, 70];
 
 // Quantos cubos empilhados e quanto a pilha inclina, em graus. O giro entra
 // na conta da escala: inclinada, a pilha ocupa muito mais largura.
@@ -33,7 +29,8 @@ const ROTS = [
 // Verde da marca variando pouco ao longo da pilha, do mais quente ao mais frio.
 const cor = (i: number, n: number, luz: number) => `hsl(${(i / n) * 28 + 142}, 88%, ${100 * luz}%)`;
 
-export default function PalavrasGirando() {
+export default function PalavrasGirando({ palavras }: { palavras: string[] }) {
+  const PALAVRAS = palavras.map((texto, i) => ({ texto, corpo: CORPOS[i] }));
   const povRef = useRef<HTMLDivElement>(null);
   const trayRef = useRef<HTMLDivElement>(null);
   const n = useTelaGrande() ? N_DESKTOP : N_CELULAR;

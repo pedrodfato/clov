@@ -8,30 +8,32 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import useTelaGrande from "../useTelaGrande";
 import { ENTRADA } from "../Reveal";
+import type { Dicionario } from "@/dicionarios/pt";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-type Projeto = { nome: string; desc: string; img: string; href?: string; dominio?: string };
+type Projeto = { nome: string; img: string; href?: string; dominio?: string };
 
 // Sem href = ainda em desenvolvimento: card cinza, faixa WIP e nenhum link.
+// A descrição de cada um vem do dicionário, pelo nome.
 const PROJETOS: Projeto[] = [
-  { nome: "FinalForms", desc: "Plataforma para escolas", href: "https://www.finalforms.com/", dominio: "finalforms.com", img: "/projects/finalforms.jpg" },
-  { nome: "IH Roma", desc: "Escola de idiomas", href: "https://ihroma.it/", dominio: "ihroma.it", img: "/projects/ihroma.jpg" },
-  { nome: "Dazze Móveis", desc: "E-commerce de móveis", href: "https://dazzemoveis.com.br/", dominio: "dazzemoveis.com.br", img: "/projects/dazze.jpg" },
-  { nome: "Borba Services", desc: "Telhados, calhas e pisos", href: "https://borbaservicesllc.com/", dominio: "borbaservicesllc.com", img: "/projects/borba.jpg" },
-  { nome: "MedTracker", desc: "App de lembretes de remédios", href: "https://med.clov.com.br/", dominio: "med.clov.com.br", img: "/projects/medtracker.jpg" },
-  { nome: "Marina Alves", desc: "Estúdio de yoga e pilates", img: "/projects/marina-alves.jpg" },
-  { nome: "Rafael Andrade", desc: "Escritório de advocacia", img: "/projects/rafael-andrade.jpg" },
+  { nome: "FinalForms", href: "https://www.finalforms.com/", dominio: "finalforms.com", img: "/projects/finalforms.jpg" },
+  { nome: "IH Roma", href: "https://ihroma.it/", dominio: "ihroma.it", img: "/projects/ihroma.jpg" },
+  { nome: "Dazze Móveis", href: "https://dazzemoveis.com.br/", dominio: "dazzemoveis.com.br", img: "/projects/dazze.jpg" },
+  { nome: "Borba Services", href: "https://borbaservicesllc.com/", dominio: "borbaservicesllc.com", img: "/projects/borba.jpg" },
+  { nome: "MedTracker", href: "https://med.clov.com.br/", dominio: "med.clov.com.br", img: "/projects/medtracker.jpg" },
+  { nome: "Marina Alves", img: "/projects/marina-alves.jpg" },
+  { nome: "Rafael Andrade", img: "/projects/rafael-andrade.jpg" },
 ];
 
 // Fita atravessada no card, como obra interditada.
-function FaixaWip() {
+function FaixaWip({ texto }: { texto: string }) {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
       <div className="flex w-[140%] -rotate-[8deg] justify-around gap-8 bg-[repeating-linear-gradient(-45deg,#00e87a_0_14px,#061910_14px_28px)] py-1">
         <div className="flex w-full justify-around gap-8 bg-[#0a0a0a]/90 py-2.5 font-mono text-[15px] font-semibold uppercase tracking-[0.35em] text-brand">
           {Array.from({ length: 6 }, (_, i) => (
-            <span key={i} className="shrink-0">WIP · Em desenvolvimento</span>
+            <span key={i} className="shrink-0">WIP · {texto}</span>
           ))}
         </div>
       </div>
@@ -51,7 +53,7 @@ const assinaMovimento = (avisa: () => void) => {
 // Galeria em fila, como uma sala escura com as telas penduradas: o scroll
 // vertical anda a fila na horizontal, a tela do centro acende e as vizinhas
 // giram para dentro e perdem a cor. Embaixo, a ficha do projeto da vez.
-export default function Projetos() {
+export default function Projetos({ t }: { t: Dicionario["projetos"] }) {
   const secaoRef = useRef<HTMLElement>(null);
   const trilhoRef = useRef<HTMLDivElement>(null);
   const stRef = useRef<ScrollTrigger | null>(null);
@@ -175,15 +177,15 @@ export default function Projetos() {
       {/* Na tela grande o título fica só para leitores de tela (quem vê tem o
           PROJETOS na lateral); no celular ele aparece, com o aviso de arrastar. */}
       {animado ? (
-        <h2 className="sr-only">Projetos e parcerias</h2>
+        <h2 className="sr-only">{t.titulo} {t.subtitulo}</h2>
       ) : (
         <div data-entra className="relative flex items-end justify-between gap-6 px-6 sm:px-10">
           <h2 className="text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
-            <span className="titulo-brilho">Projetos</span>
-            <span className="mt-1.5 block text-[20px] tracking-[-0.02em] text-white/70 sm:text-[24px]">e parcerias</span>
+            <span className="titulo-brilho">{t.titulo}</span>
+            <span className="mt-1.5 block text-[20px] tracking-[-0.02em] text-white/70 sm:text-[24px]">{t.subtitulo}</span>
           </h2>
           <span className="flex shrink-0 items-center gap-2 pb-1.5 font-mono text-[13px] uppercase tracking-[0.18em] text-white/65">
-            Arraste
+            {t.arraste}
             <ArrowRight className="v2-cutuca h-3.5 w-3.5 text-brand" aria-hidden />
           </span>
         </div>
@@ -211,8 +213,8 @@ export default function Projetos() {
           >
             {/* Subtítulo encostado no começo do título, como numa ficha. */}
             <span className="flex flex-col items-start gap-[0.12em]">
-              PROJETOS
-              <span className="text-[0.3em] tracking-[0.04em] text-white/[0.1]">e parcerias</span>
+              {t.titulo.toUpperCase()}
+              <span className="text-[0.3em] tracking-[0.04em] text-white/[0.1]">{t.subtitulo}</span>
             </span>
           </span>
         )}
@@ -239,13 +241,13 @@ export default function Projetos() {
               >
                 <Image
                   src={proj.img}
-                  alt={`Site da ${proj.nome}`}
+                  alt={t.alt.replace("{x}", proj.nome)}
                   fill
                   sizes="(max-width: 1024px) 82vw, 900px"
                   className={`object-cover object-top ${proj.href ? "" : "opacity-60 grayscale"}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#070b09]/70 via-transparent to-transparent" />
-                {!proj.href && <FaixaWip />}
+                {!proj.href && <FaixaWip texto={t.emDesenvolvimento} />}
               </div>
 
               {/* Sem pin, a ficha vai embaixo de cada card. */}
@@ -253,10 +255,10 @@ export default function Projetos() {
                 <div className="flex items-baseline justify-between gap-4 px-1">
                   <div>
                     <h3 className="text-[20px] tracking-[-0.02em] text-ink">{proj.nome}</h3>
-                    <p className="text-[15px] text-white/75">{proj.desc}</p>
+                    <p className="text-[15px] text-white/75">{t.descricoes[proj.nome]}</p>
                   </div>
                   <span className="flex items-center gap-1 text-[14px] text-white/50">
-                    {proj.dominio ?? "Em desenvolvimento"}
+                    {proj.dominio ?? t.emDesenvolvimento}
                     {proj.href && <ArrowUpRight className="h-3 w-3" aria-hidden />}
                   </span>
                 </div>
@@ -283,15 +285,15 @@ export default function Projetos() {
       {animado && (
         <div data-entra className="relative grid grid-cols-[1fr_1.4fr_1fr_auto] items-start gap-10 border-t border-white/10 px-10 pb-10 pt-6 font-mono text-[13px] uppercase tracking-[0.18em]">
           <div>
-            <span className="text-white/55">Projeto</span>
+            <span className="text-white/55">{t.projeto}</span>
             <p className="mt-2 font-sans text-[22px] normal-case tracking-[-0.02em] text-ink">{p.nome}</p>
           </div>
           <div>
-            <span className="text-white/55">Sobre</span>
-            <p className="mt-2 text-white/85">{p.desc}</p>
+            <span className="text-white/55">{t.sobre}</span>
+            <p className="mt-2 text-white/85">{t.descricoes[p.nome]}</p>
           </div>
           <div>
-            <span className="text-white/55">Site</span>
+            <span className="text-white/55">{t.site}</span>
             {p.href ? (
               <a
                 href={p.href}
@@ -303,7 +305,7 @@ export default function Projetos() {
                 <ArrowUpRight className="h-3 w-3" aria-hidden />
               </a>
             ) : (
-              <p className="mt-2 text-white/55">Em desenvolvimento</p>
+              <p className="mt-2 text-white/55">{t.emDesenvolvimento}</p>
             )}
           </div>
           <div className="flex gap-2">
@@ -312,7 +314,7 @@ export default function Projetos() {
                 key={proj.nome}
                 type="button"
                 onClick={() => irPara(i)}
-                aria-label={`Ver ${proj.nome}`}
+                aria-label={t.ver.replace("{x}", proj.nome)}
                 aria-current={i === ativo}
                 className={`relative h-9 w-14 overflow-hidden rounded-md border transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
                   i === ativo ? "border-brand opacity-100" : "border-white/15 opacity-45 grayscale hover:opacity-80"

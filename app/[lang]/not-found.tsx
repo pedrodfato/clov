@@ -1,8 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
+import { lang } from "next/root-params";
+import { dicionario } from "@/dicionarios";
+import { caminho, idiomaDe } from "@/dicionarios/idiomas";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const idioma = idiomaDe(await lang());
+  const t = dicionario(idioma).naoEncontrada;
+
   return (
     <section className="relative flex min-h-[100svh] w-full flex-col items-center justify-center overflow-hidden px-6 text-center">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -24,15 +30,15 @@ export default function NotFound() {
       </div>
 
       <p className="relative mt-4 max-w-[420px] font-mono text-white/50">
-        Não encontramos a página que você estava procurando.
+        {t.texto}
       </p>
 
       <Link
-        href="/"
+        href={caminho(idioma)}
         className="group relative mt-8 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-[15px] font-mono text-white/70 transition-all duration-300 hover:border-[#00E87A]/40 hover:text-white"
       >
         <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
-        Voltar para o início
+        {t.voltar}
       </Link>
     </section>
   );

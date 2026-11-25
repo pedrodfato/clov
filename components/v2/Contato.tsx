@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Reveal from "../Reveal";
 import StartChallengeButton from "../StartChallengeButton";
-import { WHATSAPP } from "../contato";
+import type { Dicionario } from "@/dicionarios/pt";
 
 // Cena do planeta com estrelas (mesmo vocabulário da v1, que já existia em
 // globals.css) e o trevo aceso, como o "Join us today" da referência.
-export default function Contato() {
+export default function Contato({ t, whatsapp }: { t: Dicionario["contato"]; whatsapp: string }) {
   return (
     <section
       id="contato"
@@ -37,15 +37,13 @@ export default function Contato() {
           data-r
           className="v2-glow text-balance text-[36px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[54px]"
         >
-          <span className="titulo-brilho">Conte o que precisa</span> <br /> A gente responde em até 24h
+          <span className="titulo-brilho">{t.titulo[0]}</span> <br /> {t.titulo[1]}
         </h2>
         <p data-r className="max-w-[52ch] text-[17px] leading-relaxed text-white/82">
-          A primeira conversa dura em média 30 minutos e não custa nada. Depois dela, a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.
+          {t.texto}
         </p>
         <div data-r className="mt-2 flex flex-wrap items-center justify-center gap-3">
-          <StartChallengeButton href={WHATSAPP}>
-            Agendar diagnóstico
-          </StartChallengeButton>
+          <StartChallengeButton href={whatsapp}>{t.cta}</StartChallengeButton>
         </div>
       </Reveal>
     </section>

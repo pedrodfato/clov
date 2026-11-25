@@ -7,21 +7,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import Reveal from "../Reveal";
 import ParticulasRodape from "./ParticulasRodape";
-import { BEHANCE, EMAIL, SOCIAIS, TELEFONE, WHATSAPP } from "../contato";
+import { BEHANCE, EMAIL, SOCIAIS, TELEFONE } from "../contato";
+import type { Dicionario } from "@/dicionarios/pt";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const LINKS = [
-  { label: "Quem somos", href: "#quem-somos" },
-  { label: "Como funciona", href: "#metodologia" },
-  { label: "Soluções", href: "#solucoes" },
-  { label: "Projetos", href: "#projetos" },
-  { label: "FAQ", href: "#faq" },
-];
-
 // Rodapé da referência: frase gigante cortada no topo com luz verde por trás,
 // convite no meio e colunas embaixo.
-export default function Rodape() {
+type Props = { t: Dicionario["rodape"]; links: Dicionario["header"]["links"]; whatsapp: string };
+
+export default function Rodape({ t, links, whatsapp }: Props) {
   const link = "text-[16px] text-white/78 transition-colors hover:text-brand";
 
   useEffect(() => {
@@ -52,8 +47,8 @@ export default function Rodape() {
           stagger={0.1}
           className="absolute inset-x-0 bottom-[-0.12em] select-none text-center text-[19vw] font-normal leading-[0.92] tracking-[-0.06em] text-ink md:hidden"
         >
-          <div>Vamos</div>
-          <div>conversar</div>
+          <div>{t.letreiro[0]}</div>
+          <div>{t.letreiro[1]}</div>
         </Reveal>
 
         {/* Duas cópias lado a lado: a animação anda metade e emenda sem salto. */}
@@ -65,8 +60,8 @@ export default function Rodape() {
         >
           <div>
             <div className="v2-letreiro v2-letreiro-rodape flex shrink-0">
-              <span className="pr-[0.4em]">Vamos conversar</span>
-              <span className="pr-[0.4em]">Vamos conversar</span>
+              <span className="pr-[0.4em]">{t.letreiro.join(" ")}</span>
+              <span className="pr-[0.4em]">{t.letreiro.join(" ")}</span>
             </div>
           </div>
         </Reveal>
@@ -82,20 +77,20 @@ export default function Rodape() {
           <div className="flex flex-col items-start gap-4">
             <Image src="/logoclov.svg" alt="Clov" width={260} height={104} unoptimized className="h-8 w-auto" />
             <p className="max-w-[26ch] text-[15px] leading-relaxed text-white/75">
-              Os sistemas digitais por trás de empresas que estão crescendo.
+              {t.frase}
             </p>
             <a
-              href={WHATSAPP}
+              href={whatsapp}
               className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-[14px] text-white/85 transition-colors hover:border-brand/40 hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
             >
-              Entre em contato
+              {t.contato}
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
             </a>
           </div>
 
           <nav className="flex flex-col gap-3">
-            <h3 className="mb-1 text-[16px] text-ink">Navegação</h3>
-            {LINKS.map((l) => (
+            <h3 className="mb-1 text-[16px] text-ink">{t.navegacao}</h3>
+            {links.filter((l) => l.href !== "#").map((l) => (
               <a key={l.href} href={l.href} className={link}>
                 {l.label}
               </a>
@@ -103,8 +98,8 @@ export default function Rodape() {
           </nav>
 
           <div className="flex flex-col gap-3">
-            <h3 className="mb-1 text-[16px] text-ink">Contato</h3>
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className={`${link} flex items-center gap-2`}>
+            <h3 className="mb-1 text-[16px] text-ink">{t.tituloContato}</h3>
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className={`${link} flex items-center gap-2`}>
               <Phone className="h-3.5 w-3.5 text-brand/70" aria-hidden />
               {TELEFONE}
             </a>
@@ -114,12 +109,12 @@ export default function Rodape() {
             </a>
             <span className="flex items-center gap-2 text-[16px] text-white/78">
               <MapPin className="h-3.5 w-3.5 text-brand/70" aria-hidden />
-              São Paulo, Brasil
+              {t.local}
             </span>
           </div>
 
           <div className="flex flex-col gap-3">
-            <h3 className="mb-1 text-[16px] text-ink">Siga</h3>
+            <h3 className="mb-1 text-[16px] text-ink">{t.siga}</h3>
             <div className="flex gap-3">
               {[...SOCIAIS, BEHANCE].map((s) => (
                 <a

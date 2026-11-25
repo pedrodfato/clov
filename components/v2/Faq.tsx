@@ -1,46 +1,20 @@
 import { Plus } from "lucide-react";
 import Reveal from "../Reveal";
+import type { Dicionario } from "@/dicionarios/pt";
 
-const PERGUNTAS = [
-  {
-    q: "Precisamos contratar tudo de uma vez?",
-    a: "Não. Dá para começar pela camada que está doendo agora, seja o site, uma integração ou uma automação. A arquitetura já é montada para o resto entrar depois, quando você quiser.",
-  },
-  {
-    q: "Por que não contratar uma agência e um dev separados?",
-    a: "Porque aí você vira o gerente de projeto dos dois. Aqui quem desenha é quem constrói, então não existe a conversa em que um lado explica por que a culpa é do outro.",
-  },
-  {
-    q: "Vocês vão entender o nosso negócio?",
-    a: "É a primeira etapa, antes de qualquer proposta. E é o que os clientes mais comentam: você explica uma vez e não precisa repetir.",
-  },
-  {
-    q: "E os sistemas que a gente já usa?",
-    a: "Continuam. Quase nunca chegamos numa folha em branco, e o trabalho costuma ser integrar ou substituir alguma coisa que está rodando e não pode parar.",
-  },
-  {
-    q: "Como é o primeiro passo, na prática?",
-    a: "Uma conversa de 30 minutos em média, sem custo. Depois dela a gente volta com uma leitura do que está travando e do que construiria primeiro. Proposta só quando o objetivo estiver claro.",
-  },
-  {
-    q: "O que acontece depois que vocês entregam?",
-    a: "Você fica com a documentação, os acessos no seu nome e 30 dias de suporte. Depois disso dá para seguir com acompanhamento mensal, se fizer sentido para os dois lados.",
-  },
-];
-
-export default function Faq() {
+export default function Faq({ t }: { t: Dicionario["faq"] }) {
   return (
     <section id="faq" className="relative w-full overflow-hidden bg-surface px-6 py-28 sm:px-10 md:py-36">
       <div aria-hidden className="v2-grade pointer-events-none absolute inset-0 opacity-60" />
       <div className="relative mx-auto flex w-full max-w-[760px] flex-col items-center">
         <Reveal split className="text-center">
           <h2 className="max-w-[20ch] text-balance text-[32px] font-normal leading-[1.08] tracking-[-0.03em] text-ink sm:text-[42px]">
-            Respostas para as perguntas mais frequentes
+            {t.titulo}
           </h2>
         </Reveal>
 
         <Reveal targets="details" stagger={0.06} className="mt-12 flex w-full flex-col gap-3">
-          {PERGUNTAS.map((p) => (
+          {t.perguntas.map((p) => (
             /* `name` compartilhado deixa o accordion exclusivo sem uma linha de JS. */
             <details
               key={p.q}

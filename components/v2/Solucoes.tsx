@@ -1,57 +1,34 @@
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "../Reveal";
 import { whatsapp } from "../contato";
-
-const CAMADAS = [
-  {
-    titulo: "Digital",
-    categoria: "o que o cliente vê",
-    texto:
-      "A camada visível: site, loja, as telas por onde o seu cliente passa. Rápidas, responsivas, com uma estrutura que leva o visitante até a ação.",
-    itens: ["Design UI/UX", "Landing Pages", "E-commerce", "Sites institucionais", "Performance & SEO"],
-  },
-  {
-    titulo: "Systems",
-    categoria: "o que faz a operação rodar",
-    texto:
-      "Conectamos o que você já usa, construímos as ferramentas internas que faltam e tiramos as pessoas do meio do caminho entre dois sistemas.",
-    itens: ["Integrações & APIs", "Ferramentas internas", "Migração de dados", "Painéis internos"],
-  },
-  {
-    titulo: "Intelligence",
-    categoria: "o que automatiza e decide",
-    texto:
-      "Agentes e fluxos que conversam com as ferramentas que você já tem, cortam retrabalho e encurtam o tempo entre a informação chegar e a decisão sair.",
-    itens: ["Automações", "Agentes & chatbots", "Fluxos com IA", "Relatórios automáticos"],
-  },
-];
+import type { Dicionario } from "@/dicionarios/pt";
 
 // Lista editorial em vez de três cards: uma linha por camada, e cada linha é
 // um atalho para conversar sobre ela no WhatsApp. No hover a linha acende
 // (painel, fio verde que corre no topo, numeral e seta), sem mexer no layout.
-export default function Solucoes() {
+export default function Solucoes({ t }: { t: Dicionario["solucoes"] }) {
   return (
     <section id="solucoes" className="relative w-full overflow-hidden bg-surface px-6 py-28 sm:px-10 md:py-36">
       <div className="mx-auto w-full max-w-[1200px]">
         <Reveal split className="grid gap-6 md:grid-cols-[1.2fr_1fr] md:items-end md:gap-16">
           <h2 className="max-w-[16ch] text-[34px] font-normal leading-[1.05] tracking-[-0.03em] text-ink sm:text-[46px]">
-            Três camadas do mesmo sistema
+            {t.titulo}
           </h2>
           <p className="max-w-[44ch] text-[17px] leading-relaxed text-white/78 md:justify-self-end">
-            Quase sempre o trabalho começa em uma camada e o problema estava na de baixo.
+            {t.texto}
           </p>
         </Reveal>
 
         <div className="mt-14 border-t border-white/10 md:mt-16">
           <Reveal targets="[data-linha]" stagger={0.12}>
             <ul className="flex flex-col">
-            {CAMADAS.map((c, i) => (
+            {t.camadas.map((c, i) => (
               <li key={c.titulo} data-linha className="border-b border-white/10 last:border-b-0">
                 <a
-                  href={whatsapp(`Olá! Vim pelo site da Clov e quero conversar sobre ${c.titulo}.`)}
+                  href={whatsapp(t.mensagem.replace("{x}", c.titulo))}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Conversar sobre ${c.titulo} no WhatsApp`}
+                  aria-label={t.rotulo.replace("{x}", c.titulo)}
                   className="group relative my-2 grid grid-cols-[1fr_auto] gap-x-6 gap-y-5 rounded-2xl px-1 py-7 transition-[background-color,transform,box-shadow] duration-500 ease-out hover:-translate-y-0.5 hover:bg-surface-elevated hover:shadow-[inset_0_0_0_1px_rgba(0,232,122,0.18),0_30px_60px_-30px_rgba(0,232,122,0.25)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:px-6 md:grid-cols-[56px_1fr_1.35fr_auto] md:gap-x-8"
                 >
                   {/* Fio verde que corre pelo topo da linha no hover. */}

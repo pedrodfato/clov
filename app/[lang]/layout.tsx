@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import localfont from "next/font/local";
-import "./globals.css";
+import "../globals.css";
 import Header from "@/components/Header";
 import IntroReveal from "@/components/IntroReveal";
 import { INTRO_VISTA } from "@/components/intro";
 import { SITE } from "@/components/contato";
+import { dicionario } from "@/dicionarios";
+import { IDIOMAS, caminho, idiomaDe } from "@/dicionarios/idiomas";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const ppmori = localfont({
   src: [
     {
-      path: "./fonts/PPMori-Regular.woff2",
+      path: "../fonts/PPMori-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/PPMori-SemiBold.woff2",
+      path: "../fonts/PPMori-SemiBold.woff2",
       weight: "600",
       style: "normal",
     }
@@ -24,22 +26,35 @@ const ppmori = localfont({
   variable: "--font-ppmori",
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE),
-  // Uma só URL para o Google, mesmo chegando por clov.com.br sem www.
-  alternates: { canonical: "/" },
-  title: "Clov | Site, sistema próprio e IA para o seu negócio",
-  description:
-    "A Clov cria o site, o sistema próprio e a automação com IA do seu negócio. Time pequeno, preço fechado, acompanhamento de perto.",
-  icons: {
-    icon: "/faviconclov.svg",
-  },
-};
+// As duas versões saem prontas no build; o proxy escolhe qual servir.
+export const generateStaticParams = () => IDIOMAS.map((lang) => ({ lang }));
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
+  const idioma = idiomaDe((await params).lang);
+  const { meta } = dicionario(idioma);
+  return {
+    metadataBase: new URL(SITE),
+    title: meta.title,
+    description: meta.description,
+    // Uma URL por idioma para o Google, mesmo chegando por clov.com.br sem www.
+    // x-default é a raiz: quem não fala nenhum dos dois cai nela e o proxy decide.
+    alternates: {
+      canonical: caminho(idioma),
+      languages: { "pt-BR": "/", en: "/en", "x-default": "/" },
+    },
+    icons: {
+      icon: "/faviconclov.svg",
+    },
+  };
+}
+
+export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
+  const idioma = idiomaDe((await params).lang);
+  const d = dicionario(idioma);
+
   return (
     <html
-      lang="pt-BR"
+      lang={d.htmlLang}
       className={`${ppmori.variable} h-full antialiased`}
       // O script INTRO_VISTA põe .sem-intro no <html> antes da hidratação.
       suppressHydrationWarning
@@ -58,7 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Antes do overlay: marca a intro já vista sem esperar o React. */}
         <script dangerouslySetInnerHTML={{ __html: INTRO_VISTA }} />
         <IntroReveal />
-        <Header />
+        <Header t={d.header} idioma={idioma} whatsapp={d.whatsapp} />
         <SmoothScroll>{children}</SmoothScroll>
 
         {/* Google Tag Manager. São ~300 KB de JavaScript de terceiro (container +
