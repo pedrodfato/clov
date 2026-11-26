@@ -158,7 +158,6 @@ const en: Dicionario = {
         "Websites and systems built by Clov. Explore the projects and ask for a quote on a site in the same style or in a brand-new one.",
     },
     titulo: "Projects",
-    texto: "Websites and systems that came out of here. Drag to explore, open a project and ask for one in the same style, or a new one.",
     arraste: "Drag to explore",
     deslize: "Swipe to browse",
     noAr: "Live",

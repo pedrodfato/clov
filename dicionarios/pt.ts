@@ -160,7 +160,6 @@ const pt = {
         "Sites e sistemas construídos pela Clov. Explore os projetos e peça um orçamento de um site no mesmo estilo ou com um estilo novo.",
     },
     titulo: "Projetos",
-    texto: "Sites e sistemas que saíram daqui. Arraste para explorar, abra um projeto e peça um no mesmo estilo ou um estilo novo.",
     arraste: "Arraste para explorar",
     deslize: "Deslize para navegar",
     noAr: "No ar",
