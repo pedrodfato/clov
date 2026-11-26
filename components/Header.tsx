@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import gsap from "gsap"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import StartChallengeButton from "./StartChallengeButton"
 import MenuQuebrado from "./MenuQuebrado"
 import TrocaIdioma from "./TrocaIdioma"
@@ -14,7 +15,15 @@ import { caminho, type Idioma } from "@/dicionarios/idiomas"
 type Props = { t: Dicionario["header"]; idioma: Idioma; whatsapp: string }
 
 export default function Header({ t, idioma, whatsapp }: Props) {
-    const links = t.links
+    const pathname = usePathname()
+    // O pathname pode chegar reescrito pelo proxy (/pt) no servidor.
+    const naHome = pathname === caminho(idioma) || pathname === `/${idioma}`
+    // Fora da home as âncoras levam de volta para ela (/#faq). Na home ficam
+    // #faq, que é o que o ScrollSmoother intercepta para rolar.
+    const links = useMemo(
+        () => naHome ? t.links : t.links.map((l) => l.href.startsWith("#") ? { ...l, href: caminho(idioma) + (l.href === "#" ? "" : l.href) } : l),
+        [t.links, naHome, idioma]
+    )
     const [hidden, setHidden] = useState(false)
     // Link da seção que está no meio da tela; "#" (Início) no topo da página.
     const [ativo, setAtivo] = useState("#")
@@ -67,8 +76,9 @@ export default function Header({ t, idioma, whatsapp }: Props) {
 
     // Acende o link da seção que cruza a faixa do meio da tela.
     useEffect(() => {
+        if (!naHome) return
         const secoes = links.map((l) => l.href)
-            .filter((h) => h !== "#")
+            .filter((h) => h.startsWith("#") && h !== "#")
             .map((h) => document.querySelector(h))
             .filter((el): el is Element => el !== null)
 
@@ -86,7 +96,7 @@ export default function Header({ t, idioma, whatsapp }: Props) {
         )
         secoes.forEach((s) => io.observe(s))
         return () => io.disconnect()
-    }, [links])
+    }, [links, naHome])
 
     return (
         <>
@@ -114,7 +124,8 @@ export default function Header({ t, idioma, whatsapp }: Props) {
 
                     <div data-entra className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl backdrop-saturate-150 lg:flex">
                         {links.map((link) => {
-                            const aceso = link.href === ativo
+                            // Fora da home acende o link da própria página.
+                            const aceso = naHome ? link.href === ativo : link.href === pathname
                             return (
                                 <a
                                     key={link.href}

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Languages } from "lucide-react"
-import { COOKIE_IDIOMA, caminho, type Idioma } from "@/dicionarios/idiomas"
+import { COOKIE_IDIOMA, caminho, traduz, type Idioma } from "@/dicionarios/idiomas"
 
 // Pílula com a bolinha que desliza, como o botão de dark mode da referência:
 // a bolinha fica à esquerda no português e à direita no inglês, e a sigla do
@@ -21,7 +21,7 @@ export default function TrocaIdioma({ idioma, rotulo }: { idioma: Idioma; rotulo
         // Recarga inteira, e não navegação do cliente: a outra língua troca o
         // <html lang> e as animações de scroll montam de novo do zero. A espera
         // deixa a bolinha terminar de deslizar.
-        setTimeout(() => window.location.assign(caminho(outro) + window.location.hash), 250)
+        setTimeout(() => window.location.assign((traduz(window.location.pathname, outro) ?? caminho(outro)) + window.location.hash), 250)
     }
 
     return (

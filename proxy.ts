@@ -1,12 +1,23 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { COOKIE_IDIOMA, idiomaPreferido } from "@/dicionarios/idiomas";
+import { COOKIE_IDIOMA, PAGINAS, idiomaPreferido, traduz } from "@/dicionarios/idiomas";
 
 // Português mora na raiz (reescrita para /pt por dentro) e inglês em /en.
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const url = req.nextUrl.clone();
+
+  // /en/projects é servido pela pasta em português; o endereço com a pasta
+  // duplicaria a página para o Google.
+  if (pathname === PAGINAS.projetos.en) {
+    url.pathname = "/en/projetos";
+    return NextResponse.rewrite(url);
+  }
+  if (pathname === "/en/projetos") {
+    url.pathname = PAGINAS.projetos.en;
+    return NextResponse.redirect(url, 308);
+  }
   if (pathname === "/en" || pathname.startsWith("/en/")) return;
 
-  const url = req.nextUrl.clone();
   const resto = pathname === "/" ? "" : pathname;
 
   // /pt duplicaria a raiz para o Google.
@@ -21,7 +32,7 @@ export function proxy(req: NextRequest) {
     req.headers.get("x-vercel-ip-country") ?? req.headers.get("cf-ipcountry"),
   );
   if (idioma === "en") {
-    url.pathname = `/en${resto}`;
+    url.pathname = traduz(pathname, "en") ?? `/en${resto}`;
     return NextResponse.redirect(url);
   }
 

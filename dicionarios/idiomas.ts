@@ -12,8 +12,19 @@ export const ehIdioma = (v: string): v is Idioma => (IDIOMAS as readonly string[
 // O [lang] da rota: o proxy só entrega pt ou en, e qualquer outro cai no português.
 export const idiomaDe = (lang: string): Idioma => (ehIdioma(lang) ? lang : "pt");
 
-// Português fica na raiz, que é o endereço que o Google já conhece.
-export const caminho = (idioma: Idioma) => (idioma === "en" ? "/en" : "/");
+// Cada página nos dois idiomas. Português fica na raiz, que é o endereço que
+// o Google já conhece. A pasta da rota tem o nome em português; o proxy
+// reescreve o endereço em inglês para ela.
+export const PAGINAS = {
+  home: { pt: "/", en: "/en" },
+  projetos: { pt: "/projetos", en: "/en/projects" },
+} as const;
+
+export const caminho = (idioma: Idioma, pagina: keyof typeof PAGINAS = "home") => PAGINAS[pagina][idioma];
+
+// O mesmo endereço no outro idioma; undefined se não for uma página conhecida.
+export const traduz = (pathname: string, para: Idioma): string | undefined =>
+  Object.values(PAGINAS).find((p) => p.pt === pathname || p.en === pathname)?.[para];
 
 // Países onde o português é a língua do dia a dia.
 const LUSOFONOS = new Set(["BR", "PT", "AO", "MZ", "CV", "GW", "ST", "TL"]);

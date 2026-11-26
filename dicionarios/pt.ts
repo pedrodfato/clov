@@ -17,7 +17,7 @@ const pt = {
       { label: "Quem somos", href: "#quem-somos" },
       { label: "Como funciona", href: "#metodologia" },
       { label: "Soluções", href: "#solucoes" },
-      { label: "Projetos", href: "#projetos" },
+      { label: "Projetos", href: "/projetos" },
       { label: "FAQ", href: "#faq" },
     ],
     cta: "Fale conosco",
@@ -141,6 +141,7 @@ const pt = {
     // {x} vira o nome do projeto.
     alt: "Site da {x}",
     ver: "Ver {x}",
+    verTodos: "Ver todos os projetos",
     descricoes: {
       FinalForms: "Plataforma para escolas",
       "IH Roma": "Escola de idiomas",
@@ -150,6 +151,52 @@ const pt = {
       "Marina Alves": "Estúdio de yoga e pilates",
       "Rafael Andrade": "Escritório de advocacia",
     } as Record<string, string>,
+  },
+
+  paginaProjetos: {
+    meta: {
+      title: "Projetos | Clov",
+      description:
+        "Sites e sistemas construídos pela Clov. Explore os projetos e peça um orçamento de um site no mesmo estilo ou com um estilo novo.",
+    },
+    titulo: "Projetos",
+    texto: "Sites e sistemas que saíram daqui. Arraste para explorar, abra um projeto e peça um no mesmo estilo ou um estilo novo.",
+    arraste: "Arraste para explorar",
+    noAr: "No ar",
+    // {n} vira o total e {m} os que estão no ar.
+    contagem: "{n} projetos · {m} no ar",
+    abrir: "Abrir",
+    abrirX: "Abrir {x}",
+    mapa: "Mapa da parede",
+    irPara: "Ir para {x}",
+    orcamento: "Pedir orçamento",
+    vaga: { legenda: "Seu site", status: "Estilo novo", titulo: "O próximo pode ser o seu", texto: "Comece um estilo do zero", dominio: "suaempresa.com.br" },
+    caso: {
+      fechar: "Fechar",
+      anterior: "Projeto anterior",
+      proximo: "Próximo projeto",
+      visitar: "Visitar o site",
+      novoTitulo: "Um estilo novo",
+      novoTexto:
+        "Do zero, com a cara da sua empresa. Depois da primeira conversa, a gente volta com uma leitura do cenário e uma proposta de escopo fechado.",
+      neste: "Neste estilo",
+      novo: "Estilo novo",
+      estilo: "Estilo",
+      tipo: "Que tipo de site?",
+      tipos: [
+        { rotulo: "Institucional", frase: "um site institucional" },
+        { rotulo: "Loja virtual", frase: "uma loja virtual" },
+        { rotulo: "Landing page", frase: "uma landing page" },
+        { rotulo: "Sistema ou app", frase: "um sistema ou app" },
+      ],
+      tipoPadrao: "um site",
+      // {tipo} vira a frase do tipo escolhido e {x} o nome do projeto.
+      mensagemEstilo: "Olá! Vim pela página de projetos da Clov e quero um orçamento de {tipo} no estilo do projeto {x}.",
+      mensagemNovo: "Olá! Vim pela página de projetos da Clov e quero um orçamento de {tipo} com um estilo novo.",
+      previa: "A mensagem que vai para o WhatsApp",
+      cta: "Pedir orçamento no WhatsApp",
+      nota: "Resposta em até 24h. A primeira conversa não custa nada.",
+    },
   },
 
   contato: {

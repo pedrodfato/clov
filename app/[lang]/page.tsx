@@ -10,12 +10,13 @@ import Contato from "@/components/v2/Contato"
 import Faq from "@/components/v2/Faq"
 import Rodape from "@/components/v2/Rodape"
 import { dicionario } from "@/dicionarios"
-import { idiomaDe } from "@/dicionarios/idiomas"
+import { caminho, idiomaDe } from "@/dicionarios/idiomas"
 
 // v2: estrutura inspirada na referência (letreiros gigantes, etapas
 // presas no scroll). A versão anterior está na tag git `v1`.
 export default async function Home({ params }: PageProps<"/[lang]">) {
-  const d = dicionario(idiomaDe((await params).lang))
+  const idioma = idiomaDe((await params).lang)
+  const d = dicionario(idioma)
 
   return (
     <>
@@ -27,7 +28,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <Diagnostico t={d.diagnostico} whatsapp={d.whatsapp} />
         <ComoFunciona t={d.comoFunciona} />
         <Solucoes t={d.solucoes} />
-        <Projetos t={d.projetos} />
+        <Projetos t={d.projetos} todos={caminho(idioma, "projetos")} />
         <Contato t={d.contato} whatsapp={d.whatsapp} />
         <Faq t={d.faq} />
       </main>

@@ -3,14 +3,19 @@ import { ArrowUpRight } from "lucide-react"
 
 type Props = {
     href?: string
+    /** Com onClick vira <button>: abre algo na própria página em vez de navegar. */
+    onClick?: () => void
     children: string
     className?: string
 }
 
-export default function StartChallengeButton({ href = "#", children, className = "" }: Props) {
+export default function StartChallengeButton({ href = "#", onClick, children, className = "" }: Props) {
+    // Link e button recebem as mesmas classes e o mesmo miolo.
+    const Tag = (onClick ? "button" : Link) as typeof Link
+    const alvo = (onClick ? { type: "button", onClick } : { href }) as React.ComponentProps<typeof Link>
     return (
-        <Link
-            href={href}
+        <Tag
+            {...alvo}
             // isolate + overflow-hidden: a onda é pintada por baixo do texto e
             // recortada na pílula.
             className={`group relative isolate flex items-center gap-[1.2em] overflow-hidden rounded-full border border-transparent bg-ink p-[0.45em] pl-[1.8em] text-[13px] font-semibold uppercase leading-none tracking-[0.14em] text-brand-deep shadow-[0_10px_40px_-10px_rgba(0,232,122,0.45)] transition-[box-shadow,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[#7dffbf] hover:shadow-[0_14px_50px_-8px_rgba(0,232,122,0.6)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${className}`}
@@ -45,6 +50,6 @@ export default function StartChallengeButton({ href = "#", children, className =
             <span className="flex h-[2.75em] w-[2.75em] shrink-0 items-center justify-center rounded-full bg-brand-deep text-brand transition-[transform,background-color,color] duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] [transition-duration:500ms,700ms,700ms] group-hover:rotate-45 group-hover:bg-white group-hover:text-brand-deep">
                 <ArrowUpRight className="h-[1.25em] w-[1.25em]" strokeWidth={2.25} />
             </span>
-        </Link>
+        </Tag>
     )
 }

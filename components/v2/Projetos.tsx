@@ -8,38 +8,10 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import useTelaGrande from "../useTelaGrande";
 import { ENTRADA } from "../Reveal";
+import { FaixaWip, PROJETOS } from "../projetos/comum";
 import type { Dicionario } from "@/dicionarios/pt";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
-type Projeto = { nome: string; img: string; href?: string; dominio?: string };
-
-// Sem href = ainda em desenvolvimento: card cinza, faixa WIP e nenhum link.
-// A descrição de cada um vem do dicionário, pelo nome.
-const PROJETOS: Projeto[] = [
-  { nome: "FinalForms", href: "https://www.finalforms.com/", dominio: "finalforms.com", img: "/projects/finalforms.jpg" },
-  { nome: "IH Roma", href: "https://ihroma.it/", dominio: "ihroma.it", img: "/projects/ihroma.jpg" },
-  { nome: "Dazze Móveis", href: "https://dazzemoveis.com.br/", dominio: "dazzemoveis.com.br", img: "/projects/dazze.jpg" },
-  { nome: "Borba Services", href: "https://borbaservicesllc.com/", dominio: "borbaservicesllc.com", img: "/projects/borba.jpg" },
-  { nome: "MedTracker", href: "https://med.clov.com.br/", dominio: "med.clov.com.br", img: "/projects/medtracker.jpg" },
-  { nome: "Marina Alves", img: "/projects/marina-alves.jpg" },
-  { nome: "Rafael Andrade", img: "/projects/rafael-andrade.jpg" },
-];
-
-// Fita atravessada no card, como obra interditada.
-function FaixaWip({ texto }: { texto: string }) {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
-      <div className="flex w-[140%] -rotate-[8deg] justify-around gap-8 bg-[repeating-linear-gradient(-45deg,#00e87a_0_14px,#061910_14px_28px)] py-1">
-        <div className="flex w-full justify-around gap-8 bg-[#0a0a0a]/90 py-2.5 font-mono text-[15px] font-semibold uppercase tracking-[0.35em] text-brand">
-          {Array.from({ length: 6 }, (_, i) => (
-            <span key={i} className="shrink-0">WIP · {texto}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 const dois = (n: number) => String(n).padStart(2, "0");
 
@@ -53,7 +25,7 @@ const assinaMovimento = (avisa: () => void) => {
 // Galeria em fila, como uma sala escura com as telas penduradas: o scroll
 // vertical anda a fila na horizontal, a tela do centro acende e as vizinhas
 // giram para dentro e perdem a cor. Embaixo, a ficha do projeto da vez.
-export default function Projetos({ t }: { t: Dicionario["projetos"] }) {
+export default function Projetos({ t, todos }: { t: Dicionario["projetos"]; todos: string }) {
   const secaoRef = useRef<HTMLElement>(null);
   const trilhoRef = useRef<HTMLDivElement>(null);
   const stRef = useRef<ScrollTrigger | null>(null);
@@ -192,9 +164,18 @@ export default function Projetos({ t }: { t: Dicionario["projetos"] }) {
       )}
 
       {animado && (
-        <span data-entra className="absolute right-10 top-24 font-mono text-[14px] tracking-[0.2em] text-white/65">
-          {dois(ativo + 1)} / {dois(PROJETOS.length)}
-        </span>
+        <div data-entra className="absolute right-10 top-24 z-10 flex items-center gap-6">
+          <a
+            href={todos}
+            className="group flex items-center gap-2 font-mono text-[13px] uppercase tracking-[0.18em] text-white/80 transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+          >
+            {t.verTodos}
+            <ArrowRight className="h-3.5 w-3.5 text-brand transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+          </a>
+          <span className="font-mono text-[14px] tracking-[0.2em] text-white/65">
+            {dois(ativo + 1)} / {dois(PROJETOS.length)}
+          </span>
+        </div>
       )}
 
       <div
@@ -271,13 +252,22 @@ export default function Projetos({ t }: { t: Dicionario["projetos"] }) {
 
       {/* Celular: pontos que andam com a fila, para dizer que tem mais ao lado. */}
       {!animado && (
-        <div aria-hidden data-entra className="relative flex items-center gap-1.5 px-6 sm:px-10">
-          {PROJETOS.map((proj, i) => (
-            <span
-              key={proj.nome}
-              className={`h-1.5 rounded-full transition-all duration-300 ${i === ativo ? "w-6 bg-brand shadow-[0_0_8px_rgba(0,232,122,0.7)]" : "w-1.5 bg-white/20"}`}
-            />
-          ))}
+        <div data-entra className="relative flex items-center justify-between gap-6 px-6 sm:px-10">
+          <div aria-hidden className="flex items-center gap-1.5">
+            {PROJETOS.map((proj, i) => (
+              <span
+                key={proj.nome}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === ativo ? "w-6 bg-brand shadow-[0_0_8px_rgba(0,232,122,0.7)]" : "w-1.5 bg-white/20"}`}
+              />
+            ))}
+          </div>
+          <a
+            href={todos}
+            className="flex items-center gap-2 py-2 font-mono text-[13px] uppercase tracking-[0.18em] text-white/80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+          >
+            {t.verTodos}
+            <ArrowRight className="h-3.5 w-3.5 text-brand" aria-hidden />
+          </a>
         </div>
       )}
 
