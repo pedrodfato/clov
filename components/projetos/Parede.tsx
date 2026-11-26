@@ -460,10 +460,11 @@ export default function Parede({ t, p }: Props) {
       {/* Bordas escuras: o título e a barra de baixo leem por cima das telas. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,transparent_55%,rgba(0,0,0,0.55))]" />
 
-      {/* Celular: faixa sólida acima da parede. Desktop: por cima, num degradê. */}
-      <div className="parede-espera pointer-events-none relative z-10 order-1 border-b border-white/10 bg-surface pb-4 pt-24 opacity-0 lg:absolute lg:inset-x-0 lg:top-0 lg:border-0 lg:bg-transparent lg:bg-gradient-to-b lg:from-surface lg:via-surface/70 lg:to-transparent lg:pb-12 lg:pt-28">
+      {/* Celular: faixa sólida acima da parede. Desktop: o título fica só para
+          leitores de tela; quem chegou clicou em Projetos e já sabe onde está. */}
+      <div className="parede-espera pointer-events-none relative z-10 order-1 border-b border-white/10 bg-surface pb-4 pt-24 opacity-0 lg:absolute lg:inset-x-0 lg:top-0 lg:h-32 lg:border-0 lg:bg-transparent lg:bg-gradient-to-b lg:from-surface lg:via-surface/60 lg:to-transparent lg:p-0">
         <div className="mx-auto flex max-w-[1400px] items-end justify-between gap-4 px-6 sm:px-10 lg:block">
-          <h1 id="parede-titulo" data-hud className="titulo-brilho w-fit text-[36px] font-normal leading-none tracking-[-0.03em] sm:text-[48px] lg:text-[64px]">
+          <h1 id="parede-titulo" data-hud className="titulo-brilho w-fit text-[36px] font-normal leading-none tracking-[-0.03em] sm:text-[48px] lg:sr-only">
             {t.titulo}
           </h1>
           <span data-hud className="flex flex-col items-end gap-1 pb-1 text-right font-mono text-[11px] uppercase tracking-[0.16em] lg:hidden">
