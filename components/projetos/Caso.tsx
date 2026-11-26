@@ -5,12 +5,11 @@ import gsap from "gsap";
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import StartChallengeButton from "../StartChallengeButton";
 import { whatsapp } from "../contato";
-import { Moldura, NOVO, PROJETOS, Vaga } from "./comum";
+import { Moldura, NOVO, PROJETOS, Vaga, dois } from "./comum";
 import type { Dicionario } from "@/dicionarios/pt";
 
 const TOTAL = PROJETOS.length + 1;
 
-const dois = (n: number) => String(n).padStart(2, "0");
 const reduzido = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 type Props = {

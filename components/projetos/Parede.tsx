@@ -4,11 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
-import { Move } from "lucide-react";
+import { ArrowLeft, ArrowRight, Move } from "lucide-react";
 import StartChallengeButton from "../StartChallengeButton";
 import { ENTRADA } from "../Reveal";
 import { semIntro } from "../IntroReveal";
-import { Moldura, NOVO, PROJETOS, Vaga } from "./comum";
+import { Moldura, NOVO, PROJETOS, Vaga, dois } from "./comum";
 import Caso from "./Caso";
 import type { Dicionario } from "@/dicionarios/pt";
 
@@ -40,7 +40,12 @@ const centroDe = (i: number) => ({ x: LUGARES[i].x + LUGARES[i].w / 2, y: LUGARE
 // largura); no celular ele ocupa quase a tela inteira.
 const escalaDe = (largura: number) => gsap.utils.clamp(0.38, 0.72, largura / 2300);
 
+const REDONDO =
+  "flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-colors active:border-brand/60 active:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+
 const MOVIMENTO_REDUZIDO = "(prefers-reduced-motion: reduce)";
+// No celular a parede encaixa uma tela por vez; no desktop ela é livre.
+const celular = () => window.matchMedia("(max-width: 1023px)").matches;
 
 // Grade de medição da parede: fina a cada 100 unidades, marcada a cada 400.
 // Linhas de var(--u), 1px na tela em qualquer escala.
@@ -74,6 +79,8 @@ export default function Parede({ t, p }: Props) {
   const [rotulo, setRotulo] = useState(t.arraste);
   const [mexeu, setMexeu] = useState(false);
   const [aberto, setAberto] = useState<number | null>(null);
+  // A tela da vez no celular: a que a câmera encaixou.
+  const [atual, setAtual] = useState(0);
 
   // Até onde a câmera vai: a borda da parede encosta na da tela, com folga.
   // Se a tela for maior que a parede, ela fica centrada.
@@ -111,6 +118,7 @@ export default function Parede({ t, p }: Props) {
     (i: number) => {
       const c = centroDe(i);
       leva(-c.x, -c.y, 0.9, "power3.inOut");
+      setAtual(i);
     },
     [leva],
   );
@@ -123,6 +131,23 @@ export default function Parede({ t, p }: Props) {
       leva((gsap.getProperty(parede, "x") as number) - dx / k, (gsap.getProperty(parede, "y") as number) - dy / k, 0.6);
     },
     [leva],
+  );
+
+  // A tela cujo centro (já dentro dos limites) fica mais perto do ponto.
+  const maisPerto = useCallback(
+    (x: number, y: number) => {
+      const b = limites(kRef.current);
+      let melhor = { i: 0, x, y, d: Infinity };
+      LUGARES.forEach((_, i) => {
+        const c = centroDe(i);
+        const px = gsap.utils.clamp(b.minX, b.maxX, -c.x);
+        const py = gsap.utils.clamp(b.minY, b.maxY, -c.y);
+        const d = Math.hypot(px - x, py - y);
+        if (d < melhor.d) melhor = { i, x: px, y: py, d };
+      });
+      return melhor;
+    },
+    [limites],
   );
 
   useEffect(() => {
@@ -164,6 +189,21 @@ export default function Parede({ t, p }: Props) {
       onDragStart() {
         arrastou.current = true;
         setMexeu(true);
+      },
+      // Celular: o arremesso termina sempre em cima de uma tela.
+      snap: {
+        points: (pt: { x: number; y: number }) => {
+          if (!celular()) return pt;
+          // Chamado ao soltar: a ficha já troca enquanto a tela desliza.
+          const m = maisPerto(pt.x, pt.y);
+          setAtual(m.i);
+          return { x: m.x, y: m.y };
+        },
+      },
+      maxDuration: 1,
+      // Sem inércia (movimento reduzido) não há arremesso: encaixa direto.
+      onDragEnd() {
+        if (reduzido && celular()) irPara(maisPerto(this.x, this.y).i);
       },
     })[0];
     dragRef.current = drag;
@@ -210,6 +250,7 @@ export default function Parede({ t, p }: Props) {
       tl = gsap.timeline({
         delay: semIntro() ? 0.15 : 2.1,
         onComplete: () => {
+          drag.applyBounds(limites(kRef.current));
           drag.enable();
           drag.update();
           palco.removeEventListener("pointerdown", pressa);
@@ -222,7 +263,7 @@ export default function Parede({ t, p }: Props) {
         0,
       )
         .from("[data-palavra]", { opacity: 0, scale: 0.92, duration: 1.4, ease: "power3.out" }, 0.1)
-        .from(pecas, { opacity: 0, y: 70, duration: 0.9, ease: "power3.out", stagger: 0.09 }, 0.3)
+        .from(pecas, { opacity: 0, y: 70, duration: 0.9, ease: "power3.out", stagger: 0.09, clearProps: "opacity,transform" }, 0.3)
         .from(telas, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.8, ease: "power2.inOut", stagger: 0.09 }, 0.5)
         .to(camera, { scale: k, duration: 1.8, ease: "expo.inOut" }, "+=0.2")
         .to(parede, { x: fim.x, y: fim.y, duration: 1.8, ease: "expo.inOut" }, "<")
@@ -250,7 +291,9 @@ export default function Parede({ t, p }: Props) {
       const agora = `${palco.clientWidth}x${palco.clientHeight}`;
       if (agora === tamanho) return;
       tamanho = agora;
-      tl?.progress(1);
+      // A faixa do título muda de altura quando as fontes chegam, no meio da
+      // entrada: a câmera já é centrada pelo CSS, e os limites se ajustam no fim.
+      if (tl?.isActive()) return;
       const kNovo = escalaDe(palco.clientWidth);
       kRef.current = kNovo;
       camera.style.setProperty("--k", String(kNovo));
@@ -275,7 +318,7 @@ export default function Parede({ t, p }: Props) {
       drag.kill();
       dragRef.current = null;
     };
-  }, [limites, empurra]);
+  }, [limites, empurra, maisPerto, irPara]);
 
   // Etiqueta que segue o mouse: diz o que acontece se apertar ali.
   const seguePonteiro = (e: React.PointerEvent) => {
@@ -302,10 +345,14 @@ export default function Parede({ t, p }: Props) {
   };
 
   // Clique de verdade, não o fim de um arrasto que começou em cima da tela.
+  // No celular, tocar numa tela vizinha traz ela para o centro; só a da vez abre.
   const abrir = (i: number) => {
     if (arrastou.current) return;
+    if (celular() && i !== atual) return irPara(i);
     setAberto(i);
   };
+  const passo = (n: number) => irPara((atual + n + LUGARES.length) % LUGARES.length);
+  const projAtual = PROJETOS[atual];
 
   const noAr = PROJETOS.filter((x) => x.href).length;
   const contagem = t.contagem.replace("{n}", String(PROJETOS.length)).replace("{m}", String(noAr));
@@ -318,14 +365,15 @@ export default function Parede({ t, p }: Props) {
       onKeyDown={setas}
       onPointerMove={seguePonteiro}
       onPointerLeave={() => cursorRef.current && gsap.to(cursorRef.current, { opacity: 0, duration: 0.2 })}
-      className="relative h-[100svh] w-full overflow-hidden bg-surface"
+      className="relative flex h-[100svh] w-full flex-col overflow-hidden bg-surface lg:block"
     >
       {/* Sem JS a parede não tem câmera: fica à vista como está. */}
       <noscript>
         <style>{`.parede-espera{opacity:1!important}`}</style>
       </noscript>
 
-      <div ref={palcoRef} className="parede-espera absolute inset-0 touch-none select-none opacity-0">
+      {/* No celular a parede fica entre o título e a ficha, sem nada por cima. */}
+      <div ref={palcoRef} className="parede-espera relative order-2 min-h-0 flex-1 touch-none select-none overflow-hidden opacity-0 lg:absolute lg:inset-0">
         <div
           ref={cameraRef}
           className="absolute left-1/2 top-1/2 origin-top-left [--k:1] [--u:calc(1px/var(--k))]"
@@ -367,11 +415,13 @@ export default function Parede({ t, p }: Props) {
                   onClick={() => abrir(i)}
                   onFocus={(e) => e.currentTarget.matches(":focus-visible") && irPara(i)}
                   aria-label={vaga ? `${t.vaga.titulo}. ${t.vaga.texto}` : t.abrirX.replace("{x}", proj.nome)}
-                  className="group absolute cursor-[inherit] text-left focus-visible:outline-none [&:focus-visible>div:last-child]:outline-2 [&:focus-visible>div:last-child]:outline-offset-[calc(var(--u)*6)] [&:focus-visible>div:last-child]:outline-brand"
+                  className={`group absolute cursor-[inherit] text-left transition-opacity duration-500 focus-visible:outline-none [&:focus-visible>div:last-child]:outline-2 [&:focus-visible>div:last-child]:outline-offset-[calc(var(--u)*6)] [&:focus-visible>div:last-child]:outline-brand ${
+                    i === atual ? "" : "max-lg:opacity-30"
+                  }`}
                   style={{ left: l.x, top: l.y, width: l.w }}
                 >
                   {/* Legenda pregada acima da tela. */}
-                  <span className="pointer-events-none absolute inset-x-0 bottom-full flex items-start justify-between gap-[calc(var(--u)*12)] pb-[calc(var(--u)*10)]">
+                  <span className="pointer-events-none absolute inset-x-0 bottom-full hidden items-start lg:flex justify-between gap-[calc(var(--u)*12)] pb-[calc(var(--u)*10)]">
                     <span className="flex min-w-0 flex-col">
                       <span className="truncate text-[length:calc(var(--u)*17)] leading-tight tracking-[-0.02em] text-ink">
                         {vaga ? t.vaga.legenda : proj.nome}
@@ -410,19 +460,55 @@ export default function Parede({ t, p }: Props) {
       {/* Bordas escuras: o título e a barra de baixo leem por cima das telas. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,transparent_55%,rgba(0,0,0,0.55))]" />
 
-      <div className="parede-espera pointer-events-none absolute inset-x-0 top-0 z-10 opacity-0 bg-gradient-to-b from-surface via-surface/70 to-transparent pb-20 pt-24 lg:pt-28">
-        <div className="mx-auto max-w-[1400px] px-6 sm:px-10">
-          <h1 id="parede-titulo" data-hud className="titulo-brilho w-fit text-[44px] font-normal leading-none tracking-[-0.03em] sm:text-[64px]">
+      {/* Celular: faixa sólida acima da parede. Desktop: por cima, num degradê. */}
+      <div className="parede-espera pointer-events-none relative z-10 order-1 border-b border-white/10 bg-surface pb-4 pt-24 opacity-0 lg:absolute lg:inset-x-0 lg:top-0 lg:border-0 lg:bg-transparent lg:bg-gradient-to-b lg:from-surface lg:via-surface/70 lg:to-transparent lg:pb-20 lg:pt-28">
+        <div className="mx-auto flex max-w-[1400px] items-end justify-between gap-4 px-6 sm:px-10 lg:block">
+          <h1 id="parede-titulo" data-hud className="titulo-brilho w-fit text-[36px] font-normal leading-none tracking-[-0.03em] sm:text-[48px] lg:text-[64px]">
             {t.titulo}
           </h1>
-          <p data-hud className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-white/75 sm:text-[16px]">
+          <span data-hud className="flex flex-col items-end gap-1 pb-1 text-right font-mono text-[11px] uppercase tracking-[0.16em] lg:hidden">
+            <span className="text-white/60">{contagem}</span>
+            <span className="flex items-center gap-1.5 text-white/80">
+              <Move className="h-3.5 w-3.5 text-brand" aria-hidden />
+              {t.deslize}
+            </span>
+          </span>
+          <p data-hud className="mt-4 hidden max-w-[46ch] text-[16px] leading-relaxed text-white/75 lg:block">
             {t.texto}
           </p>
         </div>
       </div>
 
-      <div className="parede-espera pointer-events-none absolute inset-x-0 bottom-0 z-10 opacity-0 bg-gradient-to-t from-surface from-45% via-surface/90 to-transparent pt-28 lg:from-0% lg:via-surface/70 lg:pt-20">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-5 px-6 pb-6 sm:px-10 sm:pb-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-end">
+      {/* Celular: ficha da tela da vez, com as setas e o orçamento dela. */}
+      <div className="parede-espera relative z-10 order-3 flex flex-col gap-4 border-t border-white/10 bg-surface px-6 pb-6 pt-4 opacity-0 sm:px-10 lg:hidden">
+        <div data-hud className="flex items-center justify-between gap-4">
+          <div className="min-w-0" aria-live="polite">
+            <p className="truncate text-[20px] leading-tight tracking-[-0.02em] text-ink">{projAtual ? projAtual.nome : t.vaga.legenda}</p>
+            <p className="truncate text-[14px] text-white/60">
+              {projAtual ? `${p.descricoes[projAtual.nome]}${projAtual.href ? "" : ` · ${p.emDesenvolvimento}`}` : t.vaga.status}
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="mr-1 font-mono text-[12px] tracking-[0.18em] text-white/55">
+              {dois(atual + 1)}/{dois(LUGARES.length)}
+            </span>
+            <button type="button" onClick={() => passo(-1)} aria-label={t.caso.anterior} className={REDONDO}>
+              <ArrowLeft className="h-4 w-4" aria-hidden />
+            </button>
+            <button type="button" onClick={() => passo(1)} aria-label={t.caso.proximo} className={REDONDO}>
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </button>
+          </div>
+        </div>
+        <div data-hud>
+          <StartChallengeButton onClick={() => setAberto(atual)} className="w-full justify-between whitespace-nowrap">
+            {t.orcamento}
+          </StartChallengeButton>
+        </div>
+      </div>
+
+      <div className="parede-espera pointer-events-none absolute inset-x-0 bottom-0 z-10 hidden bg-gradient-to-t from-surface via-surface/70 to-transparent pt-20 opacity-0 lg:block">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-[1fr_auto_1fr] items-end gap-5 px-10 pb-8">
           <div data-hud className="flex flex-col gap-2 font-mono text-[12px] uppercase tracking-[0.18em]">
             <span className={`flex items-center gap-2 text-white/75 transition-opacity duration-700 ${mexeu ? "opacity-50" : ""}`}>
               <Move className="h-4 w-4 text-brand" aria-hidden />
@@ -442,7 +528,7 @@ export default function Parede({ t, p }: Props) {
             </StartChallengeButton>
           </div>
 
-          <div data-hud role="group" aria-label={t.mapa} className="pointer-events-auto relative hidden h-[114px] w-[176px] justify-self-end overflow-hidden rounded-xl border border-white/10 bg-black/60 lg:block">
+          <div data-hud role="group" aria-label={t.mapa} className="pointer-events-auto relative h-[114px] w-[176px] justify-self-end overflow-hidden rounded-xl border border-white/10 bg-black/60">
             {LUGARES.map((l, i) => {
               const proj = PROJETOS[i];
               return (

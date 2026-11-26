@@ -19,6 +19,8 @@ export const PROJETOS: Projeto[] = [
 // Na página /projetos, a vaga do próximo projeto vem logo depois do último.
 export const NOVO = PROJETOS.length;
 
+export const dois = (n: number) => String(n).padStart(2, "0");
+
 // Fita atravessada no card, como obra interditada. O corpo do texto vem de
 // --wip: a parede é escalada e precisa compensar.
 export function FaixaWip({ texto }: { texto: string }) {

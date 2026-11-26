@@ -160,6 +160,7 @@ const en: Dicionario = {
     titulo: "Projects",
     texto: "Websites and systems that came out of here. Drag to explore, open a project and ask for one in the same style, or a new one.",
     arraste: "Drag to explore",
+    deslize: "Swipe to browse",
     noAr: "Live",
     contagem: "{n} projects · {m} live",
     abrir: "Open",

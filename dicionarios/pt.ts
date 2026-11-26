@@ -162,6 +162,7 @@ const pt = {
     titulo: "Projetos",
     texto: "Sites e sistemas que saíram daqui. Arraste para explorar, abra um projeto e peça um no mesmo estilo ou um estilo novo.",
     arraste: "Arraste para explorar",
+    deslize: "Deslize para navegar",
     noAr: "No ar",
     // {n} vira o total e {m} os que estão no ar.
     contagem: "{n} projetos · {m} no ar",
